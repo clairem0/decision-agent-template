@@ -18,7 +18,7 @@ The fictional demo and Jev are optional. Do not start with repository maintenanc
 
 ## Changing the starter itself
 
-Read [docs/spec.md](docs/spec.md) and [now.md](now.md) before implementation. They govern development; the setup guide governs reader onboarding. Keep missing proof visible in [docs/verification.md](docs/verification.md).
+Read [docs/spec.md](docs/spec.md) before implementation. It governs development; the setup guide governs reader onboarding. Keep missing proof visible in [docs/verification.md](docs/verification.md).
 
 Prefer Python's standard library and small local files. Pin and review any needed dependency; follow any dependency constraints the user supplies. Do not add frameworks or services without a demonstrated need. Use fictional identities and synthetic fixtures; never import private data, machine paths, credentials or another repository's history. Escape source text and keep local review from executing source HTML or exposing arbitrary files.
 

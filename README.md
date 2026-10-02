@@ -31,6 +31,12 @@ The starter uses **Act now**, **Track for follow up**, **Useful info**, **FYI on
 
 The template does not intentionally cache full email bodies. It saves private metadata—subjects, sender names, links, brief decisions and your review notes—in ignored local files. Your agent must paraphrase rather than copy email text into those notes. Full teaching examples need your separate approval; your agent's transcripts may retain reads. [More about privacy](docs/storage.md).
 
+## When the agent gets it wrong
+
+Correct the category and explain why. Ask your agent to check for missing replies, attachments or context before treating the mistake as a preference. Your correction is saved only when the agent confirms it.
+
+To help with similar emails, select **“Also propose this as a teaching example.”** Review the proposed example and its exceptions before approving it for storage and reuse. Changing your general rules needs separate agreement. Then try a new similar email and a contrasting one to check that the distinction works.
+
 ## Once it's working
 
 [Schedule your review](docs/scheduling.md) · [Adapt to another use case](docs/adapting.md) · [Try Jev (advanced, optional)](docs/advanced-jev.md)

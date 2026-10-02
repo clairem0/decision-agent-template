@@ -12,7 +12,7 @@ Jev has mocked proof for request construction, explicit live/request-bound gates
 
 ## Distribution and review surfaces
 
-The distribution contains **39 manifest-listed files**, excluding Git history, local state and credentials. The private GitHub repository began with a separately audited clean snapshot. File-pattern checks supplement inspection; neither guarantees the absence of every kind of private data.
+The distribution contains **37 manifest-listed files**, excluding Git history, local state and credentials. The private GitHub repository began with a separately audited clean snapshot. File-pattern checks supplement inspection; neither guarantees the absence of every kind of private data.
 
 The current fresh ZIP passed the offline suite and a demo correction/receipt/readback plus unchanged rerun. Prior fresh-folder checks exercised the fictional demo, correction/readback, unchanged rerun and streamed Jev preview. Browser checks exercised both review surfaces, safe original links, exact copy-to-chat payloads, light/dark themes and 360px layouts. Expanded browser fixtures and the video were development-only artifacts; the shipped demo contains three conversations. Preview chat bridges and assistant replies were simulated.
 

@@ -11,7 +11,6 @@ docs/advanced-jev.md
 docs/adapting.md
 docs/agent-guide.md
 docs/agent-reference.md
-docs/feedback.md
 docs/inline-review.md
 docs/scheduling.md
 docs/spec.md
@@ -24,7 +23,6 @@ examples/references.json
 inline_review.py
 jev_preview.py
 jev_run.py
-now.md
 review_assets/inline-review.html
 serve.py
 storage.py

@@ -68,7 +68,7 @@ For an optional fictional evaluation, use `tests/cases/email.json` with `--input
 
 ## Teach from a correction
 
-Save the correction and confirm its receipt first. “Also propose this as a teaching example” requests a proposal, not adoption. Show the complete source, corrected label, distinction and limits in chat. Ask whether to retain and reuse that example. A general rubric edit needs separate approval; do not train on review history automatically.
+Save the correction and confirm its receipt first. Before proposing a reusable example, check for missing replies, attachments or context; fix that evidence and reassess before teaching a preference from the mistake. “Also propose this as a teaching example” requests a proposal, not adoption. Show the complete source, corrected label, distinction and limits in chat. Ask whether to retain and reuse that example. A general rubric edit needs separate approval; do not train on review history automatically.
 
 After approval, save an approval JSON under the same ignored root:
 
@@ -84,7 +84,7 @@ python3 decision.py teach --root local/my-review --approval local/my-review/appr
 
 The helper checks source/context hashes against the corrected assessment, retains approval provenance, archives the previous library and saves the approved example. Read it back from `local/my-review/references.json`. It does not rewrite the rubric or model weights. A later approved correction retires an earlier version; stale corrections are rejected.
 
-The next `prepare` uses the root's library by default. If supplying `--references`, choose that updated file. Verify the actual example text, label and distinction appear in a new target's complete request. A target's own example is excluded; proposed/retired examples are excluded. Changed selected references invalidate cached assessments. Test a fresh similar case and a contrast before claiming improvement. [Reader explanation](feedback.md).
+The next `prepare` uses the root's library by default. If supplying `--references`, choose that updated file. Verify the actual example text, label and distinction appear in a new target's complete request. A target's own example is excluded; proposed/retired examples are excluded. Changed selected references invalidate cached assessments. Test a fresh similar case and a contrast before claiming improvement. [Reader explanation](../README.md#when-the-agent-gets-it-wrong).
 
 ## Optional fictional demo
 
