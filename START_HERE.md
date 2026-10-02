@@ -1,0 +1,3 @@
+Help me set up an email decision agent using the template repository or folder I've shared. If I've given you only a link, first make a local working copy without overwriting an existing folder. Read AGENTS.md and follow docs/agent-guide.md. Do the technical work and guide me one step at a time.
+
+Start by checking capabilities, then confirm my email account and a small read-only example scope. Help me approve a rubric, test it with fresh reviewers, and complete a manual review with saved choices. If I already have a rubric, use it as our starting point. If I prefer to try it without email access, use the fictional demo. Stop before scheduling or changing my inbox.

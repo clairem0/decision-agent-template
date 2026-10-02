@@ -1,0 +1,32 @@
+{
+  "mode": "simulated",
+  "results": [
+    {
+      "id": "mail-demo-a",
+      "label": "act",
+      "reason": "Your approval is needed before the proposal can go to the client.",
+      "reference_ids": [
+        "email-deadline"
+      ],
+      "uncertainty": ""
+    },
+    {
+      "id": "mail-demo-b",
+      "label": "fyi",
+      "reason": "You confirmed that the package was found; the question is resolved.",
+      "reference_ids": [
+        "email-confirmed"
+      ],
+      "uncertainty": ""
+    },
+    {
+      "id": "mail-demo-c",
+      "label": "track",
+      "reason": "The repair quote is due from Casey; no action is needed from you yet.",
+      "reference_ids": [
+        "email-waiting"
+      ],
+      "uncertainty": ""
+    }
+  ]
+}

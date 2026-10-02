@@ -1,0 +1,41 @@
+{
+  "coverage": {
+    "scope": "Separate fictional checks",
+    "status": "partial",
+    "detail": "All four held-out cases supplied; one records a fictional retrieval failure."
+  },
+  "items": [
+    {
+      "id": "check-mail-0",
+      "kind": "email",
+      "title": "Optional expo",
+      "content": "Example Expo: Register today if you wish. This unsolicited invitation is optional; no prior agreement exists.",
+      "context": "As of 2030-04-08. Complete fictional thread unless explicitly noted.",
+      "status": "complete"
+    },
+    {
+      "id": "check-mail-1",
+      "kind": "email",
+      "title": "Deadline moved",
+      "content": "Host: Reply by April 9.\nHost, later: No reply needed; the event is canceled.",
+      "context": "As of 2030-04-08. Complete fictional thread unless explicitly noted.",
+      "status": "complete"
+    },
+    {
+      "id": "check-mail-2",
+      "kind": "email",
+      "title": "Missing budget details",
+      "content": "Coordinator: Approve the budget.\nRecipient: Please send the figures; no budget or attachment was supplied.",
+      "context": "As of 2030-04-08. Complete fictional thread unless explicitly noted.",
+      "status": "complete"
+    },
+    {
+      "id": "check-mail-3",
+      "kind": "email",
+      "title": "Body could not be retrieved",
+      "content": "Capture note: metadata only; fictional connector body read failed.",
+      "context": "As of 2030-04-08. The body and thread replies could not be read; do not classify from the title.",
+      "status": "failed"
+    }
+  ]
+}

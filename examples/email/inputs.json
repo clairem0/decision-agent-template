@@ -1,0 +1,39 @@
+{
+  "coverage": {
+    "scope": "Fictional demonstration only",
+    "status": "complete",
+    "detail": "All fictional items in this file are included."
+  },
+  "items": [
+    {
+      "id": "mail-demo-a",
+      "kind": "email",
+      "title": "Approve the client proposal by noon",
+      "content": "Nina: Please approve the final client proposal by noon on April 9. We need your approval before we can send it to the client.",
+      "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation, with no later replies or other open obligations.",
+      "status": "complete",
+      "original_url": "https://mail.example.test/thread/mail-demo-a",
+      "sender": "Nina · Design team"
+    },
+    {
+      "id": "mail-demo-b",
+      "kind": "email",
+      "title": "Your delivery question is resolved",
+      "content": "Recipient: I cannot find my desk lamp delivery.\nParcel Post: It was left with reception.\nRecipient: Found it, thank you. No further help needed.",
+      "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation, with no later replies or other open obligations.",
+      "status": "complete",
+      "original_url": "https://mail.example.test/thread/mail-demo-b",
+      "sender": "Parcel Post"
+    },
+    {
+      "id": "mail-demo-c",
+      "kind": "email",
+      "title": "Your repair quote is on its way",
+      "content": "Recipient: Please send a quote for the kitchen tap repair we discussed.\nCasey: I will send it April 12. I have all the details; nothing is needed from you before then.",
+      "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation, with no later replies or other open obligations.",
+      "status": "complete",
+      "original_url": "https://mail.example.test/thread/mail-demo-c",
+      "sender": "Casey · Home repairs"
+    }
+  ]
+}

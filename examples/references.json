@@ -1,0 +1,102 @@
+{
+  "purpose": "Original fictional teaching examples. Gold and anti-gold are relative to a distinction, not high and low scores. Both sides have approved labels. These labels belong in teaching packets. They are not target answer keys.",
+  "references": [
+    {
+      "id": "email-deadline",
+      "status": "approved",
+      "kind": "email",
+      "source_id": "fictional-teaching:email-deadline",
+      "title": "Approve the launch copy",
+      "content": "From: Fictional colleague\nPlease approve the launch copy by April 9. We need your answer to publish the product page on time.",
+      "context": "Fictional review on April 8; next review April 10. The reader owns approval and has not replied. This is the complete conversation.",
+      "label": "act",
+      "contrast_ids": [
+        "email-confirmed"
+      ],
+      "distinction": "The recipient still owes a concrete answer; the confirmation example has a later reply resolving it."
+    },
+    {
+      "id": "email-confirmed",
+      "status": "approved",
+      "kind": "email",
+      "source_id": "fictional-teaching:email-confirmed",
+      "title": "Launch copy approved",
+      "content": "Colleague: Please approve the launch copy by April 9.\nRecipient: Approved.\nColleague: Published, thank you. No further action needed.",
+      "context": "Fictional teaching example only. No other messages or facts are implied.",
+      "label": "fyi",
+      "contrast_ids": [
+        "email-deadline"
+      ],
+      "distinction": "The later conversation settles the request. Do not classify only the first message."
+    },
+    {
+      "id": "email-waiting",
+      "status": "approved",
+      "kind": "email",
+      "source_id": "fictional-teaching:email-waiting",
+      "title": "Repair quote pending",
+      "content": "Recipient: Please send a quote for the agreed bathroom repair.\nRepair company: We will send it April 12; nothing is needed from you until then.",
+      "context": "Fictional teaching example only. No other messages or facts are implied.",
+      "label": "track",
+      "contrast_ids": [
+        "email-promotion"
+      ],
+      "distinction": "A specific outstanding deliverable exists. A promotional invitation creates no obligation."
+    },
+    {
+      "id": "email-promotion",
+      "status": "approved",
+      "kind": "email",
+      "source_id": "fictional-teaching:email-promotion",
+      "title": "Last chance: spring sale",
+      "content": "Cedar & Thread: Our optional spring clothing sale ends tonight. Shop if you want. This is a general promotion, unrelated to any existing order.",
+      "context": "Fictional reader explicitly does not want recurring optional Cedar & Thread sale emails. Existing orders, personal asks and account issues are exceptions. This is the complete message; no obligation exists.",
+      "label": "suppress",
+      "contrast_ids": [
+        "email-waiting"
+      ],
+      "distinction": "Urgent marketing language does not make a task. The waiting example concerns an existing deliverable."
+    },
+    {
+      "id": "email-missing",
+      "status": "approved",
+      "kind": "email",
+      "source_id": "fictional-teaching:email-missing",
+      "title": "Please handle this",
+      "content": "Sender: Please handle the issue today.\nRecipient: Which issue? No description or attachment was supplied.",
+      "context": "Fictional teaching example only. No other messages or facts are implied.",
+      "label": "track",
+      "contrast_ids": [],
+      "distinction": "The conversation is fully retrieved but lacks substantive details. Flag the missing context without inventing urgency or dismissing the request.",
+      "uncertainty": "The requested issue is unspecified; ask what it is before deciding the action and timing."
+    },
+    {
+      "id": "email-reading",
+      "status": "approved",
+      "kind": "email",
+      "source_id": "fictional-teaching:email-reading",
+      "title": "A small balcony garden",
+      "content": "Small Space Garden newsletter: For a small balcony, grow herbs in containers with drainage, check the light available, and water when the soil feels dry. No reply or task is requested.",
+      "context": "Fictional reader has asked to read practical balcony-gardening ideas. This is the whole newsletter.",
+      "label": "read",
+      "contrast_ids": [
+        "email-confirmed"
+      ],
+      "distinction": "The reader wants intentional reading time. A routine resolved confirmation only needs brief awareness."
+    },
+    {
+      "id": "email-later-reply",
+      "status": "approved",
+      "kind": "email",
+      "source_id": "fictional-teaching:email-later-reply",
+      "title": "Choose a weekend for the family visit",
+      "content": "Sam: Please let me know which weekend works for the family visit by April 18. We will make plans after that; nothing needs booking this week.",
+      "context": "Fictional assessment on April 8; next review April 10. The reader owns the choice, with no earlier preparation need or explicit priority.",
+      "label": "track",
+      "contrast_ids": [
+        "email-deadline"
+      ],
+      "distinction": "Track includes the reader's own important but non-urgent action. It does not only mean waiting for someone else."
+    }
+  ]
+}

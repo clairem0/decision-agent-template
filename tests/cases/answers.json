@@ -1,0 +1,14 @@
+{
+  "warning": "Read only AFTER freezing classifier results. Never load this file into a classification packet. Small author-written checks are not independent accuracy validation.",
+  "answers": {
+    "check-mail-0": "fyi",
+    "check-mail-1": "fyi",
+    "check-mail-2": "track"
+  },
+  "holds": {
+    "check-mail-3": "Retrieval failed; preserve a hold, not a classification."
+  },
+  "uncertainty": {
+    "check-mail-2": "The actual figures are missing; do not infer urgency or approve the budget."
+  }
+}
