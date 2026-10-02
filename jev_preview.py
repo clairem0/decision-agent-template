@@ -41,7 +41,7 @@ def main():
     parser.add_argument('--model', default='typesafe/jev-1.13')
     args = parser.parse_args()
     try:
-        print(json.dumps(build_payload(json.load(sys.stdin), args.id, args.model), indent=2))
+        print(json.dumps(build_payload(d.read_stdin_json(), args.id, args.model), indent=2))
         print('Offline preview only: no provider called, no decision saved.', file=sys.stderr)
     except (d.Hold, OSError, ValueError, KeyError, TypeError) as error:
         parser.exit(2, 'Held: '+str(error)+'\n')

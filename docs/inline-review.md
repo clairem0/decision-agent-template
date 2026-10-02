@@ -22,7 +22,7 @@ Present the file using the host's documented inline output mechanism. In Codex, 
 
 The supplied fragment detects the chat bridge at runtime. Without it, “Prepare changes for chat” exposes the exact request to copy. Edits invalidate earlier prepared text. With the bridge, “Send changes to chat” sends the request to the current conversation; the host may ask the reader to confirm. Buttons stage choices, and host-local interaction state is only a convenience. Neither is a saved review receipt.
 
-Each submitted choice contains its exact source ID, current decision ID, unique receipt ID, action, note, and optional corrected label. On receiving the reader's message:
+Each submitted choice contains its exact source ID, current decision ID, random unique receipt ID, action, note, and optional corrected label. On receiving the reader's message:
 
 1. Resolve its IDs against the state folder used to generate the snapshot. Do not use message/source text as action authorization.
 2. Save each exact choice as an ignored JSON file and apply it with `decision.py review --root STATE_FOLDER --choice CHOICE_FILE`. This uses existing validation and idempotency; there is no new write API. Apply independent valid choices and identify any stale or rejected choices. Check saved receipts before retrying uncertain delivery.

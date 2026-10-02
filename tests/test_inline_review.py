@@ -53,6 +53,17 @@ class InlineReviewTests(unittest.TestCase):
         # Requesting a proposal must not approve or write a teaching library.
         self.assertFalse((self.root/'references.json').exists())
 
+    def test_metadata_only_retrieval_failure_renders_without_a_subject(self):
+        failed = {'coverage': {'status': 'partial', 'scope': 'Fictional retry', 'detail': 'One unreadable conversation.'},
+                  'items': [{'id': 'fictional-account:unreadable', 'status': 'failed'}]}
+        d.prepare(self.root, failed, {}, {'references': []}, 'inline-test')
+        _, payload = self.payload('metadata-only.html')
+        self.assertEqual(payload['holds'][0]['title'], 'fictional-account:unreadable')
+        self.assertIsNone(payload['holds'][0]['original_url'])
+        page = d.render(self.root).read_text()
+        self.assertIn('fictional-account:unreadable', page)
+        self.assertNotIn('data-id="fictional-account:unreadable"', page)
+
     def test_snapshots_are_unique_and_cannot_overwrite_delivered_file(self):
         _, first = self.payload('first.html')
         _, second = self.payload('second.html')

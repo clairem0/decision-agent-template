@@ -132,6 +132,74 @@ class DecisionTests(unittest.TestCase):
         self.assertEqual(len(state['items']['mail-demo-a']['history']),1)
         self.assertFalse(d.summary(self.root)['items'][0]['new_review'])
 
+    def test_retrieval_hold_suspends_then_restores_exact_review_and_task(self):
+        import inline_review
+        self.accepted()
+        d.review(self.root, self.choice('assign', note='Draft the fictional reply.'))
+        correction = self.choice('correct', label='track', note='This can wait.')
+        d.review(self.root, correction)
+        d.review(self.root, self.choice('delivered', note='Presented in fictional chat.'))
+        original = copy.deepcopy(d.read_state(self.root)['items']['mail-demo-a'])
+        self.inputs['items'][0]['status'] = 'failed'
+        self.inputs['coverage']['status'] = 'partial'
+        self.assertEqual(self.prepare()['requests'], [])
+        held = d.summary(self.root)['items'][0]
+        self.assertEqual(held['status'], 'held'); self.assertIsNone(held['label'])
+        self.assertFalse(held['new_review'])
+        self.assertEqual(held['follow_up']['status'], 'open')
+        with self.assertRaises(d.Hold):
+            d.review(self.root, dict(correction, receipt_id='while-held'))
+        with self.assertRaises(d.Hold):
+            d.teach(self.root, self.approval(), self.refs, self.inputs['items'][0])
+        page = d.render(self.root).read_text()
+        self.assertNotIn('data-id="mail-demo-a"', page)
+        fragment = inline_review.render(self.root, self.root/'held.html', include_seen=True).read_text()
+        payload = json.loads(fragment.split('class="dr-data">')[1].split('</script>')[0])
+        self.assertNotIn('mail-demo-a', [i['id'] for i in payload['items']])
+        self.assertEqual(len(payload['holds']), 1)
+        self.inputs['items'][0]['status'] = 'complete'
+        self.inputs['coverage']['status'] = 'complete'
+        self.assertEqual(self.prepare()['requests'], [])
+        restored = d.read_state(self.root)['items']['mail-demo-a']
+        self.assertEqual(restored, original)
+        self.assertEqual(d.summary(self.root)['items'][0]['label'], 'track')
+        self.assertFalse(d.summary(self.root)['items'][0]['new_review'])
+        self.assertTrue(d.teach(self.root, self.approval(), self.refs, self.inputs['items'][0]))
+
+    def test_changed_inputs_after_hold_require_fresh_assessment(self):
+        for changed in ('content', 'context', 'rubric', 'reference', 'evaluator'):
+            with self.subTest(changed=changed), tempfile.TemporaryDirectory() as root:
+                inputs, rubric, refs = map(copy.deepcopy, (self.inputs, self.rubric, self.refs))
+                batch = d.prepare(root, inputs, rubric, refs, 'fixed')
+                d.accept(root, batch, self.response)
+                inputs['items'][0]['status'] = 'partial'
+                d.prepare(root, inputs, rubric, refs, 'fixed')
+                inputs['items'][0]['status'] = 'complete'
+                evaluator = 'fixed'
+                if changed in ('content', 'context'): inputs['items'][0][changed] += ' Changed evidence.'
+                elif changed == 'rubric': rubric['version'] += '-changed'
+                elif changed == 'reference': refs['references'][0]['distinction'] += ' Changed rule.'
+                else: evaluator = 'changed'
+                batch = d.prepare(root, inputs, rubric, refs, evaluator)
+                self.assertIn('mail-demo-a', [w['request']['target']['id'] for w in batch['requests']])
+                row = d.read_state(root)['items']['mail-demo-a']
+                self.assertEqual(row['status'], 'pending'); self.assertIsNone(row['decision'])
+                self.assertEqual(len(row['history']), 1)
+
+    def test_unclassified_hold_recovers_to_pending_and_unseen_decision_stays_new(self):
+        batch = self.prepare()
+        self.inputs['items'][0]['status'] = 'failed'; self.prepare()
+        self.inputs['items'][0]['status'] = 'complete'
+        recovered = self.prepare()
+        self.assertEqual(recovered['requests'], batch['requests'])
+        d.accept(self.root, recovered, self.response)
+        decision_id = d.read_state(self.root)['items']['mail-demo-a']['decision']['id']
+        self.inputs['items'][0]['status'] = 'failed'; self.prepare()
+        self.inputs['items'][0]['status'] = 'complete'
+        self.assertEqual(self.prepare()['requests'], [])
+        self.assertTrue(d.summary(self.root)['items'][0]['new_review'])
+        self.assertEqual(d.read_state(self.root)['items']['mail-demo-a']['decision']['id'], decision_id)
+
     def test_validation_is_atomic_and_rejects_stale_results(self):
         batch=self.prepare();bad=copy.deepcopy(self.response);bad['results'][-1]['label']='made-up'
         before=(self.root/'state.json').read_bytes()

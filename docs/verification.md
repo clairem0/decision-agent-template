@@ -1,42 +1,30 @@
 # What has been verified
 
-Updated 2026-10-02. Implementation and synthetic proof are separate from reader acceptance.
+Updated 2026-10-02. Synthetic implementation proof is separate from a reader's live acceptance.
 
-## Current technical proof
+## Offline behavior
 
-The Python 3.11+ standard-library suite contains **48 behavioral tests**. All pass with loopback sockets enabled; the restricted sandbox skips only the socket regression. No account access or paid provider call is used.
+The Python 3.11+ standard-library suite has **54 behavioral tests**. All pass with loopback enabled. It covers complete classifier input, approved teaching propagation, answer/history exclusion, five categories and separate uncertainty, atomic validation, saved receipts and tasks, changed-input reassessment, safe links, escaped reviews and metadata-only storage. Tests use fictional sources; no account or paid provider call is needed.
 
-Coverage includes complete classifier input and approved-example propagation; answer/history exclusion; five treatments with separate uncertainty; rejection of uncertain suppression, invalid categories and outdated contracts; metadata-only storage; atomic acceptance; persistent/idempotent receipts; changed-input reassessment; follow-up persistence; approved teaching with matching source re-read; safe links and escaped reviews; and legacy source-cache redaction.
+Recovery tests cover a failed retrieval followed by identical inputs: the same correction, acknowledgment, delivery state and task resume without a new classification. Changed source, context, rubric, references or evaluator still require reassessment. Held assessments remain unavailable for new choices in both review surfaces, including metadata-only retrieval failures with no subject. Process tests send non-ASCII input while the console encoding is cp1252. This does not establish Windows support.
 
-The optional Jev runner has mocked proof for exact HTTP request construction, offline preview, explicit live/request-bound gates, attempt-before-send, validated typed output, model/usage preservation, source/key exclusion, HTTP errors, invalid results, timeouts, redirect refusal and blocking duplicate attempts. Its output stays separate from operational coding-agent decisions. This is implementation proof, not a live provider success claim.
+Jev has mocked proof for request construction, explicit live/request-bound gates, attempt-before-send, typed output validation, failures/timeouts, redirect refusal and duplicate-attempt blocking. No live provider success is claimed.
 
-## Fresh-folder and browser proof
+## Distribution and review surfaces
 
-The safe ZIP has **39 manifest-listed files**, excluding Git history, local state, credentials and private research. It was extracted into a fresh folder and exercised without a provider key: the offline suite, fictional demo, correction/readback, unchanged rerun and streamed Jev preview. The full manifest and local Markdown links were checked. Pattern auditing supplements inspection; it cannot identify every kind of private data.
+The distribution contains **39 manifest-listed files**, excluding Git history, local state and credentials. The private GitHub repository began with a separately audited clean snapshot. File-pattern checks supplement inspection; neither guarantees the absence of every kind of private data.
 
-Chrome inspected both current review surfaces on loopback with seven fictional conversations, all five treatments and a separate uncertainty message. The local page exposed category controls and original-email links. In the inline page, a synthetic correction was staged, the exact copy-to-chat request inspected, and the resulting receipt applied and read back. Staging alone saved nothing. This was a browser fallback rehearsal, not a real reader's native submitted choice. Fictional email links were inspected, not treated as live mailbox links.
+The current fresh ZIP passed the offline suite and a demo correction/receipt/readback plus unchanged rerun. Prior fresh-folder checks exercised the fictional demo, correction/readback, unchanged rerun and streamed Jev preview. Browser checks exercised both review surfaces, safe original links, exact copy-to-chat payloads, light/dark themes and 360px layouts. Expanded browser fixtures and the video were development-only artifacts; the shipped demo contains three conversations. Preview chat bridges and assistant replies were simulated.
 
-Earlier runs supplied same-chat Codex judgments on fictional inputs and mocked native bridge checks. Those do not establish independent classification accuracy, repeatability, current host submission or human acceptance.
-
-The current inline review sorts by category with Act now first, including saved corrections. A fictional demo opens a follow-up editor with notes. Demo and teaching fixtures now span work and personal email; the five-category article preview includes a client approval, family plans, a gardening newsletter, a delivery confirmation and an unwanted promotion. Browser inspection confirmed that “Add to changes” includes the exact follow-up note and enables both submit buttons. Browser checks verified that staging enables both top and bottom submit buttons, a mocked native call receives the exact notes and locks both buttons during and after sending, and the bottom fallback exposes the exact copy request. The reader kept the original visual design. Browser inspection verified “View original email” as the fourth row action, safe original-link attributes and removal of caching notes from the interface. At 360px the review had no horizontal overflow. The screenshot uses a preview-only bridge; it is not evidence of real native delivery.
-
-The inline review now uses bold category badges, a slim urgency rail and explicit timing cues. Act now uses a filled forest-green badge (sage in dark mode) to emphasize priority calmly; the local HTML fallback also uses green for Act now. The updated palette was inspected in both themes. Browser checks covered all five categories in light/dark themes and a 360px viewport without horizontal overflow. A staged correction updated both the badge and timing cue, and its exact label/note reached the copy-to-chat payload. The refreshed video also verified both exact follow-up notes and the seen action.
-
-## Video demonstration and follow-up handoff
-
-The UI has reader approval. An updated 18-second fictional video at 1.5× speed uses the actual inline renderer with two assigned follow-ups and one clear action. Opus 5.5 supplied the staging page and choreography; the chat bridge and closing assistant reply are simulated. Browser capture verified the exact submitted notes, no runtime errors and no horizontal overflow. An isolated replay saved/read back all three receipts and confirmed that duplicate replay leaves state unchanged. The MP4 was decoded to verify dimensions, duration and representative frames.
-
-Both review handoffs now instruct the agent to save/confirm receipts and begin explicitly requested review or drafting, with approval before sending messages, changing source accounts or scheduling. No new executor or account write API was added. Real host delivery and live follow-up execution remain unverified; the demonstration is not evidence of either.
-
-## Onboarding clarity review
-
-A fresh reviewer with no inherited context read only numbered screenshots of the rendered entry documents. The host checked the observations against the spec and source wording. The review confirmed that the overall journey was understandable, but the optional demo interrupted setup and Start Here contradicted the follow-up execution contract. The updated entry path now separates reader setup from development, uses a short paste prompt, defines the categories and links command details at the relevant step. This is document-clarity evidence, not a new agent's live setup walkthrough.
+Current Chrome checks verified keyboard focus after Seen, Undo, Add to changes and correction; distinct receipt IDs after reopening the same snapshot; exact follow-up text; the shared fallback/native handoff; both submit buttons; and light/dark layouts without horizontal overflow at 360px. Native submission used a mock bridge. Both surfaces emit the same structured teaching-proposal flag. Real native submission remains a separate acceptance gate.
 
 ## Still unverified
 
 - A new reader's rubric fit and complete manual walkthrough.
 - Real connector identity, pagination, sent-thread coverage, relevant attachments and email-link permissions.
 - Actual native chat submission/delivery, Claude, Windows/Linux, physical phones and screen readers.
-- Independent fresh-reviewer accuracy/consistency, a paid Jev call, operational Jev integration and unattended scheduling.
+- Independent fresh-reviewer classification accuracy/consistency, a paid Jev call, operational Jev integration and unattended scheduling.
 
-The helper trusts caller assertions about source completeness, approvals and evaluator identity. Free-text metadata can still leak quoted source if the agent ignores the paraphrase rule. Host transcripts/providers may retain reads; the local storage policy does not govern them. No live inbox read, source-account change, private workflow edit, schedule or publication occurred in this alignment pass.
+The helper trusts the collecting agent's coverage, approval and evaluator assertions. It limits classifier note length but cannot guarantee paraphrasing or prevent every source quotation in free-text metadata. Host transcripts and providers may retain reads; the template's local storage policy does not govern them.
+
+A fresh Fable code review confirmed the recovery, validation and encoding changes, and identified a subject-less hold failure and a stale documentation pointer. Those were corrected, and the local review now uses the same teaching-proposal flag as the inline review. The host validated the fixes; no second Fable pass was run.

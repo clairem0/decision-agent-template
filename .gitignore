@@ -7,11 +7,7 @@
 /data/
 /runs/
 /reports/
-/sources.csv
 /rubric.json
-/profile.json
-/expectations.json
-/results.csv
 
 # Local agents, editor state, and platform files
 /.codex/

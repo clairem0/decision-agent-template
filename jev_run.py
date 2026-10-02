@@ -126,7 +126,7 @@ def main():
     parser.add_argument('--max-requests', type=int, default=0)
     args = parser.parse_args()
     try:
-        result = run(json.load(sys.stdin), args.id, args.root, live=args.live, max_requests=args.max_requests)
+        result = run(d.read_stdin_json(), args.id, args.root, live=args.live, max_requests=args.max_requests)
         print(json.dumps(result, indent=2, allow_nan=False))
     except (d.Hold, OSError, ValueError, KeyError, TypeError):
         # Do not print arbitrary input/provider error text: it can contain full email source.

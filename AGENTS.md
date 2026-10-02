@@ -20,6 +20,6 @@ The fictional demo and Jev are optional. Do not start with repository maintenanc
 
 Read [docs/spec.md](docs/spec.md) and [now.md](now.md) before implementation. They govern development; the setup guide governs reader onboarding. Keep missing proof visible in [docs/verification.md](docs/verification.md).
 
-Prefer Python's standard library and small local files. Pin and review any needed dependency; honor the user's cooldown. Do not add frameworks or services without a demonstrated need. Use fictional identities and synthetic fixtures; never import private data, machine paths, credentials or another repository's history. Escape source text and keep local review from executing source HTML or exposing arbitrary files.
+Prefer Python's standard library and small local files. Pin and review any needed dependency; follow any dependency constraints the user supplies. Do not add frameworks or services without a demonstrated need. Use fictional identities and synthetic fixtures; never import private data, machine paths, credentials or another repository's history. Escape source text and keep local review from executing source HTML or exposing arbitrary files.
 
 Use focused behavioral tests, offline by default. Distinguish simulated, browser, live and human proof. Commit focused validated changes, inspect staged files, preserve unrelated work and never bypass hooks. Publication needs the user's instruction.

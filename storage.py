@@ -2,6 +2,7 @@
 import contextlib
 import json
 import os
+import sys
 from pathlib import Path
 import tempfile
 
@@ -12,6 +13,12 @@ class Hold(ValueError):
 
 def load_json(path):
     return json.loads(Path(path).read_text(encoding='utf-8'),
+                      parse_constant=lambda _: (_ for _ in ()).throw(Hold('Nonfinite JSON value.')))
+
+
+def read_stdin_json():
+    """Process input is UTF-8 regardless of the host's console code page."""
+    return json.loads(sys.stdin.buffer.read().decode('utf-8'),
                       parse_constant=lambda _: (_ for _ in ()).throw(Hold('Nonfinite JSON value.')))
 
 

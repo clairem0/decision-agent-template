@@ -16,7 +16,7 @@ def render(root, output, include_seen=False):
     for key, row in state['items'].items():
         source, assessment = row['source'], row['decision']
         if row['status'] != 'current' or not assessment:
-            holds.append({'title': source['title'], 'reason': row.get('hold', 'Awaiting classification.'),
+            holds.append({'title': source.get('title', key), 'reason': row.get('hold', 'Awaiting classification.'),
                           'original_url': d.source_link(source.get('original_url'))})
             continue
         if not include_seen and (assessment['acknowledged'] or assessment['delivered']):
@@ -28,14 +28,15 @@ def render(root, output, include_seen=False):
                       'original_url': d.source_link(source.get('original_url')),
                       'uncertainty': assessment.get('uncertainty', ''),
                       'mode': assessment['mode']})
-    priority = {label: index for index, label in enumerate(('act', 'track', 'read', 'fyi', 'suppress'))}
+    priority = {label: index for index, label in enumerate(d.LABEL_NAMES)}
     items.sort(key=lambda item: priority.get(item['label'], len(priority)))
     review_id = uuid.uuid4().hex
     payload = {'review_id': review_id, 'items': items, 'holds': holds,
+               'names': d.LABEL_NAMES, 'handoff': d.HANDOFF,
                'coverage': state['scans'][-1] if state['scans'] else {}}
     # Source text cannot close the data script or become executable markup.
     data = json.dumps(payload, ensure_ascii=True).replace('<', '\\u003c').replace('>', '\\u003e').replace('&', '\\u0026')
-    fragment = TEMPLATE.read_text().replace('__REVIEW_ROOT__', 'decision-review-'+review_id).replace('__REVIEW_DATA__', data)
+    fragment = TEMPLATE.read_text(encoding='utf-8').replace('__REVIEW_ROOT__', 'decision-review-'+review_id).replace('__REVIEW_DATA__', data)
     if len(fragment.encode()) >= 1_000_000:
         raise d.Hold('Inline review exceeds 1 MB; explicitly split the review, never truncate review metadata.')
     output = Path(output)

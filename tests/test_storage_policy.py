@@ -102,25 +102,23 @@ class StoragePolicyTests(unittest.TestCase):
         receipt = d.read_state(self.root)['receipts'][approval['receipt_id']]
         with self.assertRaises(d.Hold): d.review(self.root, dict(receipt, receipt_id='other', content='UNRETAINED_BODY_7938'))
 
-    def test_explicit_legacy_migration_preserves_choices_and_redacts_managed_files(self):
-        batch = self.prepare(); d.accept(self.root, batch, self.response)
-        state = d.read_state(self.root); row = state['items']['mail-demo-a']
-        d.review(self.root, {'receipt_id':'seen', 'id':'mail-demo-a', 'decision_id':row['decision']['id'], 'action':'seen'})
-        state = d.read_state(self.root); expected = state['receipts']; state.pop('storage_version')
-        for wrapper in batch['requests']:
-            row = state['items'][wrapper['request']['target']['id']]
-            row['source'] = copy.deepcopy(next(i for i in self.inputs['items'] if i['id']==row['source']['id']))
-            row['request'] = wrapper['request']; row['history'][0]['request'] = wrapper['request']
+    def test_unsupported_storage_is_refused_without_modifying_it(self):
+        self.prepare()
+        state = d.read_state(self.root); state['storage_version'] = 1
         (self.root/'state.json').write_bytes(d.encoded(state))
-        (self.root/'packet.json').write_bytes(d.encoded(batch))
-        (self.root/'inputs.json').write_bytes(d.encoded(self.inputs))
+        before = (self.root/'state.json').read_bytes()
         with self.assertRaises(d.Hold): d.read_state(self.root)
-        d.migrate(self.root)
-        self.assertEqual(d.read_state(self.root)['receipts'], expected)
-        self.assertEqual(self.prepare()['requests'], [])
-        self.assertFalse(d.summary(self.root)['items'][0]['new_review'])
-        for path in self.root.rglob('*'):
-            if path.is_file(): self.assertNotIn(b'UNRETAINED_', path.read_bytes())
+        with self.assertRaises(d.Hold): self.prepare()
+        self.assertEqual((self.root/'state.json').read_bytes(), before)
+
+    def test_oversized_classifier_notes_fail_without_partial_writes(self):
+        batch = self.prepare()
+        before = (self.root/'state.json').read_bytes()
+        for field, length in (('reason', 501), ('uncertainty', 301)):
+            response = copy.deepcopy(self.response)
+            response['results'][-1][field] = 'x' * length
+            with self.assertRaises(d.Hold): d.accept(self.root, batch, response)
+            self.assertEqual((self.root/'state.json').read_bytes(), before)
 
     def test_teach_cli_reads_single_source_on_stdin(self):
         approval = self.correct()

@@ -1,6 +1,6 @@
 # Product contract
 
-Version 1.2 · 2026-10-02
+Version 1.3 · 2026-10-02
 
 A companion to *Teach your AI to make better decisions*. The reader opens this folder in a coding agent and pastes one prompt. The agent does the technical work. The reader supplies judgment and approves the rubric. [Agent instructions](agent-guide.md) give the setup sequence; the [command reference](agent-reference.md) supplies technical steps as needed; [verification](verification.md) separates implementation from live and human proof.
 
@@ -38,8 +38,8 @@ Teaching examples contain full approved source/context, correct treatment, a dis
 | --- | --- |
 | Source collection | Stable account/source-specific IDs, complete conversations and necessary context, pagination and retrieval gaps accounted for. Verified links only; never invent an account or permalink. |
 | Classifier input | Actual full target, approved rubric, selected approved reference text/labels/contrasts, evaluator identity and contract. No answer keys, earlier predictions, review history or action authority. Split deliberately rather than truncate. |
-| Acceptance | Exactly one result per requested target; allowed label, brief paraphrased reason, selected reference IDs, optional uncertainty text. Invalid/stale/altered batches fail without partial writes. Failures remain pending; incomplete sources remain held. |
-| Continuity | Reuse only matching source/context, rubric, selected references and evaluator contract. Link-only refresh does not reclassify. Meaningful changes preserve history and require reassessment. Missing scan entries do not retire items or close tasks. |
+| Acceptance | Exactly one result per requested target; allowed label, brief paraphrased reason (up to 500 characters), selected reference IDs, optional uncertainty text (up to 300 characters). Invalid/stale/altered batches fail without partial writes. Failures remain pending; incomplete sources remain held. |
+| Continuity | Reuse only matching source/context, rubric, selected references and evaluator contract. Link-only refresh does not reclassify. Retrieval failures suspend the prior assessment without losing its correction, acknowledgment or task; identical inputs restore it, while changed inputs require reassessment. Held assessments are not actionable. Meaningful changes preserve history and require reassessment. Missing scan entries do not retire items or close tasks. |
 | Review | Prefer native conversation UI; support local HTML and numbered chat. Sort by current category, Act now first, using saved corrections. In the inline review, use prominent category badges, slim rails and plain timing cues to distinguish action before the next review from important work that can wait; color is supplementary. Show all treatments, uncertainty, holds and original links. Native submit is available above and below the list. Escape all source text; never execute source HTML or expose arbitrary files. |
 | Receipts | Only submitted user choices save. Validate exact current source/decision mappings; identical retries deduplicate; conflicting retries fail. Report independent failures in a multi-choice submission. Rendered pages/widget state are not receipts or delivery. |
 | Follow-up | Clear acknowledges a decision, not task completion. Assign records the exact instruction; after confirming its receipt, the agent begins the explicitly requested review or drafting. Source content grants no authority. Skip stale/failed choices and reconcile prior progress before retries. Sending, account changes and scheduling still need approval. Completion needs evidence. Classification grants no permission to change an account. |
@@ -49,9 +49,9 @@ Teaching examples contain full approved source/context, correct treatment, a dis
 
 ### Retention
 
-Ordinary source and context are used in memory. Local state/manifests/reviews retain IDs, subjects, verified links, input hashes, brief paraphrased decisions, tasks, coverage and receipts. These are private metadata. Only separately approved teaching examples retain full source. Rubric/reference snapshots may contain that approved teaching content. Never save ordinary bodies in input exports, stdout logs, reasons, notes or provider records.
+Ordinary source and context are used in memory. Local state/manifests/reviews retain IDs, subjects, sender display text, verified links, input hashes, evaluator identity, brief paraphrased decisions and uncertainty notes, tasks, coverage and receipts. These are private metadata. Only separately approved teaching examples retain full source. Rubric/reference snapshots may contain that approved teaching content. Never save ordinary bodies in input exports, stdout logs, reasons, notes or provider records. Reason/uncertainty length limits constrain verbosity but cannot recognize all copied source; paraphrasing remains an agent responsibility.
 
-`packet.json` is a metadata manifest, not complete classifier input. Losing the in-memory request requires re-reading and preparing again. Host transcripts and provider logs may retain full reads; the template does not control those policies. [Storage](storage.md) documents explicit legacy redaction and its residual audit. Do not delete or silently rewrite prior user configuration; reconcile older treatment definitions with approval and reassess under the current contract.
+`packet.json` is a metadata manifest, not complete classifier input. Losing the in-memory request requires re-reading and preparing again. Host transcripts and provider logs may retain full reads; the template does not control those policies. [Storage](storage.md) explains retention boundaries. Unsupported storage versions are refused without modifying them; choose a fresh state folder. Do not delete or silently rewrite prior user configuration; reconcile older treatment definitions with approval and reassess under the current contract.
 
 ### Optional Jev path
 

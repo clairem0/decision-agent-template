@@ -29,7 +29,7 @@ You can use the [official Python downloads](https://www.python.org/downloads/) a
 
 The starter uses **Act now**, **Track for follow up**, **Useful info**, **FYI only**, and **Never see again**. You can adapt the categories to your preferences; have your agent [update the rubric, code and review together](docs/adapting.md).
 
-Ordinary email content is not saved by the template. Full teaching examples are saved only with your separate approval, and your agent's transcripts may retain reads. [More about privacy](docs/storage.md).
+The template does not intentionally cache full email bodies. It saves private metadata—subjects, sender names, links, brief decisions and your review notes—in ignored local files. Your agent must paraphrase rather than copy email text into those notes. Full teaching examples need your separate approval; your agent's transcripts may retain reads. [More about privacy](docs/storage.md).
 
 ## Once it's working
 

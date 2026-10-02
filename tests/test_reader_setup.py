@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -40,6 +41,32 @@ class ReaderSetupTests(unittest.TestCase):
             self.assertEqual(subprocess.run(command, input=json.dumps(inputs), text=True, capture_output=True).returncode, 0)
             self.assertEqual(len(d.load_json(root/'packet.json')['requests']), 1)
             self.assertEqual(len(d.read_state(root)['items'][request['target']['id']]['reviews']), 1)
+
+    def test_process_input_is_utf8_even_with_non_utf8_console_encoding(self):
+        with tempfile.TemporaryDirectory() as directory:
+            inputs = d.load_json('examples/email/inputs.json')
+            marker = 'Café — 東京'
+            inputs['items'][0]['content'] += marker
+            env = dict(os.environ, PYTHONIOENCODING='cp1252', PYTHONUTF8='0')
+            result = subprocess.run([sys.executable, 'decision.py', 'prepare', '--root', directory,
+                '--rubric', 'examples/email/rubric.json', '--references', 'examples/references.json',
+                '--evaluator', 'unicode-test', '--stdin'], input=json.dumps(inputs, ensure_ascii=False).encode('utf-8'),
+                capture_output=True, env=env)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            batch = json.loads(result.stdout)
+            self.assertIn(marker, batch['requests'][0]['request']['target']['content'])
+            for command in ('jev_preview.py', 'jev_run.py'):
+                preview = subprocess.run([sys.executable, command, '--id', 'mail-demo-a'],
+                    input=json.dumps(batch, ensure_ascii=False).encode('utf-8'), capture_output=True, env=env)
+                self.assertEqual(preview.returncode, 0, preview.stderr)
+                output = json.loads(preview.stdout)
+                payload = output.get('payload', output)
+                self.assertIn(marker, payload['state']['target']['content'])
+            fragment_path = Path(directory)/'native.html'
+            rendered = subprocess.run([sys.executable, 'inline_review.py', '--root', directory,
+                '--output', str(fragment_path)], capture_output=True, env=env)
+            self.assertEqual(rendered.returncode, 0, rendered.stderr)
+            self.assertIn('✓', fragment_path.read_text(encoding='utf-8'))
 
     def test_prepare_requires_actual_evaluator_before_writing(self):
         with tempfile.TemporaryDirectory() as directory:
