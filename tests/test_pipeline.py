@@ -17,12 +17,13 @@ class PipelineTests(unittest.TestCase):
             for source, target in [('rubric.example.json','rubric.json'), ('examples/references.json','references.json')]:
                 (root/target).write_text(Path(source).read_text())
             inputs = d.load_json('examples/email/inputs.json')
+            item_count = len(inputs['items'])
             with patch.dict(os.environ, {'JEV_API_KEY':'test-key'}), patch.object(j, 'post', side_effect=lambda p,k: answer(p)) as post:
-                result = pipeline.run(root, inputs, live=True, max_requests=3)
-                self.assertEqual(result['accepted'], 3)
+                result = pipeline.run(root, inputs, live=True, max_requests=item_count)
+                self.assertEqual(result['accepted'], item_count)
                 self.assertTrue(Path(result['review_file']).exists())
                 self.assertEqual(pipeline.run(root, inputs, live=True, max_requests=0)['accepted'], 0)
-                self.assertEqual(post.call_count, 3)
+                self.assertEqual(post.call_count, item_count)
 
     def test_explicit_environment_file_reads_only_key_without_execution(self):
         with tempfile.TemporaryDirectory() as directory, patch.dict(os.environ, {}, clear=True):

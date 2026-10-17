@@ -14,6 +14,7 @@ class DecisionTests(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory(); self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
         self.inputs = d.load_json('examples/email/inputs.json')
+        self.item_count = len(self.inputs['items'])
         self.rubric = d.load_json('rubric.example.json')
         self.refs = d.load_json('examples/references.json')
         self.response = d.load_json('examples/email/demo-results.json')
@@ -106,12 +107,12 @@ class DecisionTests(unittest.TestCase):
         d.accept(self.root,batch,response)
         self.assertEqual(len(d.read_state(self.root)['items']['mail-demo-a']['history']),2)
         self.rubric['rules'].append('Require an explicit deadline.')
-        self.assertEqual(len(self.prepare()['requests']),3)
+        self.assertEqual(len(self.prepare()['requests']),self.item_count)
         d.accept(self.root,self.prepare(),self.response)
         self.refs['references'][0]['content']+=' Additional context.'
-        self.assertEqual(len(self.prepare()['requests']),3)
+        self.assertEqual(len(self.prepare()['requests']),self.item_count)
         d.accept(self.root,self.prepare(),self.response)
-        self.assertEqual(len(d.prepare(self.root,self.inputs,self.rubric,self.refs,'different-evaluator')['requests']),3)
+        self.assertEqual(len(d.prepare(self.root,self.inputs,self.rubric,self.refs,'different-evaluator')['requests']),self.item_count)
 
     def test_acknowledgment_is_not_completion_and_task_survives_change(self):
         self.accepted();d.review(self.root,self.choice('assign',note='Draft a question; do not send.'))
@@ -127,7 +128,7 @@ class DecisionTests(unittest.TestCase):
         self.inputs['items'][0]['status']='failed';self.inputs['coverage']['status']='partial'
         self.assertEqual(self.prepare()['requests'],[])
         state=d.read_state(self.root)
-        self.assertEqual(len(state['items']),3)
+        self.assertEqual(len(state['items']),self.item_count)
         self.assertEqual(state['items']['mail-demo-a']['status'],'held')
         self.assertEqual(len(state['items']['mail-demo-a']['history']),1)
         self.assertFalse(d.summary(self.root)['items'][0]['new_review'])
@@ -280,7 +281,7 @@ class DecisionTests(unittest.TestCase):
         library = d.load_json(self.root/'references.json')
         batch = d.prepare(self.root, self.inputs, self.rubric, library, 'test-evaluator')
         # Target never receives its own corrected answer; other targets receive the example.
-        self.assertEqual(len(batch['requests']), 2)
+        self.assertEqual(len(batch['requests']), self.item_count - 1)
         request = batch['requests'][0]['request']
         ref = next(r for r in request['references'] if r['id'] == ref_id)
         self.assertEqual(ref['content'], self.inputs['items'][0]['content'])
@@ -302,7 +303,7 @@ class DecisionTests(unittest.TestCase):
                                  '--evaluator', 'test-evaluator', '--stdin'], input=json.dumps(self.inputs), capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
         batch = d.load_json(self.root/'packet.json')
-        self.assertEqual(len(batch['requests']), 2)
+        self.assertEqual(len(batch['requests']), self.item_count - 1)
         self.assertTrue(all(ref_id in [r['id'] for r in w['request']['references']]
                             for w in batch['requests']))
 

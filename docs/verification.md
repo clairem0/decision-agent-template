@@ -8,6 +8,8 @@ A new behavior test was first run against the missing workflow entry point, then
 
 The local review was also inspected in the browser with all three categories visible. This is a fictional demo; native chat submission and real inbox coverage were not exercised.
 
+The refreshed fictional demo contains five emails covering all three categories, including the selected humorous subjects. All 62 tests passed again after the update; the demo results remain simulated.
+
 ## Live model evidence
 
 No validated live TypeSafe response was obtained in this revision. The initial sandbox could not resolve the endpoint; an unrestricted attempt and an unauthenticated curl check could not connect. Earlier attempt records were preserved. See the [24-case rubric check](rubric-check.md) for planned semantic and repeatability trials.

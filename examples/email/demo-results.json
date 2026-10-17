@@ -4,7 +4,7 @@
     {
       "id": "mail-demo-a",
       "label": "act",
-      "reason": "Your approval is needed before the proposal can go to the client.",
+      "reason": "You need to update the expired card to keep an existing workspace running.",
       "reference_ids": [
         "email-deadline"
       ],
@@ -13,7 +13,7 @@
     {
       "id": "mail-demo-b",
       "label": "skip",
-      "reason": "You confirmed that the package was found; the question is resolved.",
+      "reason": "Your sent reply already approved the file; the acknowledgment adds nothing new.",
       "reference_ids": [
         "email-confirmed"
       ],
@@ -25,6 +25,24 @@
       "reason": "The repair quote is due from Casey; no action is needed from you yet.",
       "reference_ids": [
         "email-waiting"
+      ],
+      "uncertainty": ""
+    },
+    {
+      "id": "mail-demo-d",
+      "label": "skip",
+      "reason": "An unwanted sale creates no obligation, even with another deadline.",
+      "reference_ids": [
+        "email-promotion"
+      ],
+      "uncertainty": ""
+    },
+    {
+      "id": "mail-demo-e",
+      "label": "skip",
+      "reason": "You already decided not to attend; this optional reminder adds nothing new.",
+      "reference_ids": [
+        "email-promotion"
       ],
       "uncertainty": ""
     }

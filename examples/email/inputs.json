@@ -8,22 +8,22 @@
     {
       "id": "mail-demo-a",
       "kind": "email",
-      "title": "Approve the client proposal by noon",
-      "content": "Nina: Please approve the final client proposal by noon on April 9. We need your approval before we can send it to the client.",
-      "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation, with no later replies or other open obligations.",
+      "title": "SaaS isn’t dead. Your payment method is.",
+      "content": "Sidequest Billing: Your card expired. Please update it by Friday, April 12, to keep your workspace running.",
+      "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation, with no later replies or other open obligations. The reader uses this paid workspace, wants to keep it running and is responsible for billing. The payment method has not been updated.",
       "status": "complete",
       "original_url": "https://mail.example.test/thread/mail-demo-a",
-      "sender": "Nina · Design team"
+      "sender": "Sidequest · Billing"
     },
     {
       "id": "mail-demo-b",
       "kind": "email",
-      "title": "Your delivery question is resolved",
-      "content": "Recipient: I cannot find my desk lamp delivery.\nParcel Post: It was left with reception.\nRecipient: Found it, thank you. No further help needed.",
-      "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation, with no later replies or other open obligations.",
+      "title": "Re: final_final_ACTUALLY_final.html",
+      "content": "Nina: Please approve final_final_ACTUALLY_final.html. I will handle sending it to the workshop host.\nRecipient: Approved. And yes, this is the version we’re using.\nNina: Got it, thank you.",
+      "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation, with no later replies or other open obligations. The reader’s only task was approval, which their sent reply completed. Nina’s acknowledgment adds no new information; distribution belongs to Nina.",
       "status": "complete",
       "original_url": "https://mail.example.test/thread/mail-demo-b",
-      "sender": "Parcel Post"
+      "sender": "Nina · Design team"
     },
     {
       "id": "mail-demo-c",
@@ -34,6 +34,26 @@
       "status": "complete",
       "original_url": "https://mail.example.test/thread/mail-demo-c",
       "sender": "Casey · Home repairs"
+    },
+    {
+      "id": "mail-demo-d",
+      "kind": "email",
+      "title": "Your final, final chance to save 15%",
+      "content": "Cedar & Thread: We’ve extended your last chance again. This time we mean it, probably. Save 15% on our spring clothing collection through tonight.",
+      "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation, with no later replies or other open obligations. The reader does not want optional Cedar & Thread sale emails. This is a general promotion, unrelated to an existing order or account issue.",
+      "status": "complete",
+      "original_url": "https://mail.example.test/thread/mail-demo-d",
+      "sender": "Cedar & Thread"
+    },
+    {
+      "id": "mail-demo-e",
+      "kind": "email",
+      "title": "Just flagging this in case your other three agents didn’t",
+      "content": "The Webinar Team: Another reminder about our optional webinar tomorrow. There’s still time to register if you’d like to join.",
+      "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation, with no later replies or other open obligations. The reader already decided not to attend this webinar. This reminder adds no new information. There is no registration, RSVP requirement or work obligation.",
+      "status": "complete",
+      "original_url": "https://mail.example.test/thread/mail-demo-e",
+      "sender": "The Webinar Team"
     }
   ]
 }
