@@ -21,13 +21,13 @@
       "kind": "email",
       "source_id": "fictional-teaching:email-confirmed",
       "title": "Launch copy approved",
-      "content": "Colleague: Please approve the launch copy by April 9.\nRecipient: Approved.\nColleague: Published, thank you. No further action needed.",
+      "content": "Colleague: Please approve the launch copy by April 9.\nRecipient: Approved.\nColleague: Received your approval, thank you. No further action needed.",
       "context": "Fictional teaching example only. No other messages or facts are implied.",
-      "label": "fyi",
+      "label": "skip",
       "contrast_ids": [
         "email-deadline"
       ],
-      "distinction": "The later conversation settles the request. Do not classify only the first message."
+      "distinction": "The later sent reply and acknowledgment resolve the request and add no useful new information."
     },
     {
       "id": "email-waiting",
@@ -37,11 +37,11 @@
       "title": "Repair quote pending",
       "content": "Recipient: Please send a quote for the agreed bathroom repair.\nRepair company: We will send it April 12; nothing is needed from you until then.",
       "context": "Fictional teaching example only. No other messages or facts are implied.",
-      "label": "track",
+      "label": "read",
       "contrast_ids": [
         "email-promotion"
       ],
-      "distinction": "A specific outstanding deliverable exists. A promotional invitation creates no obligation."
+      "distinction": "A promised delivery date is useful to know, but the reader has nothing to do yet."
     },
     {
       "id": "email-promotion",
@@ -51,24 +51,11 @@
       "title": "Last chance: spring sale",
       "content": "Cedar & Thread: Our optional spring clothing sale ends tonight. Shop if you want. This is a general promotion, unrelated to any existing order.",
       "context": "Fictional reader explicitly does not want recurring optional Cedar & Thread sale emails. Existing orders, personal asks and account issues are exceptions. This is the complete message; no obligation exists.",
-      "label": "suppress",
+      "label": "skip",
       "contrast_ids": [
         "email-waiting"
       ],
       "distinction": "Urgent marketing language does not make a task. The waiting example concerns an existing deliverable."
-    },
-    {
-      "id": "email-missing",
-      "status": "approved",
-      "kind": "email",
-      "source_id": "fictional-teaching:email-missing",
-      "title": "Please handle this",
-      "content": "Sender: Please handle the issue today.\nRecipient: Which issue? No description or attachment was supplied.",
-      "context": "Fictional teaching example only. No other messages or facts are implied.",
-      "label": "track",
-      "contrast_ids": [],
-      "distinction": "The conversation is fully retrieved but lacks substantive details. Flag the missing context without inventing urgency or dismissing the request.",
-      "uncertainty": "The requested issue is unspecified; ask what it is before deciding the action and timing."
     },
     {
       "id": "email-reading",
@@ -80,9 +67,9 @@
       "context": "Fictional reader has asked to read practical balcony-gardening ideas. This is the whole newsletter.",
       "label": "read",
       "contrast_ids": [
-        "email-confirmed"
+        "email-promotion"
       ],
-      "distinction": "The reader wants intentional reading time. A routine resolved confirmation only needs brief awareness."
+      "distinction": "The reader asked for this subject. Both are recurring mail, but only one matches the reader's interests."
     },
     {
       "id": "email-later-reply",
@@ -92,11 +79,11 @@
       "title": "Choose a weekend for the family visit",
       "content": "Sam: Please let me know which weekend works for the family visit by April 18. We will make plans after that; nothing needs booking this week.",
       "context": "Fictional assessment on April 8; next review April 10. The reader owns the choice, with no earlier preparation need or explicit priority.",
-      "label": "track",
+      "label": "act",
       "contrast_ids": [
-        "email-deadline"
+        "email-confirmed"
       ],
-      "distinction": "Track includes the reader's own important but non-urgent action. It does not only mean waiting for someone else."
+      "distinction": "A reply is still owed even when the deadline is not today."
     }
   ]
 }

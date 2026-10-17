@@ -2,7 +2,7 @@
 
 Prefer the coding agent's native interactive conversation surface when it supports one. The default experience is a long list with a subject, concise summary, current classification and three choices on each row: Seen & clear, Assign follow-up, Correct classification. Use “Add to changes” to include a follow-up instruction or correction in the pending batch, then “Send changes to chat” to submit it. Adding a change alone does not save or execute it. The helper and saved state are the same for every presentation surface.
 
-Sort by the saved current category: Act now, Track for follow up, Useful info, FYI only, Never see again. Saved corrections determine the category; pending sources stay separate. The submit button appears above and below the list. Add the note from an open editor to changes before submitting; both buttons reflect the same pending/sent state.
+Sort by the saved current category: Needs action, Worth seeing, Skip. Saved corrections determine the category; pending sources stay separate. The submit button appears above and below the list. Add the note from an open editor to changes before submitting; both buttons reflect the same pending/sent state.
 
 ## Detect support
 

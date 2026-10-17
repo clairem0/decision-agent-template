@@ -1,14 +1,36 @@
 {
-  "warning": "Read only AFTER freezing classifier results. Never load this file into a classification packet. Small author-written checks are not independent accuracy validation.",
+  "warning": "Author-written expectations. Compare only AFTER freezing model predictions. Never send this file to Jev. Not a real-inbox accuracy benchmark.",
   "answers": {
-    "check-mail-0": "fyi",
-    "check-mail-1": "fyi",
-    "check-mail-2": "track"
+    "check-reply-owed": "act",
+    "check-reply-settled": "skip",
+    "check-consult-unwanted": "skip",
+    "check-consult-committed": "act",
+    "check-wanted-newsletter": "read",
+    "check-unwanted-newsletter": "skip",
+    "check-same-sender-sale": "skip",
+    "check-same-sender-order": "act",
+    "check-waiting-date": "read",
+    "check-waiting-overdue": "act",
+    "check-fyi-changed": "read",
+    "check-fyi-unchanged": "skip",
+    "check-github-routine": "skip",
+    "check-github-assigned": "act",
+    "check-draft-unsent": "act",
+    "check-reply-sent": "skip",
+    "check-missing-details": "act",
+    "check-plain-complete": "act",
+    "check-injection-sale": "skip",
+    "check-far-deadline": "act",
+    "check-forwarded-wanted": "read",
+    "check-resolved-unread": "skip",
+    "check-requested-option": "act",
+    "check-ambiguous-obligation": "act"
   },
   "holds": {
-    "check-mail-3": "Retrieval failed; preserve a hold, not a classification."
+    "check-retrieval-failed": "Incomplete source is held without calling Jev."
   },
   "uncertainty": {
-    "check-mail-2": "The actual figures are missing; do not infer urgency or approve the budget."
+    "check-missing-details": "The figures are missing.",
+    "check-ambiguous-obligation": "The requested work is unspecified."
   }
 }

@@ -18,7 +18,7 @@ Adapt this decision-agent starter for [use case]. First help me define the decis
 
 Use fictional fixtures while changing the template. Update the source kind, allowed labels, classifier contract, review wording, examples and behavioral tests together. Keep missing evidence distinct from failed retrieval. Preserve source identity, meaningful-input hashes, saved corrections, explicit teaching approval and metadata-only storage. Keep target answer keys out of reviewer input.
 
-Use an existing authorized connector or a sample I supply. Do not add a generic framework or bring in someone else's data. Test with fresh reviewers and a complete manual review, including correction and unchanged rerun, before discussing a schedule. Keep external actions separately authorized.
+Use an existing authorized connector or a sample I supply. Do not add a generic framework or bring in someone else's data. Test Jev on held-out examples and a complete manual review, including correction and unchanged rerun, before discussing a schedule. Keep external actions separately authorized.
 ```
 
-Start with one source and a small rubric. If many dimensions or volume make a specialized classifier useful, explore [Jev](advanced-jev.md) separately after the judgment works.
+Start with one source and a small rubric. Keep [Jev](jev.md) as the classifier and recheck its judgments against examples from the new task.

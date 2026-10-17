@@ -12,7 +12,7 @@
     },
     {
       "id": "mail-demo-b",
-      "label": "fyi",
+      "label": "skip",
       "reason": "You confirmed that the package was found; the question is resolved.",
       "reference_ids": [
         "email-confirmed"
@@ -21,7 +21,7 @@
     },
     {
       "id": "mail-demo-c",
-      "label": "track",
+      "label": "read",
       "reason": "The repair quote is due from Casey; no action is needed from you yet.",
       "reference_ids": [
         "email-waiting"

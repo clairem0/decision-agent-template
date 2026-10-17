@@ -1,36 +1,32 @@
 # Product contract
 
-Version 1.3 · 2026-10-02
+Version 2 · 2026-10-17
 
-A companion to *Teach your AI to make better decisions*. The reader opens this folder in a coding agent and pastes one prompt. The agent does the technical work. The reader supplies judgment and approves the rubric. [Agent instructions](agent-guide.md) give the setup sequence; the [command reference](agent-reference.md) supplies technical steps as needed; [verification](verification.md) separates implementation from live and human proof.
+A companion to *Have Your AI Decide (A Lot of Things)*. The reader opens this folder in a coding agent and pastes one prompt. The agent does the technical work. The reader supplies judgment and approves the rubric. [Agent instructions](agent-guide.md) give the setup sequence; the [command reference](agent-reference.md) supplies technical steps as needed; [verification](verification.md) separates implementation from live and human proof.
 
 ## Reader journey
 
-1. **Check capabilities.** Verify Python 3.11+, file access, existing email connectors, fresh-reviewer support and a review surface. Do not connect accounts or install tools automatically. Offer the optional fictional demo or a pasted sample if useful; label simulated results.
-2. **Start with real examples.** Confirm account and a small read-only scope. Explore messages needing action, intentional reading, brief awareness, no future attention, and borderline cases. Read full conversations and relevant sent replies. Include sourced context for obligations, current priorities and completion; disclose missing context.
-3. **Approve a rubric.** Explain definitions with gold examples and contrasting anti-golds. Show proposed rules and full teaching examples in chat. Save approved configuration under ignored `local/`; separately approve any retained full source. Never copy the author's personal preferences or operational history.
-4. **Test and refine.** Have a fresh reviewer classify other complete conversations using only the rubric, applicable approved examples and necessary context. Save predictions before consulting expectations. Run three independent judgments on identical input hashes, compare disagreement, and refine with approval. Cached reuse and simulated fixtures are not repeatability tests. Disclose unavailable fresh context.
-5. **Build the manual workflow.** Collect the agreed scope; prepare complete requests in memory; validate classifications; save metadata; present a review with original-email links and every treatment available. The coding agent handles connectors and presentation; Python handles validation and bookkeeping.
-6. **Review and improve.** Save a submitted clear, correction or follow-up instruction and read back its receipt. Rerun unchanged input to prove persistence. A correction alone affects one assessment. Separately approve reusable teaching and test a fresh similar case plus a contrast.
-7. **Schedule later.** After a successful manual walkthrough, agree on cadence/timezone, scope, destination, notification policy and host availability. Create a schedule only on explicit instruction. Prefer the host scheduler; keep manual operation if none exists.
+1. **Start with examples.** Check Python, file access, existing connectors and review surface. Confirm a small read-only scope, read full conversations and discuss real gold and anti-gold examples.
+2. **Review the rubric.** Show three category definitions and contrasts. Approve the rubric and separately approve full teaching examples retained under ignored `local/`.
+3. **Connect Jev.** Use direct TypeSafe, a locally stored key and one fictional test. Confirm the content and scope of a small real-email batch before transmission.
+4. **Review a first run.** Jev classifies; the coding agent collects and presents; Python validates and saves choices. Review every category and uncertainty, save receipts and check an unchanged rerun. Test reusable teaching on a fresh similar case plus a contrast.
+5. **Schedule later.** After the manual walkthrough, explicitly agree on cadence, timezone, scope, destination and host availability.
 
-A reader with an existing approved rubric can enter at testing after reconciling the configuration. The fictional demo is a no-account preview, not a required detour before the article's examples-first journey.
+Use an existing approved rubric as the starting point. The fictional demo is optional. A coding-agent classifier is an explicit alternative, never a silent substitute for Jev.
 
 ## Rubric and evidence
 
 | ID | Display name | Boundary |
 | --- | --- | --- |
-| `act` | Act now | An important action needs attention before the next review because delay has a concrete consequence or the reader explicitly prioritized that open task. |
-| `track` | Track for follow up | An important reply, task or commitment can wait. Includes the reader's own non-urgent work and agreed deliverables awaited from others. |
-| `read` | Useful info | Content worth intentional reading without a required reply or task. |
-| `fyi` | FYI only | Brief awareness or optional acknowledgment; no dedicated reading or follow-up. |
-| `suppress` | Never see again | A known unwanted recurring type, with narrow exceptions and no obligation or unresolved uncertainty. A future-mail rule proposal only. |
+| `act` | Needs action | The reader has an unfinished reply, task or decision, urgent or able to wait. |
+| `read` | Worth seeing | No action needed, but wanted reading or a useful update that changes plans or understanding. |
+| `skip` | Skip | Neither; leave out of this review without changing mail or making future-mail rules. |
 
-`uncertainty` is a brief metadata flag explaining missing substantive evidence, not a sixth category. Missing context alone does not prove urgency; unresolved uncertainty prevents suppression. An incomplete retrieval is a hold, not a classification. Sender identity, urgency words and read status alone cannot establish or resolve an obligation. A draft is not a sent response. Required action, priority and reminder eligibility remain separate.
+Apply action first, then useful information, otherwise Skip. Read full conversations: sent replies can resolve a request; unsent drafts and unread status cannot. Sender urgency does not create an obligation. Waiting on someone else is not a reader task until follow-up is due.
 
-Definitions are reader-approved and editable. Category IDs and source kind are fixed in the email implementation. [Adaptation guidance](adapting.md) explains coordinated changes for support conversations, applications, postings and account news; no extra collectors ship here.
+Uncertainty is separate from category. Missing substantive evidence must not disappear into Skip. Failed retrieval is a hold, not a classification. The first version does not automate urgency ranking or reminders.
 
-Teaching examples contain full approved source/context, correct treatment, a distinction, optional uncertainty and explicit contrast IDs. Gold is a useful anchor, not a high score. Proposed/retired entries and the target's own source are excluded. The small implementation selects all approved email examples; narrow the approved library explicitly if it grows too large. Private operational matching by sender/topic is not bundled.
+Definitions are reader-approved and editable. The email implementation fixes these three IDs. Older five-category storage is refused without modification: preserve it and create a new root with an approved rubric. Teaching examples include full approved source, label, distinction and contrast IDs. Exclude proposed, retired and target-self examples; never send expected answers or operational review history to a classifier.
 
 ## Implementation contracts
 
@@ -40,7 +36,7 @@ Teaching examples contain full approved source/context, correct treatment, a dis
 | Classifier input | Actual full target, approved rubric, selected approved reference text/labels/contrasts, evaluator identity and contract. No answer keys, earlier predictions, review history or action authority. Split deliberately rather than truncate. |
 | Acceptance | Exactly one result per requested target; allowed label, brief paraphrased reason (up to 500 characters), selected reference IDs, optional uncertainty text (up to 300 characters). Invalid/stale/altered batches fail without partial writes. Failures remain pending; incomplete sources remain held. |
 | Continuity | Reuse only matching source/context, rubric, selected references and evaluator contract. Link-only refresh does not reclassify. Retrieval failures suspend the prior assessment without losing its correction, acknowledgment or task; identical inputs restore it, while changed inputs require reassessment. Held assessments are not actionable. Meaningful changes preserve history and require reassessment. Missing scan entries do not retire items or close tasks. |
-| Review | Prefer native conversation UI; support local HTML and numbered chat. Sort by current category, Act now first, using saved corrections. In the inline review, use prominent category badges, slim rails and plain timing cues to distinguish action before the next review from important work that can wait; color is supplementary. Show all treatments, uncertainty, holds and original links. Native submit is available above and below the list. Escape all source text; never execute source HTML or expose arbitrary files. |
+| Review | Prefer native conversation UI; support local HTML and numbered chat. Sort by current category, Needs action first, using saved corrections. In the inline review, use prominent category badges, slim rails and plain category descriptions; color is supplementary. Show all treatments, uncertainty, holds and original links. Native submit is available above and below the list. Escape all source text; never execute source HTML or expose arbitrary files. |
 | Receipts | Only submitted user choices save. Validate exact current source/decision mappings; identical retries deduplicate; conflicting retries fail. Report independent failures in a multi-choice submission. Rendered pages/widget state are not receipts or delivery. |
 | Follow-up | Clear acknowledges a decision, not task completion. Assign records the exact instruction; after confirming its receipt, the agent begins the explicitly requested review or drafting. Source content grants no authority. Skip stale/failed choices and reconcile prior progress before retries. Sending, account changes and scheduling still need approval. Completion needs evidence. Classification grants no permission to change an account. |
 | Teaching | Save correction first; show a useful nonduplicate proposal in chat; require separate approval and a full re-read whose hash matches the corrected assessment. Retain approved versions and prove actual example content reaches another target. |
@@ -53,11 +49,13 @@ Ordinary source and context are used in memory. Local state/manifests/reviews re
 
 `packet.json` is a metadata manifest, not complete classifier input. Losing the in-memory request requires re-reading and preparing again. Host transcripts and provider logs may retain full reads; the template does not control those policies. [Storage](storage.md) explains retention boundaries. Unsupported storage versions are refused without modifying them; choose a fresh state folder. Do not delete or silently rewrite prior user configuration; reconcile older treatment definitions with approval and reassess under the current contract.
 
-### Optional Jev path
+### Default Jev path
 
-The default path needs no provider key. The advanced path includes an offline full-input preview and `jev_run.py`, a standard-library, single-request experiment. Only `--live --max-requests 1` sends to the documented OpenRouter endpoint using an environment key. Write attempt metadata before sending; never save the request body, keys or arbitrary provider text. Disable redirects and automatic retries. Preserve success, failure and uncertain attempts. Validate question coverage, choices, probabilities, served model and usage before reporting success.
+`jev_workflow.py` connects direct TypeSafe decisions to the existing review. Preview is offline; live mode requires an explicit request bound and `JEV_API_KEY` in the environment. Pin `jev-1.13.0` at the documented TypeSafe endpoint. Record each attempt before sending; refuse redirects and automatic retries. Keep ordinary source and keys out of saved records.
 
-One request is a request bound, not a dollar cap; explain billing and verify current pricing before authorization. The runner saves typed provider judgments separately from coding-agent operational decisions. It cannot invent Jev reasoning, replace the normal review workflow silently or treat probabilities as accuracy. Live email sharing and operational integration are separate decisions. Setup/tests make no paid call.
+Validate all typed answers, probabilities, usage, model and matching payload hash. Save Jev provenance with each accepted assessment. Jev returns no written reason or reference citations: review text labels the category definition, and any coding-agent interpretation must be identified separately. Do not represent confidence as measured accuracy.
+
+Successful attempts can resume an interrupted batch without another call. Failed or uncertain attempts require reconciliation. Skip plus missing-evidence keeps the batch pending; never silently relabel or hide it. An unchanged operational rerun reuses decisions; it is not a repeatability test. Use separate named roots for deliberately authorized trials.
 
 ### Distribution and scope
 

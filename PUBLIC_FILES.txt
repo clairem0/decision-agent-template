@@ -18,7 +18,7 @@ docs/storage.md
 docs/verification.md
 examples/email/demo-results.json
 examples/email/inputs.json
-examples/email/rubric.json
+rubric.example.json
 examples/references.json
 inline_review.py
 jev_preview.py
@@ -35,3 +35,13 @@ tests/test_jev_run.py
 tests/test_reader_setup.py
 tests/test_serve.py
 tests/test_storage_policy.py
+jev_workflow.py
+docs/jev.md
+docs/rubric-check.md
+tests/test_jev_workflow.py
+.env.example
+SETUP.md
+pipeline.py
+docs/gmail.md
+tests/test_pipeline.py
+docs/workflow.md

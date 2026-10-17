@@ -13,8 +13,8 @@ import urllib.request
 import decision as d
 from jev_preview import build_payload
 
-ENDPOINT = 'https://openrouter.ai/api/alpha/decisions'
-MODEL = 'typesafe/jev-1.13'
+ENDPOINT = 'https://api.typesafe.ai/v1/systemone'
+MODEL = 'jev-1.13.0'
 
 
 class NoRedirect(urllib.request.HTTPRedirectHandler):
@@ -88,9 +88,9 @@ def run(batch, item_id, root, *, live=False, max_requests=0):
         return {'mode': 'preview', 'destination': ENDPOINT, 'payload': payload}
     if max_requests != 1:
         raise d.Hold('A live experiment requires --max-requests 1; only one request is sent.')
-    key = os.environ.get('OPENROUTER_API_KEY', '').strip()
+    key = os.environ.get('JEV_API_KEY', '').strip()
     if not key or any(ord(c) < 33 or ord(c) > 126 for c in key):
-        raise d.Hold('Configure OPENROUTER_API_KEY in the environment; never paste it into chat.')
+        raise d.Hold('Configure JEV_API_KEY in the environment; never paste it into chat.')
     digest = d.fingerprint(payload)
     root = Path(root)
     with d.writer_lock(root):

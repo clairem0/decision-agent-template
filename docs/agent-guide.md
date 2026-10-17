@@ -1,58 +1,43 @@
 # Set up the reader's workflow
 
-**Your first task:** check capabilities, then ask which email account and small read-only sample the reader wants to use. Do the technical work yourself and guide the reader one step at a time.
+Follow **examples → approved rubric → connect Jev → saved review**. Use an existing approved rubric as the starting point. Do the technical work; keep the reader's choices about judgment, source scope and review.
 
-Follow **examples → approved rubric → fresh tests → saved manual review**. Use an existing approved rubric if provided. The [fictional demo](agent-reference.md#optional-fictional-demo) and [Jev](advanced-jev.md) are optional; neither is a prerequisite.
+## 1. Start with examples
 
-## 1. Check capabilities
+Check Python 3.11+, file access, existing email connectors and a review surface. Use an existing supported runtime; do not install tools or connect accounts automatically. With no connector, offer a pasted sample or the fictional demo. Without a native review surface, use local HTML or numbered chat.
 
-Verify Python 3.11+, file access, available email connectors, fresh-reviewer support and a review surface. Check the actual interpreter version; if `python3` is too old, look for an existing supported runtime before proposing an installation. Use that verified executable for all commands; `python3` in these docs is shorthand. Discover connectors without reading personal accounts yet. Do not install software or connect accounts automatically.
+Confirm the account and a small read-only scope. Read complete conversations and relevant sent replies and attachments. Explain that ordinary source stays in memory, private metadata stays in ignored `local/`, and host transcripts may retain reads. Saving full teaching examples needs separate approval.
 
-Explain missing capabilities briefly. With no connector, offer a small pasted sample or the fictional demo. With no fresh context, disclose that testing will not be blinded. With no native review UI, use a local page or numbered chat. A chat-only rehearsal without file access cannot prove persistence.
+## 2. Review the rubric
 
-## 2. Learn from examples and approve the rubric
+Use just three categories:
 
-Confirm the account and a small read-only scope. Explore messages needing action, intentional reading, brief awareness, no future attention, and borderline cases. Read complete conversations, relevant sent replies and any attachments that affect the decision. Include sourced context about current priorities and completed work. Search snippets are not enough; disclose gaps.
+- **Needs action:** an unfinished reply, task or decision for the reader, urgent or not.
+- **Worth seeing:** no action needed, but wanted reading or an update that affects plans or understanding.
+- **Skip:** neither. Leave out of this review; do not alter the inbox or make future-mail rules.
 
-Before the first real read, explain: ordinary bodies/context stay in memory, private metadata stays in ignored `local/`, and the host may retain reads in its transcripts. Saving a full email as a teaching example needs separate approval.
+Visualize definitions with gold and anti-gold examples when the host supports it; otherwise show a compact table. Probe an unresolved request versus its resolved thread; an unwanted invitation versus an agreed commitment; and a useful update versus routine acknowledgment. Keep timing separate from the category. Missing substantive context gets an uncertainty flag; incomplete retrieval stays on hold.
 
-Propose these distinctions for the reader to approve:
+Approve and [save the rubric and teaching examples](agent-reference.md#save-approved-configuration). Keep the library small. Do not automatically copy personal preferences or turn review history into teaching data. Older five-category state needs a new folder and an approved mapping, not an automatic rewrite.
 
-| Treatment | Meaning |
-| --- | --- |
-| Act now | Important action before the next review. |
-| Track for follow up | Important work that can wait, including replies owed or agreed work awaited. |
-| Useful info | Worth reading; no reply or task. |
-| FYI only | Brief awareness. |
-| Never see again | Known unwanted recurring email; a rule proposal, not permission to alter mail. |
+## 3. Connect Jev
 
-A complete source with missing substantive context gets an `uncertainty` flag, never automatic urgency or suppression. Incomplete retrieval stays on hold.
+Follow [Jev setup](jev.md). Keep the credential outside chat and code. Start with a fictional email; then confirm the small real-email scope and that full messages, context and approved examples will go to TypeSafe. Use the fixed Jev evaluator identity and the saved rubric for both tests and the actual workflow.
 
-Show the proposed rules and full examples in chat. Use both **gold examples** (anchors for a decision) and **anti-golds** (contrasts showing its limits). Approve the rubric and separately approve retained source examples. Do not treat review history as a teaching library. Then [save the reader's configuration](agent-reference.md#save-approved-configuration), preserving any existing local work.
+If Jev is unavailable, pause this path. A fictional demo or explicitly chosen coding-agent alternative is fine, but do not silently substitute it and claim Jev worked.
 
-## 3. Test on other emails
+## 4. Review a first run
 
-Use a separate small sample. [Prepare complete requests](agent-reference.md#prepare-and-classify), then give only their source/context, rubric and approved teaching examples to a fresh reviewer with no account tools or action authority. Setup/testing authorizes delegation when the host supports it.
+Use fresh complete inputs, `decision.py prepare`, then `jev_workflow.py` with an agreed request bound. The workflow accepts validated Jev results into the existing review. All requested decisions must validate before a batch is saved. Saved successful attempts can be reused after an interrupted batch; failed or uncertain attempts are never automatically resent.
 
-Save each trial's decisions before comparing with the reader's expectations. Run **three independent trials on identical inputs**, using separate state roots; compare input fingerprints and disagreements. Cached reruns prove reuse, not consistency. Refine with approval, then repeat. [Trial procedure](agent-reference.md#three-independent-trials).
+Show all categories, uncertainties, holds and original links. Jev does not write reasons: the default review text is explicitly a category definition. If the reader asks why, inspect the original and identify your explanation as the coding agent's interpretation.
 
-## 4. Run and save a manual review
+Use [review display and receipts](inline-review.md). Save each submitted correction, acknowledgment or follow-up instruction and read back its receipt. An unchanged rerun should preserve those choices without another Jev call. A correction affects this assessment. For broader improvement, separately approve a teaching example and test a fresh similar case plus a contrast. Never claim an unchanged cached rerun proves learning.
 
-On a small agreed scope, use [prepare → classify → accept](agent-reference.md#prepare-and-classify), then follow [review display and receipt handling](inline-review.md). Prefer native conversation UI. Show categories, brief reasons, uncertainty, holds and verified original-email links, with Act now first.
-
-Explain the actions as the reader uses them:
-
-- **Seen & clear:** acknowledge this decision; an open task stays open.
-- **Assign follow-up:** enter the work requested, then **Add to changes**.
-- **Correct classification:** change this assessment and explain why. Reusable teaching needs separate approval.
-- **Send changes to chat:** submit the pending choices. Save each exact choice and confirm its receipt; prepared UI state alone is not saved.
-
-After confirming an assigned follow-up, begin its requested review or drafting. Check prior task progress before retrying; skip stale/failed choices. Ask before sending messages, changing accounts or scheduling. Do not claim completion without evidence.
-
-Re-read the same inputs and rerun to show that saved choices persist and unchanged cleared/delivered decisions stay quiet. Changed evidence requires reassessment; keep history and open tasks. [Teaching from a correction](agent-reference.md#teach-from-a-correction) is a separate approved step.
+Follow-up notes authorize the specified work; classification alone does not. Sending, changing accounts and scheduling require their corresponding user instruction.
 
 ## 5. Finish setup
 
-Confirm what worked: the agreed source scope, rubric, fresh tests, actual review delivery, saved receipt and unchanged rerun. Name remaining capability or coverage gaps. Do not call a simulated demo a live inbox test.
+Confirm scope, actual Jev results, review delivery, saved receipt and unchanged rerun. Name remaining gaps. Keep live model evidence separate from simulated code tests and reader acceptance.
 
-**Stop here.** Explain [scheduling later](scheduling.md), but create a schedule only on explicit instruction after the manual walkthrough works. Use [adaptations](adapting.md) for other use cases; use the [command reference](agent-reference.md) only when its step is needed.
+Stop before creating a schedule unless explicitly asked. [Scheduling](scheduling.md) · [Technical reference](agent-reference.md) · [Rubric pressure test](rubric-check.md).

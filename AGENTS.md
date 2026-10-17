@@ -4,7 +4,7 @@
 
 Read [docs/agent-guide.md](docs/agent-guide.md) and follow its setup sequence. **Begin with capability checks and a small approved example scope.** The reader supplies judgment; you handle files, commands and review receipts. An existing approved rubric is a starting point, not a reason to restart discovery.
 
-The fictional demo and Jev are optional. Do not start with repository maintenance or the implementation backlog when the reader asks to set up their own workflow.
+Jev is the default classifier; follow docs/jev.md. The fictional demo is optional. Do not start with repository maintenance or the implementation backlog when the reader asks to set up their own workflow.
 
 ## Always
 

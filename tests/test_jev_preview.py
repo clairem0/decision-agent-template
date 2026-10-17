@@ -16,7 +16,7 @@ class JevPreviewTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         inputs = d.load_json('examples/email/inputs.json')
         inputs['items'][0].update(expected='PRIVATE_ANSWER', feedback='PRIVATE_REVIEW')
-        self.batch = d.prepare(self.root, inputs, d.load_json('examples/email/rubric.json'),
+        self.batch = d.prepare(self.root, inputs, d.load_json('rubric.example.json'),
                                d.load_json('examples/references.json'), 'preview-test')
 
     def test_exact_target_rubric_and_reference_content_reach_jev_state(self):

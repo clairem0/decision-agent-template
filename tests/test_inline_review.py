@@ -14,7 +14,7 @@ class InlineReviewTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         inputs = d.load_json('examples/email/inputs.json')
         inputs['items'][0]['content'] += '\n</script><img src=x onerror=alert(1)>'
-        batch = d.prepare(self.root, inputs, d.load_json('examples/email/rubric.json'),
+        batch = d.prepare(self.root, inputs, d.load_json('rubric.example.json'),
                           d.load_json('examples/references.json'), 'inline-test')
         d.accept(self.root, batch, d.load_json('examples/email/demo-results.json'))
 
@@ -41,14 +41,14 @@ class InlineReviewTests(unittest.TestCase):
         _, payload = self.payload('first.html')
         item = payload['items'][0]
         receipt = {'receipt_id': payload['review_id']+':1', 'id': item['id'],
-                   'decision_id': item['decision_id'], 'action': 'correct', 'label': 'track',
+                   'decision_id': item['decision_id'], 'action': 'correct', 'label': 'read',
                    'note': 'Fictional test correction.', 'propose_teaching': True}
         d.review(self.root, receipt)
         d.review(self.root, receipt)
         _, quiet = self.payload('quiet.html')
         self.assertNotIn(item['id'], [i['id'] for i in quiet['items']])
         _, full = self.payload('full.html', include_seen=True)
-        self.assertEqual(next(i for i in full['items'] if i['id']==item['id'])['label'], 'track')
+        self.assertEqual(next(i for i in full['items'] if i['id']==item['id'])['label'], 'read')
         self.assertEqual(len(d.read_state(self.root)['items'][item['id']]['reviews']), 1)
         # Requesting a proposal must not approve or write a teaching library.
         self.assertFalse((self.root/'references.json').exists())
@@ -75,14 +75,14 @@ class InlineReviewTests(unittest.TestCase):
         state = d.read_state(self.root)
         current = [row for row in state['items'].values() if row['status'] == 'current' and row['decision']]
         # Reverse the categories across source IDs so accidental source ordering fails.
-        labels = ['suppress', 'fyi', 'read', 'track', 'act']
+        labels = ['skip', 'read', 'act']
         for row, label in zip(current, labels):
             row['decision']['label'] = label
             row['decision']['correction'] = None
         current[0]['decision']['correction'] = {'label': 'act', 'reason': 'Approved correction.'}
         (self.root/'state.json').write_text(json.dumps(state))
         _, payload = self.payload('ordered.html', include_seen=True)
-        priority = {label: index for index, label in enumerate(['act', 'track', 'read', 'fyi', 'suppress'])}
+        priority = {label: index for index, label in enumerate(['act', 'read', 'skip'])}
         ranks = [priority[item['label']] for item in payload['items']]
         self.assertEqual(ranks, sorted(ranks))
         self.assertEqual(payload['items'][0]['summary'], 'Approved correction.')

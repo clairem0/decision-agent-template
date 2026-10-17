@@ -1,3 +1,5 @@
-Help me set up an email decision agent using the template repository or folder I've shared. If I've given you only a link, first make a local working copy without overwriting an existing folder. Read AGENTS.md and follow docs/agent-guide.md. Do the technical work and guide me one step at a time.
+Help me set up this email decision workflow. Make a local copy if needed, read AGENTS.md and follow docs/agent-guide.md. Do the technical work and guide me one step at a time.
 
-Start by checking capabilities, then confirm my email account and a small read-only example scope. Help me approve a rubric, test it with fresh reviewers, and complete a manual review with saved choices. If I already have a rubric, use it as our starting point. If I prefer to try it without email access, use the fictional demo. Stop before scheduling or changing my inbox.
+Use three categories: Needs action, Worth seeing and Skip. Start with my examples and any rubric we've already drafted. Show me the definitions with gold and anti-gold examples so I can approve them.
+
+Use Jev through TypeSafe to apply the rubric. Help me set up my key outside chat and code, try a fictional email, then agree with me on a small batch of real messages to send. Show all three categories, save my corrections and check that another run remembers them. Leave my inbox unchanged and stop before scheduling.

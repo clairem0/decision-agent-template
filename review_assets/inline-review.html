@@ -29,14 +29,12 @@
 #__REVIEW_ROOT__ article{padding:16px 20px;border-top:1px solid var(--dr-line)}
 #__REVIEW_ROOT__ .dr-item{--dr-category:var(--dr-muted);border-left:3px solid var(--dr-category);padding-left:17px}
 #__REVIEW_ROOT__ .dr-item[data-category="act"]{--dr-category:light-dark(#294e3b,#b9d4b5)}
-#__REVIEW_ROOT__ .dr-item[data-category="track"]{--dr-category:light-dark(#805b13,#e4be69)}
 #__REVIEW_ROOT__ .dr-item[data-category="read"]{--dr-category:light-dark(#376447,#a6c9a7)}
 #__REVIEW_ROOT__ .dr-category{flex-shrink:0;text-align:right}
 #__REVIEW_ROOT__ .dr-badge{display:inline-flex;align-items:center;gap:7px;padding:3px 9px;border-radius:5px;background:color-mix(in srgb,var(--dr-category) 11%,var(--dr-bg));color:var(--dr-category);font-weight:700}
 #__REVIEW_ROOT__ [data-category="act"] .dr-badge{background:var(--dr-category);color:light-dark(#fffdf8,#1a2b20)}
 #__REVIEW_ROOT__ .dr-marker{width:9px;height:9px;border:1.5px solid currentColor;border-radius:50%}
 #__REVIEW_ROOT__ [data-category="act"] .dr-marker{background:currentColor}
-#__REVIEW_ROOT__ [data-category="track"] .dr-marker{background:linear-gradient(90deg,currentColor 50%,transparent 50%)}
 #__REVIEW_ROOT__ .dr-urgency{display:block;font-size:12px;margin-top:3px;color:var(--dr-muted)}
 #__REVIEW_ROOT__ .dr-top{display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--dr-muted)}
 #__REVIEW_ROOT__ h3{font:500 16px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;margin:6px 0}
@@ -58,7 +56,7 @@
   const root=document.getElementById('__REVIEW_ROOT__'), q=s=>root.querySelector(s);
   const review=JSON.parse(q('.dr-data').textContent);
   const names=review.names;
-  const urgency={act:'Before your next review',track:'Important · can wait',read:'Reading · no action',fyi:'Awareness only',suppress:'Unwanted recurring email'};
+  const urgency={act:'Reply or task needed',read:'Useful update or reading',skip:'Leave out of this review'};
   const esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const original=item=>item.original_url?'<a href="'+esc(item.original_url)+'" target="_blank" rel="noopener noreferrer" class="dr-original cursor-interaction">View original email</a>':'No verified email link. Ask your agent to re-read this conversation.';
   let changes={}, editor=null, sent=false, sending=false, revision=0, frozen=null;

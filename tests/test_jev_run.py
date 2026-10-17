@@ -18,7 +18,7 @@ class JevRunTests(unittest.TestCase):
         inputs = d.load_json('examples/email/inputs.json')
         inputs['items'][0]['content'] += ' SOURCE_MARKER_9382'
         self.batch = d.prepare(Path(self.temp.name)/'review', inputs,
-                               d.load_json('examples/email/rubric.json'), d.load_json('examples/references.json'), 'jev-test')
+                               d.load_json('rubric.example.json'), d.load_json('examples/references.json'), 'jev-test')
         self.payload = j.build_payload(self.batch, 'mail-demo-a')
         self.response = {'id':'gen-dec-fictional-123', 'model':j.MODEL+'-20260917', 'provider':'TypeSafe',
                          'usage':{'input_tokens':20,'output_tokens':2,'cost':0.001}, 'answers':{}}
@@ -46,7 +46,7 @@ class JevRunTests(unittest.TestCase):
             self.assertEqual(key, 'test-key')
             return dict(self.response, echo='SOURCE_MARKER_9382', error='test-key')
         state = (Path(self.temp.name)/'review/state.json').read_bytes()
-        with patch.dict(os.environ, {'OPENROUTER_API_KEY':'test-key'}), patch.object(j, 'post', side_effect=post) as mock:
+        with patch.dict(os.environ, {'JEV_API_KEY':'test-key'}), patch.object(j, 'post', side_effect=post) as mock:
             result = self.run_live()
             self.assertEqual(result['status'], 'succeeded')
             self.assertEqual(result['result']['model'], self.response['model'])
@@ -60,7 +60,7 @@ class JevRunTests(unittest.TestCase):
         errors = [TimeoutError('SOURCE_MARKER_9382'), urllib.error.HTTPError(j.ENDPOINT, 429, 'SOURCE_MARKER_9382', {}, None)]
         for i, error in enumerate(errors):
             self.root = Path(self.temp.name)/str(i)
-            with patch.dict(os.environ, {'OPENROUTER_API_KEY':'test-key'}), patch.object(j, 'post', side_effect=error) as mock:
+            with patch.dict(os.environ, {'JEV_API_KEY':'test-key'}), patch.object(j, 'post', side_effect=error) as mock:
                 with self.assertRaises(d.Hold): self.run_live()
                 with self.assertRaises(d.Hold): self.run_live()
                 self.assertEqual(mock.call_count, 1)
@@ -70,7 +70,7 @@ class JevRunTests(unittest.TestCase):
 
     def test_invalid_or_partial_answers_preserve_failure(self):
         response = copy.deepcopy(self.response); del response['answers']['evidence_status']
-        with patch.dict(os.environ, {'OPENROUTER_API_KEY':'test-key'}), patch.object(j, 'post', return_value=response):
+        with patch.dict(os.environ, {'JEV_API_KEY':'test-key'}), patch.object(j, 'post', return_value=response):
             with self.assertRaises(d.Hold): self.run_live()
         self.assertEqual(json.loads(next(self.root.glob('*.json')).read_text())['status'], 'invalid_response')
         for value in [float('nan'), True, -1, 2]:

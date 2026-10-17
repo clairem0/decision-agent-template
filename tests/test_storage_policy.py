@@ -15,7 +15,7 @@ class StoragePolicyTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory(); self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
         self.inputs = d.load_json('examples/email/inputs.json')
-        self.rubric = d.load_json('examples/email/rubric.json')
+        self.rubric = d.load_json('rubric.example.json')
         self.refs = d.load_json('examples/references.json')
         self.response = d.load_json('examples/email/demo-results.json')
         self.inputs['items'][0].update(content='UNRETAINED_BODY_7938', context='UNRETAINED_CONTEXT_5291',
@@ -28,7 +28,7 @@ class StoragePolicyTests(unittest.TestCase):
         batch = self.prepare(); d.accept(self.root, batch, self.response)
         row = d.read_state(self.root)['items']['mail-demo-a']
         receipt = {'receipt_id':'teaching-test', 'id':'mail-demo-a', 'decision_id':row['decision']['id'],
-                   'action':'correct', 'label':'track', 'note':'Waiting on the assigned owner.'}
+                   'action':'correct', 'label':'read', 'note':'Waiting on the assigned owner.'}
         d.review(self.root, receipt)
         return {'receipt_id':receipt['receipt_id'], 'use_as_example':True, 'approved_by':'fictional reviewer',
                 'approval_evidence':'Synthetic explicit teaching approval.', 'distinction':'Waiting is not an action.'}
@@ -55,7 +55,7 @@ class StoragePolicyTests(unittest.TestCase):
         self.correct()
         self.inputs['items'][0]['original_url'] = 'https://mail.example.test/thread/two'
         self.assertEqual(self.prepare()['requests'], [])
-        self.assertEqual(d.summary(self.root)['items'][0]['label'], 'track')
+        self.assertEqual(d.summary(self.root)['items'][0]['label'], 'read')
         self.assertFalse(d.summary(self.root)['items'][0]['new_review'])
         self.assertIn('/thread/two', d.render(self.root).read_text())
 

@@ -14,7 +14,7 @@ class DecisionTests(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory(); self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
         self.inputs = d.load_json('examples/email/inputs.json')
-        self.rubric = d.load_json('examples/email/rubric.json')
+        self.rubric = d.load_json('rubric.example.json')
         self.refs = d.load_json('examples/references.json')
         self.response = d.load_json('examples/email/demo-results.json')
 
@@ -45,23 +45,23 @@ class DecisionTests(unittest.TestCase):
         self.assertEqual(request['references'][0]['contrast_ids'],['email-confirmed'])
         self.assertEqual(request['rubric']['rules'],self.rubric['rules'])
 
-    def test_five_treatments_and_uncertainty_survive_review_and_reuse(self):
+    def test_three_treatments_and_uncertainty_survive_review_and_reuse(self):
         import inline_review
         batch = self.prepare()
-        self.response['results'][0].update(label='track', uncertainty='The scope of the requested task is missing.')
-        self.response['results'][1]['label'] = 'fyi'
-        self.response['results'][2]['label'] = 'suppress'
+        self.response['results'][0].update(label='read', uncertainty='The scope of the requested task is missing.')
+        self.response['results'][1]['label'] = 'read'
+        self.response['results'][2]['label'] = 'skip'
         d.accept(self.root, batch, self.response)
         self.assertEqual(d.summary(self.root)['items'][0]['uncertainty'], 'The scope of the requested task is missing.')
         self.assertEqual(self.prepare()['requests'], [])
         page = d.render(self.root).read_text()
-        self.assertIn('FYI only', page); self.assertIn('Never see again', page)
+        self.assertIn('Worth seeing', page); self.assertIn('Skip', page)
         self.assertIn('Needs context:', page)
         fragment = inline_review.render(self.root, self.root/'inline.html').read_text()
         self.assertIn('The scope of the requested task is missing.', fragment)
         before = (self.root/'state.json').read_bytes()
         with self.assertRaises(d.Hold):
-            d.review(self.root, self.choice('correct', label='suppress', note='Ignore it.'))
+            d.review(self.root, self.choice('correct', label='skip', note='Ignore it.'))
         self.assertEqual(before, (self.root/'state.json').read_bytes())
 
     def test_uncertain_suppression_and_obsolete_category_fail_atomically(self):
@@ -70,7 +70,7 @@ class DecisionTests(unittest.TestCase):
         old = copy.deepcopy(batch); old['contract'] = 'coding-agent-v1'
         with self.assertRaises(d.Hold): d.accept(self.root, old, self.response)
         self.assertEqual(before, (self.root/'state.json').read_bytes())
-        for change in ({'label':'suppress','uncertainty':'Unresolved obligation.'},
+        for change in ({'label':'skip','uncertainty':'Unresolved obligation.'},
                        {'label':'unknown'}, {'uncertainty':True}):
             bad = copy.deepcopy(self.response); bad['results'][-1].update(change)
             with self.assertRaises(d.Hold): d.accept(self.root, batch, bad)
@@ -80,7 +80,7 @@ class DecisionTests(unittest.TestCase):
         batch = self.prepare()
         self.response['results'][0]['uncertainty'] = 'Confirm the owner.'
         d.accept(self.root, batch, self.response)
-        d.review(self.root, self.choice('correct', label='track', note='Clarify who owns this first.'))
+        d.review(self.root, self.choice('correct', label='read', note='Clarify who owns this first.'))
         ref_id = d.teach(self.root, self.approval(), self.refs, self.inputs['items'][0])
         batch = d.prepare(self.root, self.inputs, self.rubric, d.load_json(self.root/'references.json'), 'test-evaluator')
         ref = next(r for r in batch['requests'][0]['request']['references'] if r['id']==ref_id)
@@ -88,12 +88,12 @@ class DecisionTests(unittest.TestCase):
 
     def test_review_persists_and_deduplicates_unchanged_run(self):
         self.accepted()
-        choice=self.choice('correct',label='track',note='Wait for the host to specify the adapter.')
+        choice=self.choice('correct',label='read',note='Wait for the host to specify the adapter.')
         self.assertEqual(d.review(self.root,choice),'saved')
         self.assertEqual(d.review(self.root,choice),'already saved')
         self.assertEqual(self.prepare()['requests'],[])
         item=d.summary(self.root)['items'][0]
-        self.assertEqual(item['label'],'track'); self.assertFalse(item['new_review'])
+        self.assertEqual(item['label'],'read'); self.assertFalse(item['new_review'])
         self.assertEqual(len(d.read_state(self.root)['items']['mail-demo-a']['reviews']),1)
 
     def test_changed_inputs_rubric_reference_and_evaluator_reassess(self):
@@ -136,7 +136,7 @@ class DecisionTests(unittest.TestCase):
         import inline_review
         self.accepted()
         d.review(self.root, self.choice('assign', note='Draft the fictional reply.'))
-        correction = self.choice('correct', label='track', note='This can wait.')
+        correction = self.choice('correct', label='read', note='This can wait.')
         d.review(self.root, correction)
         d.review(self.root, self.choice('delivered', note='Presented in fictional chat.'))
         original = copy.deepcopy(d.read_state(self.root)['items']['mail-demo-a'])
@@ -162,7 +162,7 @@ class DecisionTests(unittest.TestCase):
         self.assertEqual(self.prepare()['requests'], [])
         restored = d.read_state(self.root)['items']['mail-demo-a']
         self.assertEqual(restored, original)
-        self.assertEqual(d.summary(self.root)['items'][0]['label'], 'track')
+        self.assertEqual(d.summary(self.root)['items'][0]['label'], 'read')
         self.assertFalse(d.summary(self.root)['items'][0]['new_review'])
         self.assertTrue(d.teach(self.root, self.approval(), self.refs, self.inputs['items'][0]))
 
@@ -263,7 +263,7 @@ class DecisionTests(unittest.TestCase):
 
     def corrected(self):
         self.accepted()
-        d.review(self.root, self.choice('correct', label='track',
+        d.review(self.root, self.choice('correct', label='read',
                  note='This is waiting on the assigned host.'))
 
     def test_correction_does_not_teach_without_approval(self):
@@ -285,7 +285,7 @@ class DecisionTests(unittest.TestCase):
         ref = next(r for r in request['references'] if r['id'] == ref_id)
         self.assertEqual(ref['content'], self.inputs['items'][0]['content'])
         self.assertEqual(ref['context'], self.inputs['items'][0]['context'])
-        self.assertEqual(ref['label'], 'track')
+        self.assertEqual(ref['label'], 'read')
         self.assertEqual(ref['distinction'], self.approval()['distinction'])
         self.assertEqual(ref['contrast_ids'], ['email-deadline'])
         self.assertNotIn('approval', ref)

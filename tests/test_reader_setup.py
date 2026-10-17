@@ -10,13 +10,25 @@ import decision as d
 
 
 class ReaderSetupTests(unittest.TestCase):
+    def test_documented_demo_uses_the_visible_starter_rubric(self):
+        with tempfile.TemporaryDirectory() as directory:
+            result = subprocess.run([sys.executable, 'decision.py', 'demo', '--root', directory],
+                                    capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertTrue((Path(directory)/'review/index.html').exists())
+            self.assertEqual({row['label'] for row in d.summary(directory)['items'] if row['label']},
+                             {'act', 'read', 'skip'})
+            skipped = [row for row in d.summary(directory)['items'] if row['label'] == 'skip']
+            self.assertTrue(skipped)
+            self.assertTrue(all(not row['new_review'] for row in skipped))
+
     def test_personalized_prepare_streams_source_and_uses_saved_rubric_and_references(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             inputs = d.load_json('examples/email/inputs.json')
             inputs['items'] = inputs['items'][:1]
             inputs['items'][0]['id'] = 'fictional-reader:thread-1'
-            rubric = d.load_json('examples/email/rubric.json'); rubric['version'] = 'reader-approved-test'
+            rubric = d.load_json('rubric.example.json'); rubric['version'] = 'reader-approved-test'
             refs = d.load_json('examples/references.json'); refs['references'][0]['distinction'] += ' Approved test refinement.'
             for name, data in [('rubric.json',rubric),('references.json',refs)]:
                 (root/name).write_text(json.dumps(data))
@@ -32,11 +44,11 @@ class ReaderSetupTests(unittest.TestCase):
                      'label':'act','reason':'Fictional test decision.','reference_ids':['email-deadline']}]})
             item = d.read_state(root)['items'][request['target']['id']]
             d.review(root, {'receipt_id':'reader-test','id':request['target']['id'],
-                     'decision_id':item['decision']['id'],'action':'correct','label':'track',
+                     'decision_id':item['decision']['id'],'action':'correct','label':'read',
                      'note':'Fictional reader correction.'})
             self.assertEqual(subprocess.run(command, input=json.dumps(inputs), text=True, capture_output=True).returncode, 0)
             self.assertEqual(d.load_json(root/'packet.json')['requests'], [])
-            self.assertEqual(d.summary(root)['items'][0]['label'], 'track')
+            self.assertEqual(d.summary(root)['items'][0]['label'], 'read')
             inputs['items'][0]['context'] += ' A later message changes the obligation.'
             self.assertEqual(subprocess.run(command, input=json.dumps(inputs), text=True, capture_output=True).returncode, 0)
             self.assertEqual(len(d.load_json(root/'packet.json')['requests']), 1)
@@ -49,7 +61,7 @@ class ReaderSetupTests(unittest.TestCase):
             inputs['items'][0]['content'] += marker
             env = dict(os.environ, PYTHONIOENCODING='cp1252', PYTHONUTF8='0')
             result = subprocess.run([sys.executable, 'decision.py', 'prepare', '--root', directory,
-                '--rubric', 'examples/email/rubric.json', '--references', 'examples/references.json',
+                '--rubric', 'rubric.example.json', '--references', 'examples/references.json',
                 '--evaluator', 'unicode-test', '--stdin'], input=json.dumps(inputs, ensure_ascii=False).encode('utf-8'),
                 capture_output=True, env=env)
             self.assertEqual(result.returncode, 0, result.stderr)
