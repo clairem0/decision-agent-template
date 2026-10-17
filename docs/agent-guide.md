@@ -28,7 +28,7 @@ If Jev is unavailable, pause this path. A fictional demo or explicitly chosen co
 
 ## 4. Review a first run
 
-Use fresh complete inputs, `decision.py prepare`, then `jev_workflow.py` with an agreed request bound. The workflow accepts validated Jev results into the existing review. All requested decisions must validate before a batch is saved. Saved successful attempts can be reused after an interrupted batch; failed or uncertain attempts are never automatically resent.
+Pass fresh complete conversations to `pipeline.py` through stdin, using the saved rubric, references and agreed request bound. Follow the command in [setup](../SETUP.md#command-for-the-agent). It prepares the requests, calls Jev, checks and saves the results, and generates the review. All requested decisions must validate before a batch is saved. Saved successful attempts can be reused after an interrupted batch; failed or uncertain attempts are never automatically resent.
 
 Show all categories, uncertainties, holds and original links. Jev does not write reasons: the default review text is explicitly a category definition. If the reader asks why, inspect the original and identify your explanation as the coding agent's interpretation.
 

@@ -8,7 +8,7 @@ The only retained full source is a separately approved teaching example, includi
 
 `prepare --stdin` returns the complete classifier batch to the agent on stdout. Its local `packet.json` is a **metadata manifest**, not that complete batch. `accept` validates results against this manifest and current state. Never classify from the saved manifest: retrieve source again and prepare again if the agent lost the in-memory batch. The helper does not read Gmail itself or verify a claimed complete capture. It trusts the agent's provenance and coverage.
 
-Agent conversations, tool transcripts, host visualization storage and external provider logs may retain content the agent reads. This template controls its own files; it cannot promise that your coding agent never stores email. Check the host's data policy before a real run. A pasted sample also remains in that chat. Sending email content to an optional external provider needs a separate data-sharing decision.
+Agent conversations, tool transcripts, host visualization storage and external provider logs may retain content the agent reads. This template controls its own files; it cannot promise that your coding agent never stores email. Check the host's data policy before a real run. A pasted sample also remains in that chat. The default Jev workflow sends full messages, relevant context, your rubric and approved examples to TypeSafe; agree on that scope before the first real run.
 
 ## Storage compatibility
 

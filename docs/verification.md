@@ -10,6 +10,8 @@ The local review was also inspected in the browser with all three categories vis
 
 The refreshed fictional demo contains four emails covering all three categories, including a redundant reminder from “Your fourth agent” and a fictional Technically Curious newsletter. Subjects link to the original email, category definitions are not repeated on each row, and only three review actions remain. All 62 tests passed after the update. Browser inspection confirmed the linked subjects, clear/undo behavior and correction editor; no native submission was sent. Demo judgments remain simulated.
 
+The final documentation pass added the README workflow diagram, aligned the default setup around `pipeline.py`, and checked all 55 local documentation links and anchors. All 47 tracked files match the public-file manifest.
+
 ## Live model evidence
 
 No validated live TypeSafe response was obtained in this revision. The initial sandbox could not resolve the endpoint; an unrestricted attempt and an unauthenticated curl check could not connect. Earlier attempt records were preserved. See the [24-case rubric check](rubric-check.md) for planned semantic and repeatability trials.

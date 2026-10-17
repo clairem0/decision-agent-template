@@ -2,7 +2,7 @@
 
 ```mermaid
 flowchart TD
-    A[You + your coding agent] -->|Agree on categories and examples| R[Your saved rubric]
+    A[You + your coding agent] -->|Agree on categories and examples| R[Your saved rubric and approved examples]
     G[Gmail connector] -->|Complete conversations| C[Your coding agent]
     C --> P[pipeline.py]
     R --> P

@@ -2,6 +2,17 @@
 
 Teach a simple email rubric through examples, then use Jev to apply it. Your coding agent handles Gmail and the workflow; you supply the judgment.
 
+## How it works
+
+```mermaid
+flowchart TD
+    G["Your agent reads Gmail"] --> S["Sends emails, your rubric and examples to Jev"]
+    S --> J["Jev applies the rubric and returns classifications"]
+    J --> R["Your agent shows the results for your review"]
+```
+
+Your agent checks and saves the results, then saves any corrections you make. Your inbox stays unchanged.
+
 ## Start here
 
 Open this folder in Claude Code or Codex and paste the [setup prompt](START_HERE.md). You'll need a connected Gmail account, Python 3.11+ and a TypeSafe API key. Your agent can walk you through [setup](SETUP.md).
