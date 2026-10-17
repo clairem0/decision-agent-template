@@ -2,6 +2,8 @@
 
 Jev applies your rubric. Your coding agent gathers complete emails, runs the pipeline and presents the review.
 
+**Work emails:** Before sending work emails, make sure your organization has approved Jev/TypeSafe for the email content and context you’ll share, in line with its data privacy policies.
+
 ## Connect your key
 
 1. Open the [TypeSafe console](https://console.typesafe.ai/), create an account and API key, and set up billing if required.
