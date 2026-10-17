@@ -4,11 +4,11 @@ from pathlib import Path, PurePosixPath
 import re
 import zipfile
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent
 
 
 def public_files():
-    names = (ROOT / 'PUBLIC_FILES.txt').read_text().splitlines()
+    names = (ROOT / 'workflow/PUBLIC_FILES.txt').read_text().splitlines()
     if len(names) != len(set(names)):
         raise ValueError('Duplicate manifest entries')
     for name in names:

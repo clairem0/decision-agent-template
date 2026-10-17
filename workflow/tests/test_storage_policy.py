@@ -14,10 +14,10 @@ class StoragePolicyTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(); self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
-        self.inputs = d.load_json('examples/email/inputs.json')
-        self.rubric = d.load_json('rubric.example.json')
-        self.refs = d.load_json('examples/references.json')
-        self.response = d.load_json('examples/email/demo-results.json')
+        self.inputs = d.load_json('workflow/demo/inputs.json')
+        self.rubric = d.load_json('rubric/rubric.json')
+        self.refs = d.load_json('rubric/examples.json')
+        self.response = d.load_json('workflow/demo/demo-results.json')
         self.inputs['items'][0].update(content='UNRETAINED_BODY_7938', context='UNRETAINED_CONTEXT_5291',
                                        unrelated='UNRETAINED_EXTRA_5281', original_url='https://mail.example.test/thread/one')
 
@@ -123,8 +123,8 @@ class StoragePolicyTests(unittest.TestCase):
     def test_teach_cli_reads_single_source_on_stdin(self):
         approval = self.correct()
         (self.root/'approval.json').write_bytes(d.encoded(approval))
-        result = subprocess.run([sys.executable, 'decision.py', 'teach', '--root', str(self.root),
-                                 '--approval', str(self.root/'approval.json'), '--references', 'examples/references.json', '--stdin'],
+        result = subprocess.run([sys.executable, 'workflow/decision.py', 'teach', '--root', str(self.root),
+                                 '--approval', str(self.root/'approval.json'), '--references', 'rubric/examples.json', '--stdin'],
                                 input=json.dumps(self.inputs['items'][0]), text=True, capture_output=True)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertTrue((self.root/'references.json').exists())

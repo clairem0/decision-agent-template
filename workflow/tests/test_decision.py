@@ -13,11 +13,11 @@ class DecisionTests(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory(); self.addCleanup(self.tmp.cleanup)
         self.root = Path(self.tmp.name)
-        self.inputs = d.load_json('examples/email/inputs.json')
+        self.inputs = d.load_json('workflow/demo/inputs.json')
         self.item_count = len(self.inputs['items'])
-        self.rubric = d.load_json('rubric.example.json')
-        self.refs = d.load_json('examples/references.json')
-        self.response = d.load_json('examples/email/demo-results.json')
+        self.rubric = d.load_json('rubric/rubric.json')
+        self.refs = d.load_json('rubric/examples.json')
+        self.response = d.load_json('workflow/demo/demo-results.json')
 
     def prepare(self):
         return d.prepare(self.root, self.inputs, self.rubric, self.refs, 'test-evaluator')
@@ -299,7 +299,7 @@ class DecisionTests(unittest.TestCase):
     def test_cli_uses_updated_local_library_by_default(self):
         self.corrected(); ref_id = d.teach(self.root, self.approval(), self.refs, self.inputs['items'][0])
         (self.root/'rubric.json').write_bytes(d.encoded(self.rubric))
-        result = subprocess.run([sys.executable, 'decision.py', 'prepare', '--root', str(self.root),
+        result = subprocess.run([sys.executable, 'workflow/decision.py', 'prepare', '--root', str(self.root),
                                  '--evaluator', 'test-evaluator', '--stdin'], input=json.dumps(self.inputs), capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
         batch = d.load_json(self.root/'packet.json')

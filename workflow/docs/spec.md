@@ -2,7 +2,7 @@
 
 Version 2 · 2026-10-17
 
-A companion to *Have Your AI Decide (A Lot of Things)*. The reader opens this folder in a coding agent and pastes one prompt. The agent does the technical work. The reader supplies judgment and approves the rubric. [Agent instructions](agent-guide.md) give the setup sequence; the [command reference](agent-reference.md) supplies technical steps as needed; [verification](verification.md) separates implementation from live and human proof.
+A companion to *Have Your AI Decide (A Lot of Things)*. The reader opens this folder in a coding agent and pastes one prompt. The agent does the technical work. The reader supplies judgment and approves the rubric. [Agent instructions](../../setup/README.md) give the setup sequence; the [command reference](agent-reference.md) supplies technical steps as needed; [verification](verification.md) separates implementation from live and human proof.
 
 ## Reader journey
 
@@ -51,13 +51,15 @@ Ordinary source and context are used in memory. Local state/manifests/reviews re
 
 ### Default Jev path
 
-`jev_workflow.py` connects direct TypeSafe decisions to the existing review. Preview is offline; live mode requires an explicit request bound and `JEV_API_KEY` in the environment. Pin `jev-1.13.0` at the documented TypeSafe endpoint. Record each attempt before sending; refuse redirects and automatic retries. Keep ordinary source and keys out of saved records.
+`workflow/jev_workflow.py` connects direct TypeSafe decisions to the existing review. Preview is offline; live mode requires an explicit request bound and `JEV_API_KEY` in the environment. Pin `jev-1.13.0` at the documented TypeSafe endpoint. Record each attempt before sending; refuse redirects and automatic retries. Keep ordinary source and keys out of saved records.
 
 Validate all typed answers, probabilities, usage, model and matching payload hash. Save Jev provenance with each accepted assessment. Jev returns no written reason or reference citations: review text labels the category definition, and any coding-agent interpretation must be identified separately. Do not represent confidence as measured accuracy.
 
 Successful attempts can resume an interrupted batch without another call. Failed or uncertain attempts require reconciliation. Skip plus missing-evidence keeps the batch pending; never silently relabel or hide it. An unchanged operational rerun reuses decisions; it is not a repeatability test. Use separate named roots for deliberately authorized trials.
 
 ### Distribution and scope
+
+The root README is the single reader starting point and includes the setup prompt. Keep the starter rubric and teaching examples together in `rubric/`, onboarding and connector instructions in `setup/`, and scripts, demo data, review assets, tests and technical references in `workflow/`. Commands run from the repository root; reader-approved configuration and saved state remain in ignored `local/`.
 
 Use Python's standard library and explicit public-file packaging. All shipped examples/tests are fictional. The ZIP excludes private data, credentials and Git history. Before public repository publication, separately audit history; a ZIP audit is insufficient. No hosted database, custom scheduler, connector service, automatic inbox mutation, model training or generic provider framework is included.
 

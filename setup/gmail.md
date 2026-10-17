@@ -2,7 +2,7 @@
 
 The rubric, Jev call and saved review are the same. The host-specific part is retrieving messages and presenting the result.
 
-The agent uses the Gmail connector available in the current host, then supplies complete conversations to `pipeline.py` through stdin. The Python scripts do not inherit the host's OAuth credentials or call its connector tools directly. Do not add a second Gmail login or a custom Gmail service just to run this starter.
+The agent uses the Gmail connector available in the current host, then supplies complete conversations to `workflow/pipeline.py` through stdin. The Python scripts do not inherit the host's OAuth credentials or call its connector tools directly. Do not add a second Gmail login or a custom Gmail service just to run this starter.
 
 Before the first run, check:
 

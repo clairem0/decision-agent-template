@@ -14,10 +14,10 @@ class JevPreviewTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(); self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
-        inputs = d.load_json('examples/email/inputs.json')
+        inputs = d.load_json('workflow/demo/inputs.json')
         inputs['items'][0].update(expected='PRIVATE_ANSWER', feedback='PRIVATE_REVIEW')
-        self.batch = d.prepare(self.root, inputs, d.load_json('rubric.example.json'),
-                               d.load_json('examples/references.json'), 'preview-test')
+        self.batch = d.prepare(self.root, inputs, d.load_json('rubric/rubric.json'),
+                               d.load_json('rubric/examples.json'), 'preview-test')
 
     def test_exact_target_rubric_and_reference_content_reach_jev_state(self):
         payload = j.build_payload(self.batch, 'mail-demo-a')
@@ -32,7 +32,7 @@ class JevPreviewTests(unittest.TestCase):
 
     def test_preview_streams_without_writing_or_changing_decisions(self):
         before = {p.name: p.read_bytes() for p in self.root.iterdir()}
-        result = subprocess.run([sys.executable, 'jev_preview.py', '--id', 'mail-demo-a'],
+        result = subprocess.run([sys.executable, 'workflow/jev_preview.py', '--id', 'mail-demo-a'],
                                 input=json.dumps(self.batch), text=True, capture_output=True)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(json.loads(result.stdout), j.build_payload(self.batch, 'mail-demo-a'))

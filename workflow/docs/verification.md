@@ -2,7 +2,7 @@
 
 ## Current implementation
 
-The three-category workflow uses Jev directly through TypeSafe. The final repository passed all 62 behavioral tests, including the loopback check. A clean extracted 47-file bundle also passed all 62 tests and the documented fictional demo. The Python standard-library suite covers full-source packets, approved examples, answer-key exclusion, validated provider provenance, all-or-nothing batch acceptance, saved corrections, unchanged reruns without new model calls, failure recovery and metadata-only storage. Provider calls in these tests are mocked.
+The three-category workflow uses Jev directly through TypeSafe. The final repository passed all 62 behavioral tests, including the loopback check. A clean extracted 45-file bundle also passed all 62 tests and the documented fictional demo. The Python standard-library suite covers full-source packets, approved examples, answer-key exclusion, validated provider provenance, all-or-nothing batch acceptance, saved corrections, unchanged reruns without new model calls, failure recovery and metadata-only storage. Provider calls in these tests are mocked.
 
 A new behavior test was first run against the missing workflow entry point, then passed after integration. The old five-category state version is rejected and preserved, rather than silently remapped.
 
@@ -10,7 +10,7 @@ The local review was also inspected in the browser with all three categories vis
 
 The refreshed fictional demo contains four emails covering all three categories, including a redundant reminder from “Your fourth agent” and a fictional Technically Curious newsletter. Subjects link to the original email, category definitions are not repeated on each row, and only three review actions remain. All 62 tests passed after the update. Browser inspection confirmed the linked subjects, clear/undo behavior and correction editor; no native submission was sent. Demo judgments remain simulated.
 
-The final documentation pass added the README workflow diagram, aligned the default setup around `pipeline.py`, and checked all 55 local documentation links and anchors. All 47 tracked files match the public-file manifest.
+The reader-facing layout now has one README with the setup prompt, a `rubric/` folder for the judgment, a `setup/` guide for the agent and a `workflow/` folder for scripts, review assets and technical references. The README diagram and duplicate starting pages were removed. All 55 local documentation links and anchors resolve. The clean extracted 45-file bundle passed all 62 tests, the documented four-email demo, in-chat review rendering and the pipeline CLI preview without a key. The public-file pattern audit passed; all tracked files match the packaging manifest.
 
 ## Live model evidence
 

@@ -30,4 +30,4 @@ htmlcov/
 *.sqlite3
 *.db
 
-# Public fictional fixtures live under examples/ and tests/cases/.
+# Public fictional fixtures live under rubric/, workflow/demo/ and workflow/tests/cases/.

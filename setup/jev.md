@@ -15,21 +15,21 @@ The [official quickstart](https://docs.typesafe.ai/introduction/quickstart) docu
 Prepare the four fictional emails and preview the workflow without a key or network call:
 
 ```sh
-python3 decision.py prepare --root local/jev-demo --inputs examples/email/inputs.json --rubric rubric.example.json --references examples/references.json --evaluator jev:jev-1.13.0:email-v3 | python3 jev_workflow.py --root local/jev-demo
+python3 workflow/decision.py prepare --root local/jev-demo --inputs workflow/demo/inputs.json --rubric rubric/rubric.json --references rubric/examples.json --evaluator jev:jev-1.13.0:email-v3 | python3 workflow/jev_workflow.py --root local/jev-demo
 ```
 
 After authorization, repeat with `--live --max-requests 4` on the workflow command. For a single-email trial, prepare only that fictional item in memory. The cap counts requests, not dollars. Review current pricing and provider spending controls. No automatic retries or redirects are allowed.
 
-For real mail, use fresh `prepare --stdin` in place of `--inputs`. The same root supplies the approved `rubric.json` and `references.json`. Never stage ordinary email bodies in files or redirect the complete preparation/preview output to a log. `jev_preview.py --id SOURCE_ID` shows the exact request in memory when needed; normal workflow preview shows metadata only.
+For real mail, use fresh `prepare --stdin` in place of `--inputs`. The same root supplies the approved `rubric.json` and `references.json`. Never stage ordinary email bodies in files or redirect the complete preparation/preview output to a log. `workflow/jev_preview.py --id SOURCE_ID` shows the exact request in memory when needed; normal workflow preview shows metadata only.
 
 After a successful live run:
 
 ```sh
-python3 decision.py render --root local/jev-demo
-python3 decision.py status --root local/jev-demo
+python3 workflow/decision.py render --root local/jev-demo
+python3 workflow/decision.py status --root local/jev-demo
 ```
 
-Use `inline_review.py` for an in-conversation review. Read back submitted receipts. Re-reading and preparing unchanged inputs produces no pending requests, so no new model call is needed.
+Use `workflow/inline_review.py` for an in-conversation review. Read back submitted receipts. Re-reading and preparing unchanged inputs produces no pending requests, so no new model call is needed.
 
 ## What is saved
 
@@ -37,4 +37,4 @@ Each attempt is recorded before transmission under `attempts/<payload-hash>.json
 
 A batch with a failure stays pending. Successful attempts are reusable; failed, uncertain or interrupted attempts require reconciliation before any deliberate retry. A conflicting Skip + missing-evidence result also stays pending rather than disappearing from review. Supply missing context or deliberately review the judgment, preserving earlier attempts.
 
-Use a new named state root for a deliberately authorized independent trial. Keep inputs identical and preserve earlier attempts. Do not create new roots to bypass a failed call. [Pressure-test cases](rubric-check.md).
+Use a new named state root for a deliberately authorized independent trial. Keep inputs identical and preserve earlier attempts. Do not create new roots to bypass a failed call. [Pressure-test cases](../workflow/docs/rubric-check.md).

@@ -63,7 +63,7 @@ def main():
     try:
         print(json.dumps(run(args.root, d.read_stdin_json(), live=args.live, max_requests=args.max_requests)))
     except (d.Hold, OSError, ValueError, KeyError, TypeError):
-        parser.exit(2, 'Held: inspect saved attempts and the prepared batch. No automatic retry. See docs/jev.md.\n')
+        parser.exit(2, 'Held: inspect saved attempts and the prepared batch. No automatic retry. See setup/jev.md.\n')
 
 
 if __name__ == '__main__':

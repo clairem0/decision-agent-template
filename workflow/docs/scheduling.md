@@ -8,7 +8,7 @@ Have the agent prepare a schedule prompt containing:
 
 - The local folder and approved rubric/references and metadata-only source scope settings; reuse one continuing state directory.
 - Read-only source collection, full pagination or explicit coverage gaps, and necessary context refresh in memory. Do not cache ordinary bodies, source snapshots or full classifier stdout.
-- `pipeline.py` with the approved state root and request bound, then validated review readback. Use the saved TypeSafe key without exposing it. See [setup](../SETUP.md).
+- `workflow/pipeline.py` with the approved state root and request bound, then validated review readback. Use the saved TypeSafe key without exposing it. See [setup](../../setup/README.md).
 - Keep Skip available for inspection but out of the attention list. Quiet operation when unchanged; notify only meaningful new/changed decisions, newly actionable failures or needed user input. Do not repeat known failures every run.
 - Delivery receipts only after confirmed presentation. Reconcile uncertain delivery before repeating it.
 - No send, archive, preference promotion or follow-up execution from classification alone.

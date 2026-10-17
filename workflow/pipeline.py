@@ -46,7 +46,7 @@ def main():
             load_key(args.env_file)
         print(json.dumps(run(args.root, d.read_stdin_json(), live=args.live, max_requests=args.max_requests)))
     except (d.Hold, OSError, ValueError, KeyError, TypeError):
-        parser.exit(2, 'Held: check setup, source coverage and saved attempts. See SETUP.md.\n')
+        parser.exit(2, 'Held: check setup, source coverage and saved attempts. See setup/README.md.\n')
 
 
 if __name__ == '__main__':

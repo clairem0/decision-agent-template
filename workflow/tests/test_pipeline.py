@@ -14,9 +14,9 @@ class PipelineTests(unittest.TestCase):
     def test_public_pipeline_uses_saved_rubric_and_returns_saved_review(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            for source, target in [('rubric.example.json','rubric.json'), ('examples/references.json','references.json')]:
+            for source, target in [('rubric/rubric.json','rubric.json'), ('rubric/examples.json','references.json')]:
                 (root/target).write_text(Path(source).read_text())
-            inputs = d.load_json('examples/email/inputs.json')
+            inputs = d.load_json('workflow/demo/inputs.json')
             item_count = len(inputs['items'])
             with patch.dict(os.environ, {'JEV_API_KEY':'test-key'}), patch.object(j, 'post', side_effect=lambda p,k: answer(p)) as post:
                 result = pipeline.run(root, inputs, live=True, max_requests=item_count)

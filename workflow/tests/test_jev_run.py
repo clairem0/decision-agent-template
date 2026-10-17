@@ -15,10 +15,10 @@ class JevRunTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(); self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)/'attempts'
-        inputs = d.load_json('examples/email/inputs.json')
+        inputs = d.load_json('workflow/demo/inputs.json')
         inputs['items'][0]['content'] += ' SOURCE_MARKER_9382'
         self.batch = d.prepare(Path(self.temp.name)/'review', inputs,
-                               d.load_json('rubric.example.json'), d.load_json('examples/references.json'), 'jev-test')
+                               d.load_json('rubric/rubric.json'), d.load_json('rubric/examples.json'), 'jev-test')
         self.payload = j.build_payload(self.batch, 'mail-demo-a')
         self.response = {'id':'gen-dec-fictional-123', 'model':j.MODEL+'-20260917', 'provider':'TypeSafe',
                          'usage':{'input_tokens':20,'output_tokens':2,'cost':0.001}, 'answers':{}}

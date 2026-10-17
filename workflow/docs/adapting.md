@@ -21,4 +21,4 @@ Use fictional fixtures while changing the template. Update the source kind, allo
 Use an existing authorized connector or a sample I supply. Do not add a generic framework or bring in someone else's data. Test Jev on held-out examples and a complete manual review, including correction and unchanged rerun, before discussing a schedule. Keep external actions separately authorized.
 ```
 
-Start with one source and a small rubric. Keep [Jev](jev.md) as the classifier and recheck its judgments against examples from the new task.
+Start with one source and a small rubric. Keep [Jev](../../setup/jev.md) as the classifier and recheck its judgments against examples from the new task.

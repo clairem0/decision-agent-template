@@ -12,11 +12,11 @@ class InlineReviewTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
-        inputs = d.load_json('examples/email/inputs.json')
+        inputs = d.load_json('workflow/demo/inputs.json')
         inputs['items'][0]['content'] += '\n</script><img src=x onerror=alert(1)>'
-        batch = d.prepare(self.root, inputs, d.load_json('rubric.example.json'),
-                          d.load_json('examples/references.json'), 'inline-test')
-        d.accept(self.root, batch, d.load_json('examples/email/demo-results.json'))
+        batch = d.prepare(self.root, inputs, d.load_json('rubric/rubric.json'),
+                          d.load_json('rubric/examples.json'), 'inline-test')
+        d.accept(self.root, batch, d.load_json('workflow/demo/demo-results.json'))
 
     def payload(self, name, include_seen=False):
         path = inline_review.render(self.root, self.root/name, include_seen)

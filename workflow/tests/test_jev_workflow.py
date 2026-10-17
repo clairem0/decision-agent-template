@@ -23,11 +23,11 @@ class JevWorkflowTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(); self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
-        self.inputs = d.load_json('examples/email/inputs.json')
+        self.inputs = d.load_json('workflow/demo/inputs.json')
         self.inputs['items'] = self.inputs['items'][:2]
         self.inputs['items'][0]['content'] += ' PRIVATE_SOURCE_MARKER'
-        self.rubric = d.load_json('rubric.example.json')
-        self.refs = d.load_json('examples/references.json')
+        self.rubric = d.load_json('rubric/rubric.json')
+        self.refs = d.load_json('rubric/examples.json')
         self.batch = self.prepare()
 
     def prepare(self):
