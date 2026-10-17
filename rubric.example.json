@@ -1,7 +1,7 @@
 {
   "version": "email-v3",
   "kind": "email",
-  "context": "Fictional reader reviewing work and personal email on April 8, 2030. The reader wants practical balcony-gardening ideas, but does not want optional clothing sales, unsolicited paid consulting calls or expo invitations. Existing orders and account problems still matter. No personal account is connected.",
+  "context": "Fictional reader reviewing work and personal email on April 8, 2030. The reader wants practical AI workflow guides and balcony-gardening ideas, but does not want optional clothing sales, unsolicited paid consulting calls or expo invitations. Existing orders and account problems still matter. No personal account is connected.",
   "labels": {
     "act": "The reader has an unfinished reply, task or decision to make. It may be urgent or able to wait. Optional offers do not create an obligation.",
     "read": "No action is needed from the reader, but the content is worth seeing: wanted reading or an update that changes their plans or understanding.",

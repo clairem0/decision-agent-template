@@ -12,13 +12,13 @@ The [official quickstart](https://docs.typesafe.ai/introduction/quickstart) docu
 
 ## Agent commands
 
-Prepare the five fictional emails and preview the workflow without a key or network call:
+Prepare the four fictional emails and preview the workflow without a key or network call:
 
 ```sh
 python3 decision.py prepare --root local/jev-demo --inputs examples/email/inputs.json --rubric rubric.example.json --references examples/references.json --evaluator jev:jev-1.13.0:email-v3 | python3 jev_workflow.py --root local/jev-demo
 ```
 
-After authorization, repeat with `--live --max-requests 5` on the workflow command. For a single-email trial, prepare only that fictional item in memory. The cap counts requests, not dollars. Review current pricing and provider spending controls. No automatic retries or redirects are allowed.
+After authorization, repeat with `--live --max-requests 4` on the workflow command. For a single-email trial, prepare only that fictional item in memory. The cap counts requests, not dollars. Review current pricing and provider spending controls. No automatic retries or redirects are allowed.
 
 For real mail, use fresh `prepare --stdin` in place of `--inputs`. The same root supplies the approved `rubric.json` and `references.json`. Never stage ordinary email bodies in files or redirect the complete preparation/preview output to a log. `jev_preview.py --id SOURCE_ID` shows the exact request in memory when needed; normal workflow preview shows metadata only.
 

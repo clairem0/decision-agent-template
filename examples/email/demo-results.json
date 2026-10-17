@@ -13,18 +13,18 @@
     {
       "id": "mail-demo-b",
       "label": "skip",
-      "reason": "Your sent reply already approved the file; the acknowledgment adds nothing new.",
+      "reason": "You already decided not to attend; your fourth agent has no new information.",
       "reference_ids": [
-        "email-confirmed"
+        "email-promotion"
       ],
       "uncertainty": ""
     },
     {
       "id": "mail-demo-c",
       "label": "read",
-      "reason": "The repair quote is due from Casey; no action is needed from you yet.",
+      "reason": "A practical guide to turning your judgment into an email-sorting rubric.",
       "reference_ids": [
-        "email-waiting"
+        "email-reading"
       ],
       "uncertainty": ""
     },
@@ -32,15 +32,6 @@
       "id": "mail-demo-d",
       "label": "skip",
       "reason": "An unwanted sale creates no obligation, even with another deadline.",
-      "reference_ids": [
-        "email-promotion"
-      ],
-      "uncertainty": ""
-    },
-    {
-      "id": "mail-demo-e",
-      "label": "skip",
-      "reason": "You already decided not to attend; this optional reminder adds nothing new.",
       "reference_ids": [
         "email-promotion"
       ],

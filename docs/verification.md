@@ -8,7 +8,7 @@ A new behavior test was first run against the missing workflow entry point, then
 
 The local review was also inspected in the browser with all three categories visible. This is a fictional demo; native chat submission and real inbox coverage were not exercised.
 
-The refreshed fictional demo contains five emails covering all three categories, including the selected humorous subjects. All 62 tests passed again after the update; the demo results remain simulated.
+The refreshed fictional demo contains four emails covering all three categories, including a redundant reminder from “Your fourth agent” and a fictional Technically Curious newsletter. Subjects link to the original email, category definitions are not repeated on each row, and only three review actions remain. All 62 tests passed after the update. Browser inspection confirmed the linked subjects, clear/undo behavior and correction editor; no native submission was sent. Demo judgments remain simulated.
 
 ## Live model evidence
 

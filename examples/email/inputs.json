@@ -9,31 +9,31 @@
       "id": "mail-demo-a",
       "kind": "email",
       "title": "SaaS isn’t dead. Your payment method is.",
-      "content": "Sidequest Billing: Your card expired. Please update it by Friday, April 12, to keep your workspace running.",
+      "content": "Yet Another SaaS Billing: Your card expired. Please update it by Friday, April 12, to keep your workspace running.",
       "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation, with no later replies or other open obligations. The reader uses this paid workspace, wants to keep it running and is responsible for billing. The payment method has not been updated.",
       "status": "complete",
       "original_url": "https://mail.example.test/thread/mail-demo-a",
-      "sender": "Sidequest · Billing"
+      "sender": "Yet Another SaaS · Billing"
     },
     {
       "id": "mail-demo-b",
       "kind": "email",
-      "title": "Re: final_final_ACTUALLY_final.html",
-      "content": "Nina: Please approve final_final_ACTUALLY_final.html. I will handle sending it to the workshop host.\nRecipient: Approved. And yes, this is the version we’re using.\nNina: Got it, thank you.",
-      "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation, with no later replies or other open obligations. The reader’s only task was approval, which their sent reply completed. Nina’s acknowledgment adds no new information; distribution belongs to Nina.",
+      "title": "Just flagging this in case your other three agents didn’t",
+      "content": "Your fourth agent: I found a reminder for tomorrow’s optional webinar. You’ve already decided not to attend. No new information, but I did find this independently.",
+      "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation, with no later replies or other open obligations. The reader already decided not to attend this webinar. This agent’s reminder adds no new information. The reader has not registered, does not need to RSVP and has no related work obligation.",
       "status": "complete",
       "original_url": "https://mail.example.test/thread/mail-demo-b",
-      "sender": "Nina · Design team"
+      "sender": "Your fourth agent"
     },
     {
       "id": "mail-demo-c",
       "kind": "email",
-      "title": "Your repair quote is on its way",
-      "content": "Recipient: Please send a quote for the kitchen tap repair we discussed.\nCasey: I will send it April 12. I have all the details; nothing is needed from you before then.",
-      "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation, with no later replies or other open obligations.",
+      "title": "This meeting could have been a rubric",
+      "content": "Technically Curious: When “I know it when I see it” is your entire decision process, your agent has follow-up questions. Start with real examples of what fits and what does not. Turn those distinctions into a rubric, review it yourself, then let your agent apply it to the next batch of emails.",
+      "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation, with no later replies or other open obligations. This is a fictional newsletter for the demo, not an actual published issue. The reader subscribes for practical AI workflow guides and has not read this issue. No reply or task is requested.",
       "status": "complete",
       "original_url": "https://mail.example.test/thread/mail-demo-c",
-      "sender": "Casey · Home repairs"
+      "sender": "Technically Curious"
     },
     {
       "id": "mail-demo-d",
@@ -44,16 +44,6 @@
       "status": "complete",
       "original_url": "https://mail.example.test/thread/mail-demo-d",
       "sender": "Cedar & Thread"
-    },
-    {
-      "id": "mail-demo-e",
-      "kind": "email",
-      "title": "Just flagging this in case your other three agents didn’t",
-      "content": "The Webinar Team: Another reminder about our optional webinar tomorrow. There’s still time to register if you’d like to join.",
-      "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation, with no later replies or other open obligations. The reader already decided not to attend this webinar. This reminder adds no new information. There is no registration, RSVP requirement or work obligation.",
-      "status": "complete",
-      "original_url": "https://mail.example.test/thread/mail-demo-e",
-      "sender": "The Webinar Team"
     }
   ]
 }
