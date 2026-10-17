@@ -4,6 +4,8 @@ Jev applies your rubric. Your coding agent gathers complete emails, runs the pip
 
 **Work emails:** Before sending work emails, make sure your organization has approved Jev/TypeSafe for the email content and context you’ll share, in line with its data privacy policies.
 
+If your workplace approves OpenAI’s API for this data instead, ask your coding agent to adapt the workflow to the [OpenAI Decisions API](https://developers.openai.com/api/docs/guides/decisions). It supports category choices and rubric-based scores. This template includes the Jev integration; an OpenAI integration needs implementation and testing. Confirm approval covers API use and the account’s [data controls](https://developers.openai.com/api/docs/guides/your-data), not just access to ChatGPT.
+
 ## Connect your key
 
 1. Open the [TypeSafe console](https://console.typesafe.ai/), create an account and API key, and set up billing if required.
