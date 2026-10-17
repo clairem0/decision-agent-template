@@ -13,4 +13,4 @@ Have the agent prepare a schedule prompt containing:
 - Delivery receipts only after confirmed presentation. Reconcile uncertain delivery before repeating it.
 - No send, archive, preference promotion or follow-up execution from classification alone.
 
-Review that concrete prompt and authorize schedule creation separately. After its first run, check the saved state and delivered results. This project has not created or tested a live schedule.
+Review that concrete prompt and authorize schedule creation separately. After its first run, check the saved state and delivered results. See [verification](verification.md) for the starter's tested scope.

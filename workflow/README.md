@@ -12,7 +12,16 @@ Correct a decision and explain why; ask your agent to save the correction. Appro
 
 ## Try the fictional demo
 
-The four humorous emails in [demo/](demo/) use saved, simulated decisions. This previews the review without Gmail access or a Jev key:
+Want to see the review before connecting anything? Ask your agent: **“Show me the fictional demo in chat using the included review interface.”** It uses these four emails from [demo/inputs.json](demo/inputs.json):
+
+| From | Subject | Category |
+| --- | --- | --- |
+| Yet Another SaaS · Billing | SaaS isn’t dead. Your payment method is. | Needs action |
+| Your fourth agent | Just flagging this in case your other three agents didn’t | Skip |
+| Technically Curious | This meeting could have been a rubric | Worth seeing |
+| Cedar & Thread | Your final, final chance to save 15% | Skip |
+
+The demo is optional. Its decisions are saved and simulated, so it needs no Gmail access or Jev key. Your agent runs:
 
 ```sh
 python3 workflow/decision.py demo

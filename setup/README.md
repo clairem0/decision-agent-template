@@ -18,7 +18,7 @@ Use just three categories:
 
 Visualize definitions with gold and anti-gold examples when the host supports it; otherwise show a compact table. Probe an unresolved request versus its resolved thread; an unwanted invitation versus an agreed commitment; and a useful update versus routine acknowledgment. Keep timing separate from the category. Missing substantive context gets an uncertainty flag; incomplete retrieval stays on hold.
 
-Start from [the rubric](../rubric/rubric.json) and [gold/anti-gold examples](../rubric/examples.json). Approve and [save the rubric and teaching examples](../workflow/docs/agent-reference.md#save-approved-configuration). Your approved copies live in `local/my-review/rubric.json` and `local/my-review/references.json`. Keep the library small. Do not automatically copy personal preferences or turn review history into teaching data. Older five-category state needs a new folder and an approved mapping, not an automatic rewrite.
+Start from [the rubric](../rubric/rubric.json) and [gold/anti-gold examples](../rubric/examples.json). Approve and [save the rubric and teaching examples](../workflow/docs/agent-reference.md#save-approved-configuration). Your approved copies live in `local/my-review/rubric.json` and `local/my-review/references.json`. Keep the library small. Do not automatically copy personal preferences or turn review history into teaching data.
 
 ## 3. Connect Jev
 

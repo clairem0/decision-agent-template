@@ -1,21 +1,15 @@
 # Verification · 2026-10-17
 
-## Current implementation
+## Tested
 
-The three-category workflow uses Jev directly through TypeSafe. The final repository passed all 62 behavioral tests, including the loopback check. A clean extracted 45-file bundle also passed all 62 tests and the documented fictional demo. The Python standard-library suite covers full-source packets, approved examples, answer-key exclusion, validated provider provenance, all-or-nothing batch acceptance, saved corrections, unchanged reruns without new model calls, failure recovery and metadata-only storage. Provider calls in these tests are mocked.
+- **Offline behavior:** all 62 tests pass, including full-source request construction, approved examples, answer-key exclusion, response validation, saved corrections, unchanged reruns, failure recovery, metadata-only storage and the local review server. Provider calls are mocked.
+- **Download:** a clean extracted bundle passes the same suite, the four-email demo, in-chat review rendering and the pipeline preview without a key. The packaging audit and local documentation links pass.
+- **Review interface:** browser inspection of the fictional demo confirmed linked subjects, all three categories, clear/undo and the correction editor. Native chat submission was not exercised.
 
-A new behavior test was first run against the missing workflow entry point, then passed after integration. The old five-category state version is rejected and preserved, rather than silently remapped.
+The demo uses four fictional joke emails with saved, simulated judgments. Its preview does not call Jev or read Gmail.
 
-The local review was also inspected in the browser with all three categories visible. This is a fictional demo; native chat submission and real inbox coverage were not exercised.
+## Still to verify
 
-The refreshed fictional demo contains four emails covering all three categories, including a redundant reminder from “Your fourth agent” and a fictional Technically Curious newsletter. Subjects link to the original email, category definitions are not repeated on each row, and only three review actions remain. All 62 tests passed after the update. Browser inspection confirmed the linked subjects, clear/undo behavior and correction editor; no native submission was sent. Demo judgments remain simulated.
+No successful live TypeSafe response has been validated for this starter. Real Gmail coverage in Claude and Codex, actual native-chat submission, reader acceptance and unattended scheduling remain unverified. Use the [rubric check](rubric-check.md) for planned live judgment and repeatability trials.
 
-The reader-facing layout now has one README with the setup prompt, a `rubric/` folder for the judgment, a `setup/` guide for the agent and a `workflow/` folder for scripts, review assets and technical references. The README diagram and duplicate starting pages were removed. All 55 local documentation links and anchors resolve. The clean extracted 45-file bundle passed all 62 tests, the documented four-email demo, in-chat review rendering and the pipeline CLI preview without a key. The public-file pattern audit passed; all tracked files match the packaging manifest.
-
-## Live model evidence
-
-No validated live TypeSafe response was obtained in this revision. The initial sandbox could not resolve the endpoint; an unrestricted attempt and an unauthenticated curl check could not connect. Earlier attempt records were preserved. See the [24-case rubric check](rubric-check.md) for planned semantic and repeatability trials.
-
-## Limits
-
-The offline suite proves implementation behavior, not whether Jev agrees with a reader. Live model accuracy, real connector coverage, actual native-chat submission, human acceptance and unattended scheduling remain separate checks. Historical browser evidence from the five-category version does not validate this revision's appearance.
+Offline tests verify implementation behavior; each reader still needs to check the rubric and complete a small manual run in their own setup.

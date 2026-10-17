@@ -15,8 +15,8 @@ If a required body, reply or attachment cannot be read, mark the item incomplete
 
 **Claude:** Gmail can be used through its connectors, and Claude Code can inherit connected tools when signed in with a Claude account; actual tools depend on host/version and organization settings. The official Gmail connector documents attachment metadata, not attachment contents. If an attachment matters, use an already authorized way to read it or hold the item. Check the tools actually exposed rather than assuming a Claude chat connection is usable in every Code environment.
 
-**Codex:** discover the connected Gmail tools in the current session. This development session exposes search, message reads, thread reads and an attachment-read tool; that is not a guarantee about another reader's setup. Verify available tools and complete retrieval before claiming support.
+**Codex:** discover the connected Gmail tools available in the current session. Check search, complete message and thread reads, relevant attachment access and original-email links. Verify the actual account and retrieval coverage before claiming support.
 
 The optional review fragment's native submit bridge is host-specific. Use the documented host rendering/submission mechanism when present; otherwise use copy-to-chat, a local review page or a numbered chat list. Saved receipts work independently of the presentation.
 
-Sources checked 2026-10-17: [Claude Google Workspace connectors](https://support.claude.com/en/articles/10166901-use-google-workspace-connectors), [Claude Code MCP and connected tools](https://code.claude.com/docs/en/mcp). Codex capability names were inspected in the current session; neither host's real Gmail path was exercised in this revision.
+Sources checked 2026-10-17: [Claude Google Workspace connectors](https://support.claude.com/en/articles/10166901-use-google-workspace-connectors), [Claude Code MCP and connected tools](https://code.claude.com/docs/en/mcp). Verify the tools exposed in the reader's host; neither host's real Gmail path has been validated for this starter. See [verification](../workflow/docs/verification.md).

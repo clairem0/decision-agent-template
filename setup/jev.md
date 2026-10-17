@@ -1,40 +1,37 @@
 # Connect Jev
 
-Jev is the default classifier. Your coding agent gathers the emails, helps develop the rubric and presents the review; Jev applies the rubric.
+Jev applies your rubric. Your coding agent gathers complete emails, runs the pipeline and presents the review.
 
-## Reader setup
+## Connect your key
 
-1. Open the [TypeSafe console](https://console.typesafe.ai/), create an account, set up billing if required, and create an API key.
-2. Have your agent help store the key securely outside chat and Git. Make it available as `JEV_API_KEY` in the process environment. Do not paste it into chat or borrow credentials from unrelated projects.
-3. Try one fictional email, then agree on a small real-email sample. Explain that full messages, relevant context, rubric and approved teaching examples go to TypeSafe. Verify current price and provider data policy before a live run.
+1. Open the [TypeSafe console](https://console.typesafe.ai/), create an account and API key, and set up billing if required.
+2. Copy [.env.example](../.env.example) to `.env` at the repository root and enter your key locally. The pipeline reads it with `--env-file .env`; you can also supply `JEV_API_KEY` in the process environment. Keep it outside chat and Git.
+3. Check current pricing and the provider's data policy with your agent. Full messages, relevant context, your rubric and approved teaching examples go to TypeSafe. Begin with one fictional email, then agree on a small real-email batch.
 
-The [official quickstart](https://docs.typesafe.ai/introduction/quickstart) documents the direct API. This starter pins `jev-1.13.0` at `https://api.typesafe.ai/v1/systemone` (checked 2026-10-17). No new packages are required. The official SDK calls its environment variable `TYPESAFE_API_KEY`; this standard-library runner reads `JEV_API_KEY`. Use that name for this starter.
+## Run the pipeline
 
-## Agent commands
+Use the [standard pipeline command](README.md#command-for-the-agent). It loads your approved rubric and examples from `local/my-review/`, takes complete messages through stdin, calls Jev and saves the review. It does not fetch Gmail itself. Removing `--live` gives a metadata-only preview without a key or network call.
 
-Prepare the four fictional emails and preview the workflow without a key or network call:
+Choose `--max-requests` for the agreed batch; it bounds requests, not dollars. An unchanged rerun reuses saved decisions. Follow the [review instructions](../workflow/docs/inline-review.md) to display results and save choices.
 
-```sh
-python3 workflow/decision.py prepare --root local/jev-demo --inputs workflow/demo/inputs.json --rubric rubric/rubric.json --references rubric/examples.json --evaluator jev:jev-1.13.0:email-v3 | python3 workflow/jev_workflow.py --root local/jev-demo
-```
-
-After authorization, repeat with `--live --max-requests 4` on the workflow command. For a single-email trial, prepare only that fictional item in memory. The cap counts requests, not dollars. Review current pricing and provider spending controls. No automatic retries or redirects are allowed.
-
-For real mail, use fresh `prepare --stdin` in place of `--inputs`. The same root supplies the approved `rubric.json` and `references.json`. Never stage ordinary email bodies in files or redirect the complete preparation/preview output to a log. `workflow/jev_preview.py --id SOURCE_ID` shows the exact request in memory when needed; normal workflow preview shows metadata only.
-
-After a successful live run:
-
-```sh
-python3 workflow/decision.py render --root local/jev-demo
-python3 workflow/decision.py status --root local/jev-demo
-```
-
-Use `workflow/inline_review.py` for an in-conversation review. Read back submitted receipts. Re-reading and preparing unchanged inputs produces no pending requests, so no new model call is needed.
+To see the interface before connecting anything, use the optional [fictional demo](../workflow/README.md#try-the-fictional-demo). Its saved judgments are simulated; it does not test Jev.
 
 ## What is saved
 
-Each attempt is recorded before transmission under `attempts/<payload-hash>.json`. Records contain typed answers, served model and usage; no ordinary bodies, keys or arbitrary provider error text. The operational assessment keeps the validated provider result and payload hash. Direct TypeSafe responses report token usage; a dollar estimate must be labeled as an estimate using the checked price. Jev supplies no written reason or reference citations. Definitions are not explanations, and probabilities are not measured accuracy.
+Before each call, the runner records an attempt under the state folder's `attempts/<payload-hash>.json`. It retains typed answers, the served model, usage and the payload hash. Ordinary email bodies, keys and arbitrary provider error text are not saved. See [storage](../workflow/docs/storage.md).
 
-A batch with a failure stays pending. Successful attempts are reusable; failed, uncertain or interrupted attempts require reconciliation before any deliberate retry. A conflicting Skip + missing-evidence result also stays pending rather than disappearing from review. Supply missing context or deliberately review the judgment, preserving earlier attempts.
+Jev returns categories and an evidence flag, without written reasons or reference citations. Review text labels the category definition; a coding agent's explanation should be identified as its interpretation. Probabilities are not measured accuracy. Dollar estimates must use checked pricing and be labeled as estimates.
 
-Use a new named state root for a deliberately authorized independent trial. Keep inputs identical and preserve earlier attempts. Do not create new roots to bypass a failed call. [Pressure-test cases](../workflow/docs/rubric-check.md).
+## Troubleshooting
+
+A failed batch stays pending. Successful attempts can be reused after an interruption; failed, uncertain or interrupted attempts require inspection before any deliberate retry. The runner refuses redirects and does not retry automatically. Preserve the existing attempt records; do not create a new state folder to bypass a failure.
+
+If Jev suggests Skip while flagging missing evidence, the batch stays pending. Review the original conversation, supply missing context or deliberately review the judgment, then prepare again.
+
+For diagnosing a particular step, the `prepare` command in `workflow/decision.py` builds the complete in-memory batch from fresh stdin, the approved configuration and the Jev evaluator identity in `workflow/jev_workflow.py`. Pass that batch through stdin to `workflow/jev_preview.py --id SOURCE_ID` to inspect a request or `workflow/jev_run.py --id SOURCE_ID` for a single diagnostic call. The latter reads `JEV_API_KEY` from the process environment, needs `--live --max-requests 1` to send, and records an attempt without accepting it into the review. `workflow/jev_workflow.py` validates and accepts a prepared batch; the normal pipeline calls it for you. Never save ordinary source or full request output in files or logs.
+
+Use the [rubric check](../workflow/docs/rubric-check.md) for deliberately authorized independent trials. Keep their inputs identical and their state separate from operational reviews.
+
+## API reference
+
+The [official quickstart](https://docs.typesafe.ai/introduction/quickstart) documents the direct API. This starter pins `jev-1.13.0` at `https://api.typesafe.ai/v1/systemone` (checked 2026-10-17) and uses Python's standard library. The official SDK names its key `TYPESAFE_API_KEY`; this starter reads `JEV_API_KEY`.

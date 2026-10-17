@@ -130,7 +130,7 @@ def main():
         print(json.dumps(result, indent=2, allow_nan=False))
     except (d.Hold, OSError, ValueError, KeyError, TypeError):
         # Do not print arbitrary input/provider error text: it can contain full email source.
-        parser.exit(2, 'Held: check the request, environment and any saved attempt. No automatic retry. See workflow/docs/advanced-jev.md.\n')
+        parser.exit(2, 'Held: check the request, environment and any saved attempt. No automatic retry. See setup/jev.md#troubleshooting.\n')
 
 
 if __name__ == '__main__':
