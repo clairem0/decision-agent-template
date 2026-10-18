@@ -8,28 +8,28 @@
     {
       "id": "mail-demo-a",
       "kind": "email",
-      "title": "Your card expired — update it by Friday",
-      "content": "Northline Workspace Billing: We couldn't renew your team's workspace because the card on file has expired. Please update your payment method by Friday, April 12, to avoid an interruption.",
-      "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation, with no later replies or other open obligations. The reader uses this paid workspace, wants to keep it running and is responsible for billing. The payment method has not been updated.",
+      "title": "Your AI subscription renewal failed",
+      "content": "Orbit AI Billing: We couldn't renew your AI subscription because the card on file has expired. Please update your payment method by Friday, April 12, to keep access to your paid plan.",
+      "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation, with no later replies or other open obligations. The reader uses this paid AI subscription, wants to keep it active and is responsible for billing. The payment method has not been updated.",
       "status": "complete",
       "original_url": "https://mail.example.test/thread/mail-demo-a",
-      "sender": "Northline Workspace · Billing"
+      "sender": "Orbit AI · Billing"
     },
     {
       "id": "mail-demo-b",
       "kind": "email",
-      "title": "Re: Please confirm your delivery address",
-      "content": "Rowan, delivery team: Before we send your replacement desk lamp, please confirm that the delivery address on your order is still correct.\nRecipient: Yes, the address on the order is correct. Thank you.\nRowan: Thanks, that's all we need. Your existing delivery date is unchanged.",
-      "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation. The recipient's reply was sent and the delivery team acknowledged it. No unanswered request or useful new delivery information remains.",
+      "title": "Re: Final forms for your business taxes",
+      "content": "Morgan, tax preparer: I have the bookkeeping records for your business. Please send the final tax forms you received so I can finish preparing the return.\nRecipient: Thanks, I'll gather them and send them over.\nMorgan: Checking in: I'm still waiting on those final forms. Could you send them by Thursday, April 11, or reply with when they'll be ready? I can't finish the return until I have them.",
+      "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation. The reader owns this business and is responsible for supplying the forms to their existing tax preparer. The reader's acknowledgment was sent, but the forms have not been sent and the latest request remains unanswered. Thursday is the preparer's requested handoff date, not a claimed legal filing deadline. No account change, document transfer or sending action is authorized by this source.",
       "status": "complete",
       "original_url": "https://mail.example.test/thread/mail-demo-b",
-      "sender": "Rowan · Delivery team"
+      "sender": "Morgan · Tax preparer"
     },
     {
       "id": "mail-demo-c",
       "kind": "email",
-      "title": "This meeting could have been a rubric",
-      "content": "Technically Curious: This week's guide shows how to turn everyday judgment into a reusable email rubric. Start with examples of messages you would act on, read or skip. Explain the differences, approve the categories, then test them on a small new batch. No meeting required.",
+      "title": "The best Substack",
+      "content": "Technically Curious: Your weekly dose of AI news and practical ideas is here. This issue covers useful model updates, a hands-on workflow to try and a guide to deciding which tools deserve your attention. Happy reading!",
       "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation, with no later replies or other open obligations. This is a fictional newsletter for the demo, not an actual published issue. The reader subscribes for practical AI workflow guides and has not read this issue. No reply or task is requested.",
       "status": "complete",
       "original_url": "https://mail.example.test/thread/mail-demo-c",
@@ -38,12 +38,12 @@
     {
       "id": "mail-demo-d",
       "kind": "email",
-      "title": "Your final, final chance to save 15%",
-      "content": "Cedar & Thread: Our spring sale has been extended through tonight. Save 15% on the spring clothing collection with code SPRING15. Browse the collection if you like; no purchase is required.",
-      "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation, with no later replies or other open obligations. The reader does not want optional Cedar & Thread sale emails. This is a general promotion, unrelated to an existing order or account issue.",
+      "title": "Another reminder about a clothing sale",
+      "content": "Clothing site: Our spring sale has been extended through tonight. Save 15% on the spring clothing collection with code SPRING15. Browse the collection if you like; no purchase is required.",
+      "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation, with no later replies or other open obligations. The reader does not want optional sale promotions from this clothing site. This is a general promotion, unrelated to an existing order or account issue.",
       "status": "complete",
       "original_url": "https://mail.example.test/thread/mail-demo-d",
-      "sender": "Cedar & Thread"
+      "sender": "Clothing site"
     }
   ]
 }

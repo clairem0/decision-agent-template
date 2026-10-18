@@ -4,7 +4,7 @@
     {
       "id": "mail-demo-a",
       "label": "act",
-      "reason": "Your team's workspace renewal failed. Update the expired card by Friday to keep it running.",
+      "reason": "Your card expired. Update it by Friday to keep your AI subscription active.",
       "reference_ids": [
         "email-deadline"
       ],
@@ -12,17 +12,17 @@
     },
     {
       "id": "mail-demo-b",
-      "label": "skip",
-      "reason": "You already confirmed the delivery address, and the team acknowledged your reply. Nothing else is needed.",
+      "label": "act",
+      "reason": "Your tax preparer is waiting on the final forms to finish your business return. Send them by Thursday or reply with an update.",
       "reference_ids": [
-        "email-confirmed"
+        "email-deadline"
       ],
       "uncertainty": ""
     },
     {
       "id": "mail-demo-c",
       "label": "read",
-      "reason": "A newsletter you asked to receive, with a guide to sorting emails using your own judgment. No reply needed.",
+      "reason": "Must-read AI info! :)",
       "reference_ids": [
         "email-reading"
       ],
@@ -31,7 +31,7 @@
     {
       "id": "mail-demo-d",
       "label": "skip",
-      "reason": "A clothing sale you aren't interested in. The deadline doesn't require a response or purchase.",
+      "reason": "Another sale reminder from a store you don't want promotions from. No action needed.",
       "reference_ids": [
         "email-promotion"
       ],

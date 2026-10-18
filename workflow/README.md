@@ -16,10 +16,10 @@ Want to see the review before connecting anything? Ask your agent: **“Show me 
 
 | Example of | Subject | Category |
 | --- | --- | --- |
-| A billing issue you need to fix | Your card expired — update it by Friday | Needs action |
-| A newsletter you want to read | This meeting could have been a rubric | Worth seeing |
-| A request you've already resolved | Re: Please confirm your delivery address | Skip |
-| An unwanted promotion | Your final, final chance to save 15% | Skip |
+| An AI subscription billing issue | Your AI subscription renewal failed | Needs action |
+| A tax preparer waiting on your reply | Re: Final forms for your business taxes | Needs action |
+| A newsletter you want to read | The best Substack | Worth seeing |
+| An unwanted promotion | Another reminder about a clothing sale | Skip |
 
 The complete example conversations and their fictional context are in [demo/inputs.json](demo/inputs.json). The newsletter is invented for this demo, not an actual published issue.
 

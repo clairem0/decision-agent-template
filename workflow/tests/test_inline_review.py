@@ -82,7 +82,7 @@ class InlineReviewTests(unittest.TestCase):
         (self.root/'state.json').write_text(json.dumps(state))
         _, payload = self.payload('summary-labels.html', include_seen=True)
         by_id = {item['id']: item for item in payload['items']}
-        self.assertEqual(by_id['mail-demo-a']['summary_label'], 'Example summary')
+        self.assertEqual(by_id['mail-demo-a']['summary_label'], 'Summary')
         self.assertEqual(by_id['mail-demo-b']['summary_label'], 'Agent summary')
         self.assertEqual(by_id['mail-demo-c']['summary_label'], 'Category definition')
         self.assertEqual(by_id['mail-demo-c']['summary'], 'Wanted reading.')
