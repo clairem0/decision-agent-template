@@ -7,8 +7,7 @@ function reminderCaption(reminder) {
   });
 }
 function reminderFields() {
-  return '<p>Remind me next review.</p>'
-    + '<label>Or specify another time (optional)<textarea class="reminder-text" aria-label="Another reminder time (optional)" maxlength="500" placeholder="e.g. tomorrow at 9 AM"></textarea></label>'
+  return '<label>When should I remind you?<textarea class="reminder-text" aria-label="Reminder time" maxlength="500" placeholder="e.g. tomorrow at 9 AM"></textarea></label><p>Leave blank for next review.</p>'
     + '<p class="reminder-detail" role="status"></p><p>Returns during a review. No separate notification.</p>';
 }
 function reminderDraft(container) {

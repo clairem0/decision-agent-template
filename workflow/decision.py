@@ -503,19 +503,39 @@ document.querySelectorAll('form.review').forEach(form => {
   const reminderFieldsRoot = form.querySelector('.reminder-fields');
   reminderFieldsRoot.innerHTML = reminderFields();
   bindReminder(reminderFieldsRoot);
+  let reminderEditing = false, reminderChoice = {when: 'next_review'};
   const picked = name => (form.querySelector('[name="' + name + '"]:checked') || {}).value;
   const error = form.querySelector('.error'), out = form.querySelector('.handoff');
   const text = out.querySelector('textarea'), status = out.querySelector('[role=status]');
   const sync = () => {
     const action = picked('action');
     form.querySelectorAll('[data-for]').forEach(el => { el.hidden = el.dataset.for !== action; });
-    form.querySelector('.prepare').hidden = !action;
+    form.querySelector('.prepare').hidden = !action || (action === 'remind' && !reminderEditing);
+    form.querySelector('.prepare').textContent = action === 'remind' ? 'Save time' : 'Prepare for chat';
+    form.querySelector('.reminder-editor').hidden = !reminderEditing;
+    form.querySelector('.reminder-edit').hidden = reminderEditing;
+    form.querySelector('.reminder-caption').textContent = reminderCaption(reminderChoice) + ' · ready for chat';
+    form.querySelector('.reminder-edit').textContent = reminderChoice.when === 'next_review' ? 'Choose a time' : 'Change time';
     error.textContent = '';
   };
   form.addEventListener('input', () => { out.hidden = true; });
-  form.addEventListener('change', sync);
+  form.addEventListener('change', event => {
+    if (event.target.name === 'action' && picked('action') === 'remind') {
+      reminderEditing = false; reminderChoice = {when: 'next_review'};
+      prepareChoice();
+    }
+    sync();
+  });
+  form.querySelector('.reminder-edit').onclick = () => {
+    reminderEditing = true; out.hidden = true;
+    bindReminder(reminderFieldsRoot, {text: reminderChoice.text || reminderChoice.at || ''});
+    sync(); reminderFieldsRoot.querySelector('textarea').focus();
+  };
+  form.querySelector('.reminder-cancel').onclick = () => {
+    reminderEditing = false; sync(); out.hidden = false;
+  };
   sync();
-  form.querySelector('.prepare').addEventListener('click', () => {
+  function prepareChoice() {
     const action = picked('action');
     const field = form.querySelector('[data-for="' + action + '"] textarea');
     const note = field && action !== 'remind' ? field.value.trim() : '';
@@ -527,8 +547,9 @@ document.querySelectorAll('form.review').forEach(form => {
     const choice = {receipt_id: crypto.randomUUID(), id: form.dataset.id, decision_id: form.dataset.decision, action, note, update_rubric: updateRubric};
     if (action === 'correct') choice.label = picked('label');
     if (action === 'remind') {
-      try { choice.reminder = readReminder(reminderFieldsRoot); }
+      try { choice.reminder = reminderEditing ? readReminder(reminderFieldsRoot) : reminderChoice; }
       catch (error) { return fail(error.message, reminderFieldsRoot.querySelector('.reminder-text')); }
+      reminderChoice = choice.reminder; reminderEditing = false; sync();
     }
     text.value = SAVE + JSON.stringify(choice, null, 2);
     text.rows = Math.min(16, text.value.split('\n').length + 1);
@@ -537,7 +558,8 @@ document.querySelectorAll('form.review').forEach(form => {
     out.hidden = false;
     out.scrollIntoView({block: 'nearest', behavior: 'smooth'});
     out.querySelector('.copy').focus({preventScroll: true});
-  });
+  }
+  form.querySelector('.prepare').addEventListener('click', prepareChoice);
   out.querySelector('.copy').addEventListener('click', async () => {
     text.select();
     try { await navigator.clipboard.writeText(text.value); status.textContent = 'Copied. Paste it into your agent chat to save.'; }
@@ -584,7 +606,8 @@ def render(root, now=None):
         return f'''<form class="review" data-id="{esc(key)}" data-decision="{esc(d['id'])}" onsubmit="return false">
 <fieldset><legend>What would you like to do?</legend><div class="choices">{radios}</div></fieldset>
 <p class="small" data-for="seen">Marks this as reviewed. It does not complete any follow-up.</p>
-<div class="reminder-fields" data-for="remind"></div>
+<div data-for="remind"><p class="reminder-caption small"></p><button type="button" class="reminder-edit quiet">Choose a time</button>
+<div class="reminder-editor" hidden><div class="reminder-fields"></div><button type="button" class="reminder-cancel quiet">Cancel</button></div></div>
 <div data-for="correct"><fieldset><legend>What category should it be?</legend><div class="cats">{cats}</div></fieldset>
 {note('correct', 'Why? One sentence is enough.', 'e.g. The reply already settled this, so nothing is left to do.', 'Add a short reason for the change.')}
 <label class="rubric-update"><input type="checkbox" name="update_rubric"><span>Use to update rubric

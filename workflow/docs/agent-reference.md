@@ -40,7 +40,7 @@ A temporary retrieval failure suspends the prior assessment and its saved choice
 
 ## Reminders
 
-The UI defaults to `reminder: {"when":"next_review"}`. Optional timing text produces a request such as:
+One click on Remind me adds `reminder: {"when":"next_review"}` to pending changes, with no extra save step. Choose a time opens the text editor; Save time replaces that pending choice. Both paths still require chat submission and receipt readback. Timing text produces a request such as:
 
 ```json
 {"receipt_id":"UNIQUE_RECEIPT_ID","id":"SOURCE_ID","decision_id":"CURRENT_DECISION_ID","action":"remind","reminder":{"when":"requested","text":"Tomorrow at 9 AM","timezone":"America/Chicago","requested_at":"2030-04-08T17:00:00Z"}}

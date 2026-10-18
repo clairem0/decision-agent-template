@@ -35,6 +35,7 @@
 #__REVIEW_ROOT__ select,#__REVIEW_ROOT__ textarea{background:var(--dr-field)}
 #__REVIEW_ROOT__ input[type="checkbox"]{accent-color:var(--dr-main)}
 #__REVIEW_ROOT__ .dr-send{background:var(--dr-main);color:var(--dr-onmain);border-color:var(--dr-main)}
+#__REVIEW_ROOT__ .dr-send:hover{background:var(--dr-main)}
 #__REVIEW_ROOT__ .dr-note,#__REVIEW_ROOT__ .dr-status,#__REVIEW_ROOT__ .dr-coverage,#__REVIEW_ROOT__ .dr-deferred{margin:0;padding:0 20px 15px;color:var(--dr-muted)}
 #__REVIEW_ROOT__ article{padding:16px 20px;border-top:1px solid var(--dr-line)}
 #__REVIEW_ROOT__ .dr-item{--dr-category:light-dark(#63666c,#b1b3b8);border-left:3px solid var(--dr-category);padding-left:17px}
@@ -58,7 +59,9 @@
 #__REVIEW_ROOT__ textarea{display:block;width:100%;padding:8px;min-height:75px}
 #__REVIEW_ROOT__ pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}
 #__REVIEW_ROOT__ details{margin:10px 0}
-#__REVIEW_ROOT__ .dr-collapsed{display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--dr-muted)}
+#__REVIEW_ROOT__ .dr-collapsed{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;color:var(--dr-muted)}
+#__REVIEW_ROOT__ .dr-collapsed>span{flex:1 1 220px}
+#__REVIEW_ROOT__ .dr-reminder-actions{display:flex;flex-wrap:wrap;gap:7px}
 #__REVIEW_ROOT__ .dr-fallback{padding:0 20px 15px}
 #__REVIEW_ROOT__ [hidden]{display:none!important}
 @media(max-width:480px){#__REVIEW_ROOT__ header{align-items:flex-start;flex-direction:column}#__REVIEW_ROOT__ header,#__REVIEW_ROOT__ article{padding:15px 12px}#__REVIEW_ROOT__ .dr-top{align-items:flex-start;flex-direction:column;gap:5px}#__REVIEW_ROOT__ .dr-category{text-align:left}#__REVIEW_ROOT__ .dr-item{padding-left:9px}#__REVIEW_ROOT__ textarea,#__REVIEW_ROOT__ select{font-size:16px}}
@@ -108,15 +111,15 @@
     const active=document.activeElement, index=active?.dataset.index, action=active?.dataset.action;
     q('.dr-list').innerHTML=review.items.map((item,i)=>{
       const c=changes[item.id];
-      if(c?.action==='seen'||c?.action==='remind')return '<article class="dr-collapsed"><span>✓ '+esc(item.title)+' · '+(c.action==='seen'?'clear pending':esc(reminderCaption(c.reminder))+' · reminder pending')+'</span><button type="button" class="cursor-interaction" data-index="'+i+'" data-action="undo">Undo</button></article>';
       const draft={note:c?.note||'',label:c?.label||item.label,propose:c?.update_rubric||false,...drafts[item.id]};
       let controls='';
       if(editor?.id===item.id){
         const correction=editor.action==='correct';
-        if(editor.action==='remind') controls='<div class="dr-editor"><div class="dr-reminder">'+reminderFields()+'</div><div class="dr-actions"><button type="button" class="cursor-interaction" data-index="'+i+'" data-action="save">Add to changes</button><button type="button" class="cursor-interaction" data-index="'+i+'" data-action="cancel">Cancel</button></div></div>';
+        if(editor.action==='remind') controls='<div class="dr-editor"><div class="dr-reminder">'+reminderFields()+'</div><div class="dr-actions"><button type="button" class="cursor-interaction" data-index="'+i+'" data-action="save">Save time</button><button type="button" class="cursor-interaction" data-index="'+i+'" data-action="cancel">Cancel</button></div></div>';
         else
         controls='<div class="dr-editor">'+(correction?'<label>Classification<select class="dr-label" aria-label="Classification for '+esc(item.title)+'">'+Object.keys(names).map(k=>'<option value="'+k+'"'+(draft.label===k?' selected':'')+'>'+esc(names[k])+'</option>').join('')+'</select></label>':'')+'<label>'+(correction?'Why should this classification change?':'What would you like your agent to do?')+'<textarea class="dr-input" aria-label="'+(correction?'Correction reason':'Follow-up instruction')+'">'+esc(draft.note)+'</textarea></label>'+(correction?'<label><input type="checkbox" class="dr-rubric"'+(draft.propose?' checked':'')+'> Use to update rubric</label><p class="dr-rubric-note">Your agent will suggest the rule change in chat.</p>':'')+'<div class="dr-actions"><button type="button" class="cursor-interaction" data-index="'+i+'" data-action="save">Add to changes</button><button type="button" class="cursor-interaction" data-index="'+i+'" data-action="cancel">Cancel</button></div></div>';
       }
+      if(c?.action==='seen'||c?.action==='remind')return '<article><div class="dr-collapsed"><span>✓ '+esc(item.title)+' · '+(c.action==='seen'?'clear pending':esc(reminderCaption(c.reminder))+' · reminder pending')+'</span><div class="dr-reminder-actions">'+(c.action==='remind'?'<button type="button" class="cursor-interaction" data-index="'+i+'" data-action="reminder-time">'+(c.reminder.when==='next_review'?'Choose a time':'Change time')+'</button>':'')+'<button type="button" class="cursor-interaction" data-index="'+i+'" data-action="undo">Undo</button></div></div>'+controls+'</article>';
       const category=c?.label||item.label;
       return '<article class="dr-item" data-category="'+esc(category)+'" aria-label="'+esc(item.title)+'"><div class="dr-top"><span>'+esc(item.sender)+(simulated?'':' · '+esc(item.mode))+'</span><span class="dr-category"><span class="dr-badge"><span class="dr-marker" aria-hidden="true"></span>'+esc(names[category]||'Needs review')+'</span></span></div><h3>'+subject(item)+'</h3><p class="dr-summary"><span class="dr-summary-label">'+esc(item.summary_label)+'</span>'+esc(item.summary)+'</p>'+missingLink(item)+(item.uncertainty?'<p><strong>Needs context:</strong> '+esc(item.uncertainty)+'</p>':'')+(item.reminder?'<p class="dr-saved-reminder">Reminder · '+esc(reminderCaption(item.reminder))+'</p>':'')+'<div class="dr-actions"><button type="button" class="cursor-interaction" data-action="seen" data-index="'+i+'">Seen &amp; clear</button><button type="button" class="cursor-interaction" data-action="assign" data-index="'+i+'">Assign follow-up</button><button type="button" class="cursor-interaction" data-action="remind" data-index="'+i+'">Remind me</button><button type="button" class="cursor-interaction" data-action="correct" data-index="'+i+'">Correct classification</button></div>'+(c?'<p>'+({assign:'Follow-up ready',correct:'Correction ready'}[c.action]||'Change ready')+': '+esc(c.note)+'</p>':'')+controls+'</article>';
     }).join('')||(review.holds.length?'':'<article>No new decisions to review.</article>');
@@ -129,7 +132,8 @@
     root.querySelectorAll('[data-action]').forEach(button=>button.onclick=()=>{
       const item=review.items[Number(button.dataset.index)], action=button.dataset.action;
       if(action==='seen'){editor=null;update(item,'seen');return;}
-      if(action==='undo'){delete changes[item.id];revision++;frozen=null;q('.dr-fallback').hidden=true;persist();render();return;}
+      if(action==='remind'){editor=null;delete drafts[item.id];update(item,'remind','',null,false,{when:'next_review'});return;}
+      if(action==='undo'){editor=null;delete changes[item.id];delete drafts[item.id];revision++;frozen=null;q('.dr-fallback').hidden=true;persist();render();return;}
       if(action==='cancel'){editor=null;render();return;}
       if(action==='save'){
         if(editor.action==='remind'){
@@ -143,10 +147,11 @@
         const kind=editor.action, label=kind==='correct'?q('.dr-label').value:null, propose=kind==='correct'&&q('.dr-rubric').checked;
         editor=null;delete drafts[item.id];update(item,kind,note,label,propose);return;
       }
-      editor={id:item.id,action};render();(q('.dr-input')||q('.reminder-text'))?.focus();
+      editor={id:item.id,action:action==='reminder-time'?'remind':action};q('.dr-fallback').hidden=true;render();(q('.dr-input')||q('.reminder-text'))?.focus();
     });
     if(editor?.action==='remind'){
-      const container=q('.dr-reminder');bindReminder(container,drafts[editor.id]?.reminder);
+      const container=q('.dr-reminder'), reminder=changes[editor.id]?.reminder;
+      bindReminder(container,drafts[editor.id]?.reminder||(reminder?.when!=='next_review'?{text:reminder?.text||reminder?.at}:undefined));
       container.querySelectorAll('textarea').forEach(field=>field.addEventListener('input',()=>{q('.dr-status').textContent='';drafts[editor.id]={...drafts[editor.id],reminder:reminderDraft(container)};}));
     }else if(editor){
       const store=()=>{q('.dr-input').setCustomValidity('');drafts[editor.id]={...drafts[editor.id],note:q('.dr-input').value,label:q('.dr-label')?.value,propose:q('.dr-rubric')?.checked||false};};
