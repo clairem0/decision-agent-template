@@ -155,16 +155,17 @@ class SyntheticInboxTests(unittest.TestCase):
             return self.provider(payload,key)
         with patch.dict(os.environ, {'JEV_API_KEY':'test-key'}), patch.object(j, 'post', side_effect=interrupted) as post, patch.object(sample, 'compare') as compare:
             with self.assertRaises(d.Hold): self.live()
-            self.assertEqual(post.call_count,2); compare.assert_not_called()
+            self.assertEqual(post.call_count,50); compare.assert_not_called()
         report = d.load_json(next((self.root/'runs').glob('*/report.json')))
-        self.assertEqual(report['status'],'held'); self.assertEqual(report['new_api_calls'],2)
-        self.assertEqual(report['successful_new_calls'],1)
+        self.assertEqual(report['status'],'held'); self.assertEqual(report['new_api_calls'],50)
+        self.assertEqual(report['successful_new_calls'],49)
+        self.assertEqual(report['pending'],1)
         self.assertIsNone(report['comparison']); self.assertGreaterEqual(report['api_round_trip_seconds'],0)
         self.assertFalse(list((self.root/'runs').glob('*/predictions.json')))
         with patch.object(j, 'post') as post:
             with self.assertRaises(d.Hold): self.live()
         post.assert_not_called()
-        self.assertTrue(all(r['decision'] is None for r in d.read_state(self.root)['items'].values()))
+        self.assertEqual(sum(r['decision'] is not None for r in d.read_state(self.root)['items'].values()),49)
         for path in self.root.rglob('*.json'): self.assertNotIn('PRIVATE_ERROR_MARKER',path.read_text())
 
     def test_cli_defaults_to_safe_preview(self):

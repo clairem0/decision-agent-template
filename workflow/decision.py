@@ -230,8 +230,8 @@ def accept(root, batch, response):
             if not isinstance(refs, list) or any(not isinstance(r, str) or r not in allowed for r in refs):
                 raise Hold('Invalid reference citations.')
             uncertainty = result.get('uncertainty', '')
-            if not isinstance(uncertainty, str) or (result['label'] == 'skip' and uncertainty.strip()):
-                raise Hold('Uncertainty must be text; unresolved uncertainty prevents Skip.')
+            if not isinstance(uncertainty, str):
+                raise Hold('Uncertainty must be text and remain visible for reader review.')
             if len(uncertainty) > 300:
                 raise Hold('Uncertainty must be a brief paraphrase of at most 300 characters; never quote source.')
             decision = {k: copy.deepcopy(result[k]) for k in ('label', 'reason', 'reference_ids')}
@@ -250,6 +250,7 @@ def accept(root, batch, response):
                             delivered=False, follow_up=copy.deepcopy(row.get('task')), correction=None)
             row['decision'] = decision
             row['status'] = 'current'
+            row.pop('hold', None)
             row['history'].append({'request': retained_request(request), 'assessment': copy.deepcopy(decision)})
         save(root, state)
     return len(results)
@@ -292,8 +293,8 @@ def review(root, choice, reminder_resolution=None):
         if action == 'correct':
             if choice.get('label') not in LABELS:
                 raise Hold('Correction needs an allowed label.')
-            if choice['label'] == 'skip' and decision.get('uncertainty'):
-                raise Hold('Resolve uncertain evidence and reassess before choosing Skip.')
+            # A reasoned reader correction can override a model's evidence flag.
+            # Keep the original uncertainty and provider answer in the assessment/history.
             decision['correction'] = {'label': choice['label'], 'reason': require_text(choice.get('note'), 'correction reason')}
             decision['acknowledged'] = True
         elif action == 'seen':
@@ -369,7 +370,7 @@ def teach(root, approval, library, source=None):
                  'label': receipt['label'], 'contrast_ids': contrasts,
                  'distinction': approval['distinction'],
                  'approval': {k: approval[k] for k in ('receipt_id', 'approved_by', 'approval_evidence')}}
-        if decision.get('uncertainty'):
+        if decision.get('uncertainty') and receipt['label'] != 'skip':
             entry['uncertainty'] = decision['uncertainty']
         existing = next((r for r in active['references'] if r['id'] == reference_id), None)
         if existing:
@@ -596,7 +597,7 @@ def render(root, now=None):
         names = {'seen': 'Seen & clear', 'correct': 'Change category', 'assign': 'Add follow-up', 'remind': 'Remind me', 'complete': 'Mark follow-up done'}
         radios = ''.join(f'<label><input type="radio" name="action" value="{a}"><span>{names[a]}</span></label>' for a in actions)
         cats = ''.join(
-            f'<label class="c-{v}"><input type="radio" name="label" value="{v}"{" disabled" if v == label else ""}>'
+            f'<label class="c-{v}"><input type="radio" name="label" value="{v}"{" disabled" if v == label and not d.get("uncertainty") else ""}>'
             f'<span><b>{NAMES[v]}{" (current)" if v == label else ""}</b>{esc(rubric.get("labels", {}).get(v, ""))}</span></label>'
             for v in LABEL_NAMES)
 
@@ -609,6 +610,7 @@ def render(root, now=None):
 <div data-for="remind"><p class="reminder-caption small"></p><button type="button" class="reminder-edit quiet">Choose a time</button>
 <div class="reminder-editor" hidden><div class="reminder-fields"></div><button type="button" class="reminder-cancel quiet">Cancel</button></div></div>
 <div data-for="correct"><fieldset><legend>What category should it be?</legend><div class="cats">{cats}</div></fieldset>
+{'<p class="small">You can override the evidence flag. Explain your judgment below; the original flag stays in history.</p>' if d.get('uncertainty') else ''}
 {note('correct', 'Why? One sentence is enough.', 'e.g. The reply already settled this, so nothing is left to do.', 'Add a short reason for the change.')}
 <label class="rubric-update"><input type="checkbox" name="update_rubric"><span>Use to update rubric
 <small>Your agent will suggest the rule change in chat for your approval.</small></span></label></div>
@@ -632,7 +634,7 @@ def render(root, now=None):
         new = review_due(d, now)
         chips = ''
         if d and d.get('uncertainty'):
-            chips += '<span class="chip">Needs context</span>'
+            chips += '<span class="chip">' + ('Original evidence flag' if d['correction'] else 'Needs context') + '</span>'
         if d and d.get('reminder'):
             chips += '<span class="chip">' + ('Reminder due' if new else 'Deferred') + '</span>'
         if task:
@@ -643,7 +645,7 @@ def render(root, now=None):
             chips += '<span class="chip">Shown in chat</span>'
 
         link = source_link(source.get('original_url'))
-        panel = ('<p class="note c-held"><b>Needs context:</b> ' + esc(d['uncertainty']) + '</p>' if d and d.get('uncertainty') else '')
+        panel = ('<p class="note c-held"><b>' + ('Original evidence flag:' if d['correction'] else 'Needs context:') + '</b> ' + esc(d['uncertainty']) + '</p>' if d and d.get('uncertainty') else '')
         panel += '<section><p class="label">Original email</p>'
         panel += (f'<a href="{esc(link)}" target="_blank" rel="noopener noreferrer">View original email</a>' if link else
                   '<p class="small">No verified source link available. Ask your agent to retrieve this conversation by its saved ID.</p>')

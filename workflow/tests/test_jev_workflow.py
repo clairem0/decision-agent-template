@@ -73,11 +73,52 @@ class JevWorkflowTests(unittest.TestCase):
         self.assertEqual({item['id']: item['decision_id'] for item in payload['items']},
                          {key: row['decision']['id'] for key, row in state['items'].items()})
 
-    def test_uncertain_skip_is_held_not_silently_hidden_or_relabelled(self):
+    def test_uncertain_skip_is_visible_reviewable_and_reused_without_another_call(self):
         with patch.dict(os.environ, {'JEV_API_KEY': 'test-key'}), patch.object(j, 'post', side_effect=lambda p, k: answer(p, 'skip', 'needs_review')):
-            with self.assertRaises(d.Hold): w.run(self.root, self.batch, live=True, max_requests=2)
-        self.assertTrue(all(row['decision'] is None for row in d.read_state(self.root)['items'].values()))
-        self.assertTrue(list((self.root/'attempts').glob('*.json')))
+            result = w.run(self.root, self.batch, live=True, max_requests=2)
+        self.assertEqual((result['accepted'], result['pending'], result['flagged']), (2, 0, 2))
+        state = d.read_state(self.root)
+        self.assertTrue(all(row['decision']['provider_result']['requires_review'] for row in state['items'].values()))
+        self.assertTrue(all(item['new_review'] and item['label'] == 'skip' and item['uncertainty'] for item in d.summary(self.root)['items']))
+        self.assertIn('Needs context:', d.render(self.root).read_text())
+        with patch.object(j, 'post') as post:
+            self.assertEqual(w.run(self.root, self.prepare(), live=True, max_requests=0)['accepted'], 0)
+        post.assert_not_called()
+
+    def test_one_failed_call_does_not_block_other_items_or_resend_on_rerun(self):
+        self.inputs['items'].append(d.load_json('workflow/demo/inputs.json')['items'][2])
+        batch = self.prepare()
+        def provider(payload, key):
+            if payload['state']['target']['id'] == 'mail-demo-b':
+                raise TimeoutError('PRIVATE_ERROR_MARKER')
+            return answer(payload)
+        with patch.dict(os.environ, {'JEV_API_KEY':'test-key'}), patch.object(j, 'post', side_effect=provider) as post:
+            result = w.run(self.root, batch, live=True, max_requests=3)
+        self.assertEqual(post.call_count, 3)
+        self.assertEqual((result['accepted'], result['pending']), (2, 1))
+        state = d.read_state(self.root)
+        self.assertEqual(state['items']['mail-demo-a']['status'], 'current')
+        self.assertEqual(state['items']['mail-demo-b']['status'], 'pending')
+        self.assertIsNone(state['items']['mail-demo-b']['decision'])
+        self.assertEqual(state['items']['mail-demo-c']['status'], 'current')
+        self.assertIn('saved attempt', d.render(self.root).read_text())
+        with patch.object(j, 'post') as post:
+            retry = w.run(self.root, self.prepare(), live=True, max_requests=1)
+        self.assertEqual((retry['accepted'], retry['pending']), (0, 1))
+        post.assert_not_called()
+        for path in self.root.rglob('*.json'):
+            self.assertNotIn('PRIVATE_ERROR_MARKER', path.read_text())
+            self.assertNotIn('PRIVATE_SOURCE_MARKER', path.read_text())
+
+    def test_old_successful_but_flagged_skip_attempt_can_resume_without_resending(self):
+        with patch.dict(os.environ, {'JEV_API_KEY':'test-key'}), patch.object(j, 'post', side_effect=lambda p,k: answer(p, 'skip', 'needs_review')):
+            j.run(self.batch, 'mail-demo-a', self.root/'attempts', live=True, max_requests=1)
+        with patch.dict(os.environ, {'JEV_API_KEY':'test-key'}), patch.object(j, 'post', side_effect=lambda p,k: answer(p)) as post:
+            result = w.run(self.root, self.batch, live=True, max_requests=2)
+        self.assertEqual(result['accepted'], 2)
+        self.assertEqual(result['reused_attempts'], 1)
+        self.assertEqual(result['flagged'], 1)
+        self.assertEqual(post.call_count, 1)
 
     def test_due_reminder_reuses_jev_result_without_another_provider_call(self):
         with patch.dict(os.environ, {'JEV_API_KEY': 'test-key'}), patch.object(j, 'post', side_effect=lambda p, k: answer(p)) as post:
@@ -99,9 +140,12 @@ class JevWorkflowTests(unittest.TestCase):
         with patch.dict(os.environ, {'JEV_API_KEY': 'test-key'}), patch.object(j, 'post', side_effect=interrupted):
             with self.assertRaises(KeyboardInterrupt): w.run(self.root, self.batch, live=True, max_requests=2)
         with patch.object(j, 'post') as post:
-            with self.assertRaises(d.Hold): w.run(self.root, self.batch, live=True, max_requests=2)
+            result = w.run(self.root, self.prepare(), live=True, max_requests=2)
             post.assert_not_called()
-        self.assertTrue(all(row['decision'] is None for row in d.read_state(self.root)['items'].values()))
+        self.assertEqual(result['pending'], 1)
+        state = d.read_state(self.root)
+        self.assertIsNotNone(state['items']['mail-demo-a']['decision'])
+        self.assertIsNone(state['items']['mail-demo-b']['decision'])
 
     def test_wrong_state_or_evaluator_stops_before_spending(self):
         with patch.object(j, 'post') as post:

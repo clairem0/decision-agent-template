@@ -39,6 +39,7 @@ def render(root, output, include_seen=False, now=None):
                       'label': current['label'], 'summary': summary, 'summary_label': summary_label,
                       'original_url': d.source_link(source.get('original_url')),
                       'uncertainty': assessment.get('uncertainty', ''),
+                      'uncertainty_label': 'Original evidence flag' if assessment['correction'] else 'Needs context',
                       'reminder': assessment.get('reminder'),
                       'mode': assessment['mode']})
     priority = {label: index for index, label in enumerate(d.LABEL_NAMES)}

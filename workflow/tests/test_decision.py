@@ -61,22 +61,46 @@ class DecisionTests(unittest.TestCase):
         self.assertIn('Needs context:', page)
         fragment = inline_review.render(self.root, self.root/'inline.html').read_text()
         self.assertIn('The scope of the requested task is missing.', fragment)
-        before = (self.root/'state.json').read_bytes()
-        with self.assertRaises(d.Hold):
-            d.review(self.root, self.choice('correct', label='skip', note='Ignore it.'))
-        self.assertEqual(before, (self.root/'state.json').read_bytes())
+        choice = self.choice('correct', label='skip', note='I checked: this request belongs to someone else.')
+        d.review(self.root, choice)
+        state = d.read_state(self.root)
+        row = state['items']['mail-demo-a']
+        self.assertEqual(state['receipts'][choice['receipt_id']], choice)
+        self.assertEqual(row['decision']['uncertainty'], 'The scope of the requested task is missing.')
+        self.assertEqual(row['history'][0]['assessment']['label'], 'read')
+        self.assertEqual(d.summary(self.root)['items'][0]['label'], 'skip')
+        self.assertFalse(d.summary(self.root)['items'][0]['new_review'])
+        self.assertIn('Original evidence flag:', d.render(self.root).read_text())
+        self.assertEqual(self.prepare()['requests'], [])
 
-    def test_uncertain_suppression_and_obsolete_category_fail_atomically(self):
+    def test_obsolete_category_and_invalid_uncertainty_fail_atomically(self):
         batch = self.prepare()
         before = (self.root/'state.json').read_bytes()
         old = copy.deepcopy(batch); old['contract'] = 'coding-agent-v1'
         with self.assertRaises(d.Hold): d.accept(self.root, old, self.response)
         self.assertEqual(before, (self.root/'state.json').read_bytes())
-        for change in ({'label':'skip','uncertainty':'Unresolved obligation.'},
-                       {'label':'unknown'}, {'uncertainty':True}):
+        for change in ({'label':'unknown'}, {'uncertainty':True}):
             bad = copy.deepcopy(self.response); bad['results'][-1].update(change)
             with self.assertRaises(d.Hold): d.accept(self.root, batch, bad)
             self.assertEqual(before, (self.root/'state.json').read_bytes())
+
+    def test_approved_skip_correction_teaches_reader_judgment_without_model_flag(self):
+        batch = self.prepare()
+        self.response['results'][0].update(label='skip', uncertainty='Confirm the owner.')
+        d.accept(self.root, batch, self.response)
+        self.assertTrue(d.summary(self.root)['items'][0]['new_review'])
+        choice = self.choice('correct', label='skip', note='I checked: the task belongs to someone else.')
+        d.review(self.root, choice)
+        ref_id = d.teach(self.root, self.approval(), self.refs, self.inputs['items'][0])
+        library = d.load_json(self.root/'references.json')
+        ref = next(r for r in library['references'] if r['id'] == ref_id)
+        self.assertEqual(ref['label'], 'skip')
+        self.assertNotIn('uncertainty', ref)
+        self.assertEqual(d.read_state(self.root)['items']['mail-demo-a']['decision']['uncertainty'], 'Confirm the owner.')
+        self.inputs['items'][0]['content'] += ' New source detail.'
+        self.prepare()
+        with self.assertRaises(d.Hold):
+            d.review(self.root, {**choice, 'receipt_id':'stale-correction'})
 
     def test_uncertain_teaching_reaches_other_targets(self):
         batch = self.prepare()

@@ -1,6 +1,10 @@
 import os
+import contextlib
+import io
+import json
 from pathlib import Path
 import tempfile
+import sys
 import unittest
 from unittest.mock import patch
 
@@ -11,6 +15,26 @@ from test_jev_workflow import answer
 
 
 class PipelineTests(unittest.TestCase):
+    def test_partial_review_is_printed_with_nonzero_exit_and_saved_successes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for source, target in [('rubric/rubric.json','rubric.json'), ('rubric/examples.json','references.json')]:
+                (root/target).write_text(Path(source).read_text())
+            inputs = d.load_json('workflow/demo/inputs.json')
+            def provider(payload, key):
+                if payload['state']['target']['id'] == 'mail-demo-b':
+                    raise TimeoutError('fixture')
+                return answer(payload, 'skip', 'needs_review')
+            stdout, stderr = io.StringIO(), io.StringIO()
+            argv = ['pipeline.py','--root',str(root),'--live','--max-requests','4']
+            with patch.object(sys, 'argv', argv), patch.object(d, 'read_stdin_json', return_value=inputs), patch.dict(os.environ, {'JEV_API_KEY':'test-key'}), patch.object(j, 'post', side_effect=provider), contextlib.redirect_stdout(stdout), contextlib.redirect_stderr(stderr):
+                with self.assertRaises(SystemExit) as stopped: pipeline.main()
+            self.assertEqual(stopped.exception.code, 2)
+            report = json.loads(stdout.getvalue())
+            self.assertEqual((report['accepted'],report['pending'],report['flagged']), (3,1,3))
+            self.assertTrue(Path(report['review_file']).is_file())
+            self.assertIn('Partial review saved', stderr.getvalue())
+
     def test_public_pipeline_uses_saved_rubric_and_returns_saved_review(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

@@ -108,7 +108,11 @@ def run(root=DEFAULT_ROOT, *, live=False, max_requests=0, env_file=None):
             report['reused_decisions'] = count - len(batch['requests'])
             result = measure('classify_and_save', lambda: w.run(root, batch, live=True,
                              max_requests=max_requests, metrics=metrics))
-            report['reused_attempts'] = result['accepted'] - len(metrics)
+            report['reused_attempts'] = result['reused_attempts']
+            report['pending'] = result['pending']
+            if result['pending']:
+                d.render(root)
+                raise d.Hold('Some conversations are still pending. Successful decisions and attempts were preserved.')
             state = d.read_state(root)
             predictions = {}
             for item in inputs['items']:

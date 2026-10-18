@@ -30,9 +30,9 @@ Jev returns categories and an evidence flag, without written reasons or referenc
 
 ## Troubleshooting
 
-A failed batch stays pending. Successful attempts can be reused after an interruption; failed, uncertain or interrupted attempts require inspection before any deliberate retry. The runner refuses redirects and does not retry automatically. Preserve the existing attempt records; do not create a new state folder to bypass a failure.
+Each valid result is saved independently. A failed call leaves that conversation pending while other results remain available. The command prints the partial review and exits with status 2 when calls remain unresolved. Successful attempts can be reused after an interruption; failed, uncertain or interrupted attempts require inspection before any deliberate retry. The runner refuses redirects and does not retry automatically. Preserve the existing attempt records; do not create a new state folder to bypass a failure.
 
-If Jev suggests Skip while flagging missing evidence, the batch stays pending. Review the original conversation, supply missing context or deliberately review the judgment, then prepare again.
+A successful answer with an evidence flag is shown for review, even when Jev recommends Skip. Re-read the source; either add missing context and reassess, or submit Correct classification with the reader’s chosen category and reason (including confirming Skip). The reader’s correction takes effect while the original answer and evidence flag remain in history. Failed retrieval still prevents classification and review choices.
 
 For diagnosing a particular step, the `prepare` command in `workflow/decision.py` builds the complete in-memory batch from fresh stdin, the approved configuration and the Jev evaluator identity in `workflow/jev_workflow.py`. Pass that batch through stdin to `workflow/jev_preview.py --id SOURCE_ID` to inspect a request or `workflow/jev_run.py --id SOURCE_ID` for a single diagnostic call. The latter reads `JEV_API_KEY` from the process environment, needs `--live --max-requests 1` to send, and records an attempt without accepting it into the review. `workflow/jev_workflow.py` validates and accepts a prepared batch; the normal pipeline calls it for you. Never save ordinary source or full request output in files or logs.
 

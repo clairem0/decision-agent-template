@@ -30,7 +30,7 @@ If Jev is unavailable, pause this path. A fictional demo or explicitly chosen co
 
 ## 4. Review a first run
 
-Pass fresh complete conversations to `workflow/pipeline.py` through stdin, using the saved rubric, references and agreed request bound. Run the [command below](#command-for-the-agent) from the repository root. It prepares the requests, calls Jev, checks and saves the results, and generates the review. All requested decisions must validate before a batch is saved. Saved successful attempts can be reused after an interrupted batch; failed or uncertain attempts are never automatically resent.
+Pass fresh complete conversations to `workflow/pipeline.py` through stdin, using the saved rubric, references and agreed request bound. Run the [command below](#command-for-the-agent) from the repository root. It prepares the requests, calls Jev, checks and saves the results, and generates the review. Each valid decision is saved independently. A failed call leaves only that conversation pending; the review still shows successful results and holds. Saved successful attempts can be reused after an interruption; failed or uncertain attempts are never automatically resent. A successful answer with an evidence flag is reviewable, including Skip; it is not a failed API call.
 
 Show all categories, uncertainties, holds and original links. Jev does not write reasons: the default review text is explicitly a category definition. If the reader asks why, inspect the original and identify your explanation as the coding agent's interpretation.
 
