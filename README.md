@@ -6,6 +6,8 @@ Teach your AI what needs your attention. Explore examples together, agree on a r
 
 ## Get started
 
+Make your own copy with **Use this template → Create a new repository**, or choose **Code → Download ZIP**. Customize your copy for your own workflow. This repository does not accept contributions.
+
 Open this folder in an AI agent with local file access, such as ChatGPT Work/Codex or Claude Cowork/Code. Your agent checks Python 3.11+ and the available review interface. You can follow the article's prompts one at a time, or paste this:
 
 > Help me set up this email decision workflow. Read AGENTS.md and follow setup/README.md. Briefly explain what's here, then guide me one step at a time and handle the technical work.
