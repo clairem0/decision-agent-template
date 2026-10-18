@@ -2,7 +2,7 @@
 
 Ordinary full emails and retrieved conversation context stay in the source account. The agent reads them into memory for classification and passes their actual content, the rubric and approved teaching examples to the evaluator. It must not create a local source export, save classifier stdout or put bodies in review pages, reasons, coverage notes or receipts.
 
-The starter saves source IDs, subjects, optional sender display text, verified original links, hashes of the evaluated input, rubric and approved-reference snapshots, brief paraphrased decisions, review choices, tasks and coverage notes under ignored `local/`. These are still private metadata. Use neutral subjects if a subject itself contains sensitive information. Classifier reasons are limited to 500 characters and uncertainty notes to 300; these limits do not detect every copied excerpt. The agent must paraphrase, and user-entered notes may themselves contain sensitive text. Hashes establish equality, not recoverable source evidence.
+The starter saves source IDs, subjects, optional sender display text, verified original links, hashes of the evaluated input, rubric and approved-reference snapshots, brief paraphrased decisions, review choices, tasks, reminder times and coverage notes under ignored `local/`. These are still private metadata. Use neutral subjects if a subject itself contains sensitive information. Classifier reasons are limited to 500 characters and uncertainty notes to 300; these limits do not detect every copied excerpt. The agent must paraphrase, and user-entered notes may themselves contain sensitive text. Hashes establish equality, not recoverable source evidence.
 
 The only retained full source is a separately approved teaching example, including an approved anti-gold contrast. Gold is a teaching role, not necessarily a high-priority category. Previous approved versions may remain in reference history. Do not save full proposed examples: show the proposal in chat, then re-read the source after approval. The teaching helper checks the full source hash against the corrected assessment before writing the example. Correction alone stores only a decision and review receipt.
 
@@ -11,6 +11,8 @@ The only retained full source is a separately approved teaching example, includi
 Agent conversations, tool transcripts, host visualization storage and external provider logs may retain content the agent reads. This template controls its own files; it cannot promise that your coding agent never stores email. Check the host's data policy before a real run. A pasted sample also remains in that chat. The default Jev workflow sends full messages, relevant context, your rubric and approved examples to TypeSafe; agree on that scope before the first real run.
 
 ## Storage compatibility
+
+Reminders are optional metadata on the current decision (`reminder.when` and, for timed reminders, `reminder.at`) plus the exact saved receipt. Existing version-3 state needs no migration. Due checks never rewrite state; classification inputs exclude reminders.
 
 Unsupported storage versions are refused without changing the existing folder. Preserve it and choose a fresh state root; do not copy ordinary source exports into the new workflow.
 

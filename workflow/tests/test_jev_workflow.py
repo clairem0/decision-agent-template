@@ -1,4 +1,5 @@
 import copy
+from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
@@ -77,6 +78,19 @@ class JevWorkflowTests(unittest.TestCase):
             with self.assertRaises(d.Hold): w.run(self.root, self.batch, live=True, max_requests=2)
         self.assertTrue(all(row['decision'] is None for row in d.read_state(self.root)['items'].values()))
         self.assertTrue(list((self.root/'attempts').glob('*.json')))
+
+    def test_due_reminder_reuses_jev_result_without_another_provider_call(self):
+        with patch.dict(os.environ, {'JEV_API_KEY': 'test-key'}), patch.object(j, 'post', side_effect=lambda p, k: answer(p)) as post:
+            w.run(self.root, self.batch, live=True, max_requests=2)
+            row = d.read_state(self.root)['items']['mail-demo-a']
+            d.review(self.root, {'receipt_id': 'remind-a', 'id': 'mail-demo-a', 'decision_id': row['decision']['id'],
+                                'action': 'remind', 'reminder': {'when': 'at', 'at': '2030-04-09T09:00:00Z'}})
+            batch = self.prepare()
+            self.assertEqual(batch['requests'], [])
+            self.assertEqual(w.run(self.root, batch, live=True, max_requests=2)['accepted'], 0)
+            self.assertTrue(d.summary(self.root, datetime(2030, 4, 9, 9, tzinfo=timezone.utc))['items'][0]['new_review'])
+            self.assertEqual(post.call_count, 2)
+            self.assertEqual(d.read_state(self.root)['items']['mail-demo-a']['decision']['id'], row['decision']['id'])
 
     def test_saved_success_can_resume_after_interruption_without_resending(self):
         def interrupted(payload, key):

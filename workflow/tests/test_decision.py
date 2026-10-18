@@ -1,4 +1,5 @@
 import copy
+from datetime import datetime, timedelta, timezone
 import json
 from pathlib import Path
 import tempfile
@@ -122,6 +123,90 @@ class DecisionTests(unittest.TestCase):
         self.assertEqual(d.summary(self.root)['items'][0]['follow_up']['status'],'open')
         d.review(self.root,self.choice('complete',note='Reader confirms the draft was completed.'))
         self.assertEqual(d.summary(self.root)['items'][0]['follow_up']['status'],'complete')
+
+    def test_reminder_persists_without_acknowledging_or_completing_and_is_due_at_exact_instant(self):
+        self.accepted()
+        d.review(self.root, self.choice('assign', note='Draft a reply.'))
+        choice = self.choice('remind', reminder={'when': 'at', 'at': '2030-04-09T09:00:00-05:00'})
+        self.assertEqual(d.review(self.root, choice), 'saved')
+        self.assertEqual(d.review(self.root, choice), 'already saved')
+        before = (self.root/'state.json').read_bytes()
+        row = d.read_state(self.root)['items']['mail-demo-a']
+        self.assertFalse(row['decision']['acknowledged'])
+        self.assertEqual(row['task']['status'], 'open')
+        self.assertEqual(row['decision']['label'], 'act')
+        due = datetime(2030, 4, 9, 14, tzinfo=timezone.utc)
+        self.assertFalse(d.summary(self.root, due - timedelta(microseconds=1))['items'][0]['new_review'])
+        self.assertTrue(d.summary(self.root, due)['items'][0]['new_review'])
+        self.assertTrue(d.summary(self.root, due + timedelta(days=10))['items'][0]['new_review'])
+        self.assertEqual((self.root/'state.json').read_bytes(), before)
+        with self.assertRaises(d.Hold):
+            d.review(self.root, dict(choice, reminder={'when': 'next_review'}))
+        self.assertEqual(self.prepare()['requests'], [])
+        self.assertEqual(d.read_state(self.root)['receipts']['remind'], choice)
+
+    def test_next_review_replaces_deferral_and_explicit_choices_clear_reminder(self):
+        self.accepted()
+        for index, (action, extra) in enumerate((('seen', {}), ('assign', {'note': 'Draft a reply.'}),
+                                               ('correct', {'label': 'read', 'note': 'Wanted reading.'}))):
+            d.review(self.root, self.choice('remind', receipt_id=f'later-{index}', reminder={'when': 'at', 'at': '2099-01-01T00:00:00Z'}))
+            self.assertFalse(d.summary(self.root)['items'][0]['new_review'])
+            d.review(self.root, self.choice('remind', receipt_id=f'next-{index}', reminder={'when': 'next_review'}))
+            self.assertTrue(d.summary(self.root)['items'][0]['new_review'])
+            d.review(self.root, self.choice(action, **extra))
+            self.assertNotIn('reminder', d.read_state(self.root)['items']['mail-demo-a']['decision'])
+            self.assertFalse(d.summary(self.root)['items'][0]['new_review'])
+        self.assertEqual(len(d.read_state(self.root)['items']['mail-demo-a']['reviews']), 9)
+
+    def test_invalid_reminder_receipts_fail_without_writes(self):
+        self.accepted()
+        before = (self.root/'state.json').read_bytes()
+        for reminder in (None, 'tomorrow', {}, {'when': 'later'}, {'when': 'next_review', 'content': 'NOT METADATA'},
+                         {'when': 'at', 'at': '2030-04-09T09:00:00'}, {'when': 'at', 'at': '2030-02-30T09:00:00Z'},
+                         {'when': 'at', 'at': '2030-04-09T09:00:00+01:99'}, {'when': 'at', 'at': '2030-04-09T09:00:00-00:00'},
+                         {'when': 'at', 'at': True}, {'when': 'at', 'at': '2030-04-09T09:00:00Z', 'body': 'NOT METADATA'}):
+            with self.subTest(reminder=reminder), self.assertRaises(d.Hold):
+                d.review(self.root, self.choice('remind', reminder=reminder))
+            self.assertEqual((self.root/'state.json').read_bytes(), before)
+        with self.assertRaises(d.Hold):
+            d.review(self.root, self.choice('seen', reminder={'when': 'next_review'}))
+        self.assertEqual((self.root/'state.json').read_bytes(), before)
+
+    def test_reminder_survives_identical_retrieval_recovery_but_not_reassessment(self):
+        self.accepted()
+        d.review(self.root, self.choice('remind', reminder={'when': 'at', 'at': '2099-01-01T00:00:00Z'}))
+        stale = self.choice('remind', receipt_id='old-snapshot', reminder={'when': 'next_review'})
+        self.inputs['items'][0]['status'] = 'failed'
+        self.prepare()
+        with self.assertRaises(d.Hold):
+            d.review(self.root, stale)
+        self.inputs['items'][0]['status'] = 'complete'
+        self.assertEqual(self.prepare()['requests'], [])
+        self.assertFalse(d.summary(self.root)['items'][0]['new_review'])
+        self.inputs['items'][0]['content'] += ' A new reply changes the situation.'
+        batch = self.prepare()
+        d.accept(self.root, batch, dict(self.response, results=self.response['results'][:1]))
+        with self.assertRaises(d.Hold):
+            d.review(self.root, stale)
+        self.assertTrue(d.summary(self.root)['items'][0]['new_review'])
+        row = d.read_state(self.root)['items']['mail-demo-a']
+        self.assertNotIn('reminder', row['decision'])
+        self.assertEqual(len(row['history']), 2)
+        self.assertEqual(row['reviews'][0]['reminder']['at'], '2099-01-01T00:00:00Z')
+
+    def test_user_reminder_brings_skip_to_attention_without_changing_its_category(self):
+        self.accepted()
+        item = d.summary(self.root)['items'][-1]
+        self.assertEqual(item['label'], 'skip')
+        self.assertFalse(item['new_review'])
+        row = d.read_state(self.root)['items'][item['id']]
+        choice = {'id': item['id'], 'decision_id': row['decision']['id'], 'receipt_id': 'skip-reminder',
+                  'action': 'remind', 'reminder': {'when': 'at', 'at': '2000-01-01T00:00:00Z'}}
+        # A delayed submission is still valid and already due, not quietly lost.
+        d.review(self.root, choice)
+        item = d.summary(self.root)['items'][-1]
+        self.assertEqual(item['label'], 'skip')
+        self.assertTrue(item['new_review'])
 
     def test_missing_failed_sources_and_partial_coverage_preserve_history(self):
         self.accepted();self.inputs['items']=self.inputs['items'][:1]

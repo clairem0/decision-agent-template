@@ -3,6 +3,7 @@
     <header><div><h2>Inbox review</h2><p class="dr-count"></p></div><button type="button" class="dr-send cursor-interaction" disabled>Send changes to chat</button></header>
     <p class="dr-note">Choices stay here until sent.</p>
     <p class="dr-coverage" hidden></p>
+    <p class="dr-deferred" hidden></p>
     <div class="dr-list"></div>
     <div class="dr-holds"></div>
     <footer><span class="dr-pending">No changes to send</span><button type="button" class="dr-send cursor-interaction" disabled>Send changes to chat</button></footer>
@@ -29,10 +30,10 @@
 #__REVIEW_ROOT__ .dr-actions button{background:light-dark(#e9f0f8,#283f55);color:light-dark(#254a72,#daeaff);border-color:light-dark(#7593b3,#789bbf);font-weight:500;box-shadow:0 1px 1px #00000014}
 #__REVIEW_ROOT__ .dr-actions button:hover:not(:disabled){background:light-dark(#d8e6f5,#365571);border-color:light-dark(#42678f,#aac9eb)}
 #__REVIEW_ROOT__ .dr-actions button:active:not(:disabled){box-shadow:none}
-#__REVIEW_ROOT__ .dr-actions button[data-action="correct"]{background:transparent;color:var(--dr-muted);border-color:var(--dr-line);box-shadow:none;font-weight:400}
-#__REVIEW_ROOT__ .dr-actions button[data-action="correct"]:hover:not(:disabled){background:var(--dr-soft);color:var(--dr-ink);border-color:var(--dr-muted)}
+#__REVIEW_ROOT__ .dr-actions button:is([data-action="correct"],[data-action="remind"]){background:transparent;color:var(--dr-muted);border-color:var(--dr-line);box-shadow:none;font-weight:400}
+#__REVIEW_ROOT__ .dr-actions button:is([data-action="correct"],[data-action="remind"]):hover:not(:disabled){background:var(--dr-soft);color:var(--dr-ink);border-color:var(--dr-muted)}
 #__REVIEW_ROOT__ .dr-send{background:var(--dr-main);color:var(--dr-onmain);border-color:var(--dr-main)}
-#__REVIEW_ROOT__ .dr-note,#__REVIEW_ROOT__ .dr-status,#__REVIEW_ROOT__ .dr-coverage{margin:0;padding:0 20px 15px;color:var(--dr-muted)}
+#__REVIEW_ROOT__ .dr-note,#__REVIEW_ROOT__ .dr-status,#__REVIEW_ROOT__ .dr-coverage,#__REVIEW_ROOT__ .dr-deferred{margin:0;padding:0 20px 15px;color:var(--dr-muted)}
 #__REVIEW_ROOT__ article{padding:16px 20px;border-top:1px solid var(--dr-line)}
 #__REVIEW_ROOT__ .dr-item{--dr-category:var(--dr-muted);border-left:3px solid var(--dr-category);padding-left:17px}
 #__REVIEW_ROOT__ .dr-item[data-category="act"]{--dr-category:light-dark(#294e3b,#b9d4b5)}
@@ -49,17 +50,20 @@
 #__REVIEW_ROOT__ .dr-actions{display:flex;align-items:center;flex-wrap:wrap;gap:7px}
 #__REVIEW_ROOT__ .dr-editor{margin-top:12px}
 #__REVIEW_ROOT__ label{display:block;margin:8px 0}
+#__REVIEW_ROOT__ select,#__REVIEW_ROOT__ .reminder-date{display:block;padding:7px;margin-top:5px;font:inherit;color:var(--dr-ink);background:var(--dr-bg);border:1px solid var(--dr-line);border-radius:6px;max-width:100%}
+#__REVIEW_ROOT__ .reminder-detail,#__REVIEW_ROOT__ .dr-reminder p{color:var(--dr-muted)}
 #__REVIEW_ROOT__ textarea{display:block;width:100%;padding:8px;min-height:75px}
 #__REVIEW_ROOT__ pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}
 #__REVIEW_ROOT__ details{margin:10px 0}
 #__REVIEW_ROOT__ .dr-collapsed{display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--dr-muted)}
 #__REVIEW_ROOT__ .dr-fallback{padding:0 20px 15px}
 #__REVIEW_ROOT__ [hidden]{display:none!important}
-@media(max-width:480px){#__REVIEW_ROOT__ header{align-items:flex-start;flex-direction:column}#__REVIEW_ROOT__ header,#__REVIEW_ROOT__ article{padding:15px 12px}#__REVIEW_ROOT__ .dr-top{align-items:flex-start;flex-direction:column;gap:5px}#__REVIEW_ROOT__ .dr-category{text-align:left}#__REVIEW_ROOT__ .dr-item{padding-left:9px}#__REVIEW_ROOT__ textarea,#__REVIEW_ROOT__ select{font-size:16px}}
-@media(pointer:coarse){#__REVIEW_ROOT__ button,#__REVIEW_ROOT__ select{min-height:44px}}
+@media(max-width:480px){#__REVIEW_ROOT__ header{align-items:flex-start;flex-direction:column}#__REVIEW_ROOT__ header,#__REVIEW_ROOT__ article{padding:15px 12px}#__REVIEW_ROOT__ .dr-top{align-items:flex-start;flex-direction:column;gap:5px}#__REVIEW_ROOT__ .dr-category{text-align:left}#__REVIEW_ROOT__ .dr-item{padding-left:9px}#__REVIEW_ROOT__ textarea,#__REVIEW_ROOT__ select,#__REVIEW_ROOT__ .reminder-date{font-size:16px}}
+@media(pointer:coarse){#__REVIEW_ROOT__ button,#__REVIEW_ROOT__ select,#__REVIEW_ROOT__ .reminder-date{min-height:44px}}
 </style>
 <script>
 (()=>{
+  __REMINDER_JS__
   const root=document.getElementById('__REVIEW_ROOT__'), q=s=>root.querySelector(s);
   const review=JSON.parse(q('.dr-data').textContent);
   const names=review.names;
@@ -70,6 +74,7 @@
   const drafts={};
   const simulated=review.items.length>0&&review.items.every(item=>item.mode==='simulated');
   q('.dr-count').textContent=review.items.length+(simulated?' example emails · Fictional demo':' conversations');
+  if(review.deferred){q('.dr-deferred').hidden=false;q('.dr-deferred').textContent=review.deferred+' reminder'+(review.deferred===1?'':'s')+' waiting for a later review. Ask to review deferred items to change the time.';}
   if(review.coverage.status!=='complete'){
     q('.dr-coverage').hidden=false;
     q('.dr-coverage').textContent=(review.coverage.status==='partial'?'Partial review':'Coverage not checked')+(review.coverage.detail?': '+review.coverage.detail:'.');
@@ -80,7 +85,7 @@
     changes={};
     for(const item of review.items){
       const c=saved.modelContent.changes?.[item.id];
-      if(c&&['seen','assign','correct'].includes(c.action)&&typeof c.receipt_id==='string'&&typeof c.note==='string'&&typeof c.propose_teaching==='boolean'&&(c.action!=='correct'||names[c.label]))changes[item.id]={...c,id:item.id,decision_id:item.decision_id};
+      if(c&&['seen','assign','correct','remind'].includes(c.action)&&(c.action!=='remind'||c.reminder?.when==='next_review'||(c.reminder?.when==='at'&&Number.isFinite(Date.parse(c.reminder.at))))&&typeof c.receipt_id==='string'&&typeof c.note==='string'&&typeof c.propose_teaching==='boolean'&&(c.action!=='correct'||names[c.label]))changes[item.id]={...c,id:item.id,decision_id:item.decision_id};
     }
     sent=saved.privateContent?.sent===true;
   }
@@ -89,46 +94,58 @@
     if(JSON.stringify(state).length<16000)window.openai?.setWidgetState?.(state)?.catch(()=>{});
   }
   restore(window.openai?.widgetState);
-  function update(item,action,note='',label=null,propose=false){
+  function update(item,action,note='',label=null,propose=false,reminder=null){
     changes[item.id]={receipt_id:crypto.randomUUID(),id:item.id,decision_id:item.decision_id,action,note,propose_teaching:propose};
     if(label)changes[item.id].label=label;
+    if(reminder)changes[item.id].reminder=reminder;
     revision++;frozen=null;q('.dr-fallback').hidden=true;q('.dr-status').textContent='';persist();render();
   }
   function render(){
     const active=document.activeElement, index=active?.dataset.index, action=active?.dataset.action;
     q('.dr-list').innerHTML=review.items.map((item,i)=>{
       const c=changes[item.id];
-      if(c?.action==='seen')return '<article class="dr-collapsed"><span>✓ '+esc(item.title)+' · clear pending</span><button type="button" class="cursor-interaction" data-index="'+i+'" data-action="undo">Undo</button></article>';
-      const draft=drafts[item.id]||{note:c?.note||'',label:c?.label||item.label,propose:c?.propose_teaching||false};
+      if(c?.action==='seen'||c?.action==='remind')return '<article class="dr-collapsed"><span>✓ '+esc(item.title)+' · '+(c.action==='seen'?'clear pending':esc(reminderCaption(c.reminder))+' · reminder pending')+'</span><button type="button" class="cursor-interaction" data-index="'+i+'" data-action="undo">Undo</button></article>';
+      const draft={note:c?.note||'',label:c?.label||item.label,propose:c?.propose_teaching||false,...drafts[item.id]};
       let controls='';
       if(editor?.id===item.id){
         const correction=editor.action==='correct';
+        if(editor.action==='remind') controls='<div class="dr-editor"><div class="dr-reminder">'+reminderFields()+'</div><div class="dr-actions"><button type="button" class="cursor-interaction" data-index="'+i+'" data-action="save">Add to changes</button><button type="button" class="cursor-interaction" data-index="'+i+'" data-action="cancel">Cancel</button></div></div>';
+        else
         controls='<div class="dr-editor">'+(correction?'<label>Classification<select class="dr-label" aria-label="Classification for '+esc(item.title)+'">'+Object.keys(names).map(k=>'<option value="'+k+'"'+(draft.label===k?' selected':'')+'>'+esc(names[k])+'</option>').join('')+'</select></label>':'')+'<label>'+(correction?'Why should this classification change?':'What would you like your agent to do?')+'<textarea class="dr-input" aria-label="'+(correction?'Correction reason':'Follow-up instruction')+'">'+esc(draft.note)+'</textarea></label>'+(correction?'<label><input type="checkbox" class="dr-teach"'+(draft.propose?' checked':'')+'> Also propose this as a teaching example</label>':'')+'<div class="dr-actions"><button type="button" class="cursor-interaction" data-index="'+i+'" data-action="save">Add to changes</button><button type="button" class="cursor-interaction" data-index="'+i+'" data-action="cancel">Cancel</button></div></div>';
       }
       const category=c?.label||item.label;
-      return '<article class="dr-item" data-category="'+esc(category)+'" aria-label="'+esc(item.title)+'"><div class="dr-top"><span>'+esc(item.sender)+(simulated?'':' · '+esc(item.mode))+'</span><span class="dr-category"><span class="dr-badge"><span class="dr-marker" aria-hidden="true"></span>'+esc(names[category]||'Needs review')+'</span></span></div><h3>'+subject(item)+'</h3><p class="dr-summary"><span class="dr-summary-label">'+esc(item.summary_label)+'</span>'+esc(item.summary)+'</p>'+missingLink(item)+(item.uncertainty?'<p><strong>Needs context:</strong> '+esc(item.uncertainty)+'</p>':'')+'<div class="dr-actions"><button type="button" class="cursor-interaction" data-action="seen" data-index="'+i+'">Seen &amp; clear</button><button type="button" class="cursor-interaction" data-action="assign" data-index="'+i+'">Assign follow-up</button><button type="button" class="cursor-interaction" data-action="correct" data-index="'+i+'">Correct classification</button></div>'+(c?'<p>'+({assign:'Follow-up ready',correct:'Correction ready'}[c.action]||'Change ready')+': '+esc(c.note)+'</p>':'')+controls+'</article>';
+      return '<article class="dr-item" data-category="'+esc(category)+'" aria-label="'+esc(item.title)+'"><div class="dr-top"><span>'+esc(item.sender)+(simulated?'':' · '+esc(item.mode))+'</span><span class="dr-category"><span class="dr-badge"><span class="dr-marker" aria-hidden="true"></span>'+esc(names[category]||'Needs review')+'</span></span></div><h3>'+subject(item)+'</h3><p class="dr-summary"><span class="dr-summary-label">'+esc(item.summary_label)+'</span>'+esc(item.summary)+'</p>'+missingLink(item)+(item.uncertainty?'<p><strong>Needs context:</strong> '+esc(item.uncertainty)+'</p>':'')+(item.reminder?'<p class="dr-saved-reminder">Reminder · '+esc(reminderCaption(item.reminder))+'</p>':'')+'<div class="dr-actions"><button type="button" class="cursor-interaction" data-action="seen" data-index="'+i+'">Seen &amp; clear</button><button type="button" class="cursor-interaction" data-action="assign" data-index="'+i+'">Assign follow-up</button><button type="button" class="cursor-interaction" data-action="remind" data-index="'+i+'">Remind me…</button><button type="button" class="cursor-interaction" data-action="correct" data-index="'+i+'">Correct classification</button></div>'+(c?'<p>'+({assign:'Follow-up ready',correct:'Correction ready'}[c.action]||'Change ready')+': '+esc(c.note)+'</p>':'')+controls+'</article>';
     }).join('')||(review.holds.length?'':'<article>No new decisions to review.</article>');
     const count=Object.keys(changes).length, bridge=typeof window.openai?.sendFollowUpMessage==='function';
     root.querySelectorAll('.dr-send').forEach(button=>{
       button.disabled=!count||sent||sending||editor!==null;
       button.textContent=sent?'Sent to chat':bridge?'Send changes to chat':'Prepare changes for chat';
     });
-    q('.dr-pending').textContent=editor?'Add your note to changes, then send to chat':count?count+' change'+(count===1?'':'s')+(sent?' sent to chat':sending?' sending to chat':' ready to send'):'No changes to send';
+    q('.dr-pending').textContent=editor?'Add your choice to changes, then send to chat':count?count+' change'+(count===1?'':'s')+(sent?' sent to chat':sending?' sending to chat':' ready to send'):'No changes to send';
     root.querySelectorAll('[data-action]').forEach(button=>button.onclick=()=>{
       const item=review.items[Number(button.dataset.index)], action=button.dataset.action;
       if(action==='seen'){editor=null;update(item,'seen');return;}
       if(action==='undo'){delete changes[item.id];revision++;frozen=null;q('.dr-fallback').hidden=true;persist();render();return;}
       if(action==='cancel'){editor=null;render();return;}
       if(action==='save'){
+        if(editor.action==='remind'){
+          let reminder;
+          try{reminder=readReminder(q('.dr-reminder'));}
+          catch(error){q('.dr-status').textContent=error.message;q('.reminder-date')?.focus();return;}
+          editor=null;delete drafts[item.id];update(item,'remind','',null,false,reminder);return;
+        }
         const note=q('.dr-input').value.trim();
         if(!note){q('.dr-input').setCustomValidity('Add the exact instruction or correction reason.');q('.dr-input').reportValidity();return;}
         const kind=editor.action, label=kind==='correct'?q('.dr-label').value:null, propose=kind==='correct'&&q('.dr-teach').checked;
         editor=null;delete drafts[item.id];update(item,kind,note,label,propose);return;
       }
-      editor={id:item.id,action};render();q('.dr-input')?.focus();
+      editor={id:item.id,action};render();(q('.dr-input')||q('.reminder-when'))?.focus();
     });
-    if(editor){
-      const store=()=>{q('.dr-input').setCustomValidity('');drafts[editor.id]={note:q('.dr-input').value,label:q('.dr-label')?.value,propose:q('.dr-teach')?.checked||false};};
+    if(editor?.action==='remind'){
+      const container=q('.dr-reminder');bindReminder(container,drafts[editor.id]?.reminder);
+      container.querySelectorAll('input,select').forEach(field=>field.addEventListener('input',()=>{q('.dr-status').textContent='';drafts[editor.id]={...drafts[editor.id],reminder:reminderDraft(container)};}));
+    }else if(editor){
+      const store=()=>{q('.dr-input').setCustomValidity('');drafts[editor.id]={...drafts[editor.id],note:q('.dr-input').value,label:q('.dr-label')?.value,propose:q('.dr-teach')?.checked||false};};
       root.querySelectorAll('.dr-input,.dr-label,.dr-teach').forEach(field=>field.oninput=store);
     }
     if(sent||sending)root.querySelectorAll('article button,article input,article textarea,article select').forEach(el=>el.disabled=true);

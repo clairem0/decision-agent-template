@@ -29,6 +29,7 @@ workflow/jev_run.py
 workflow/jev_workflow.py
 workflow/pipeline.py
 workflow/review_assets/inline-review.html
+workflow/review_assets/reminder-controls.js
 workflow/serve.py
 workflow/storage.py
 workflow/tests/cases/answers.json

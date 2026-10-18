@@ -1,4 +1,5 @@
 import json
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 import tempfile
 import unittest
@@ -18,8 +19,8 @@ class InlineReviewTests(unittest.TestCase):
                           d.load_json('rubric/examples.json'), 'inline-test')
         d.accept(self.root, batch, d.load_json('workflow/demo/demo-results.json'))
 
-    def payload(self, name, include_seen=False):
-        path = inline_review.render(self.root, self.root/name, include_seen)
+    def payload(self, name, include_seen=False, now=None):
+        path = inline_review.render(self.root, self.root/name, include_seen, now)
         fragment = path.read_text()
         data = fragment.split('class="dr-data">')[1].split('</script>')[0]
         return fragment, json.loads(data)
@@ -88,6 +89,29 @@ class InlineReviewTests(unittest.TestCase):
         page = d.render(self.root).read_text()
         self.assertIn('fictional-account:unreadable', page)
         self.assertNotIn('data-id="fictional-account:unreadable"', page)
+
+    def test_reminder_visibility_is_shared_by_all_reviews_and_does_not_write_state(self):
+        _, initial = self.payload('initial.html')
+        item = initial['items'][0]
+        reminder = {'when': 'at', 'at': '2030-04-09T14:00:00Z'}
+        d.review(self.root, {'receipt_id': 'reminder', 'id': item['id'], 'decision_id': item['decision_id'],
+                            'action': 'remind', 'reminder': reminder})
+        before = (self.root/'state.json').read_bytes()
+        due = datetime(2030, 4, 9, 14, tzinfo=timezone.utc)
+        _, deferred = self.payload('deferred.html', now=due - timedelta(seconds=1))
+        self.assertEqual(deferred['deferred'], 1)
+        self.assertNotIn(item['id'], [i['id'] for i in deferred['items']])
+        _, full = self.payload('full.html', include_seen=True, now=due - timedelta(seconds=1))
+        self.assertEqual(next(i for i in full['items'] if i['id'] == item['id'])['reminder'], reminder)
+        _, returned = self.payload('due.html', now=due)
+        self.assertEqual(returned['deferred'], 0)
+        self.assertEqual(next(i for i in returned['items'] if i['id'] == item['id'])['decision_id'], item['decision_id'])
+        self.assertIn('3 awaiting review', d.render(self.root, now=due - timedelta(seconds=1)).read_text())
+        page = d.render(self.root, now=due).read_text()
+        self.assertIn('4 awaiting review', page)
+        self.assertIn('Reminder due', page)
+        self.assertIn(reminder['at'], page)
+        self.assertEqual((self.root/'state.json').read_bytes(), before)
 
     def test_snapshots_are_unique_and_cannot_overwrite_delivered_file(self):
         _, first = self.payload('first.html')

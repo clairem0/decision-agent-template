@@ -32,11 +32,23 @@ Construct fresh inputs in memory following the example shape:
 
 Show all three categories and any held items using the [review interface or chat fallback](inline-review.md). Save submitted choices and read back their receipts before confirming them. An unchanged rerun must preserve the choices without another Jev call. A correction applies to that assessment; then discuss [whether the rubric should change](#improve-the-rubric-with-the-reader).
 
-Inspect the full review page. `new_review` identifies current, unacknowledged Needs action/Worth seeing decisions, including those already shown. Resurface untouched decisions at the next review. Only a saved user choice (Seen & clear, Assign follow-up or Correct classification) quiets an unchanged assessment. Silence and unsubmitted UI edits are not acknowledgment. Skip remains available for inspection outside the attention list.
+Inspect the full review page. `new_review` identifies current, unacknowledged Needs action/Worth seeing decisions that are due for review, including those already shown. It also includes due reminders explicitly requested for Skip items. Resurface untouched decisions at the next review. Only a saved user choice (Seen & clear, Assign follow-up or Correct classification) quiets an unchanged assessment; a saved reminder defers it until due. Silence and unsubmitted UI edits are not acknowledgment. Skip remains available for inspection; only an explicit user reminder brings it into the attention list.
 
 Generated HTML is not proof of delivery. Only after actual chat delivery, save a `delivered` receipt with evidence in `note` using the review command. It records presentation without suppressing the next review. Reuse the existing classification when inputs match; resurfacing does not require another Jev call. The full page retains all items, failures and earlier assessments; missing scan entries do not close tasks or retire items.
 
-A temporary retrieval failure suspends the prior assessment and its saved choices. When the exact same decision inputs return, the assessment resumes unchanged; held assessments cannot accept new choices. Changes in content, relevant context, rubric, approved references or evaluator invalidate the current assessment. Old assessments and reviews remain visible. Reassess changed inputs; do not silently reapply an old correction to new evidence. Saved follow-up tasks remain separate from classification and require explicit completion evidence. No automatic reminder engine is included. An open task alone does not justify another recommendation.
+A temporary retrieval failure suspends the prior assessment and its saved choices. When the exact same decision inputs return, the assessment resumes unchanged; held assessments cannot accept new choices. Changes in content, relevant context, rubric, approved references or evaluator invalidate the current assessment. Old assessments and reviews remain visible. Reassess changed inputs; do not silently reapply an old correction to new evidence. Saved follow-up tasks remain separate from classification and require explicit completion evidence. Reminders use the next manual or scheduled review; no separate notification engine is included. An open task alone does not justify another recommendation.
+
+## Reminders
+
+Use the existing review command and receipt readback for `action: "remind"`. Include `reminder: {"when":"next_review"}` or an exact time, for example:
+
+```json
+{"receipt_id":"UNIQUE_RECEIPT_ID","id":"SOURCE_ID","decision_id":"CURRENT_DECISION_ID","action":"remind","reminder":{"when":"at","at":"2030-04-09T09:00:00-05:00"}}
+```
+
+Use the reader’s actual chosen date and timezone; resolve ambiguous chat requests before saving. Timestamps must include `Z` or a numeric UTC offset. Late submissions are accepted and immediately due. This only changes review visibility: confirm the saved time with its timezone and explain that it returns at the first review at or after that time. For a separate timed notification, use an available host scheduler only under the reader’s instruction and verify it separately.
+
+Generate a fresh review on each run rather than reopening an old snapshot. Due reminders remain pending until a further choice. To change a reminder, render with `--include-seen` or open the full local review and submit a new remind choice; Next review removes the delay. Seen, assign and correct clear it. Reassessment clears the active reminder but preserves its receipt. The classifier never receives reminder history.
 
 ## Improve the rubric with the reader
 

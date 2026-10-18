@@ -38,7 +38,7 @@ Follow-up notes authorize the specified work; classification alone does not. Sen
 
 ## 5. Finish setup
 
-Confirm scope, actual Jev results, review delivery, saved receipt and unchanged rerun. Leave one item untouched and verify it resurfaces while a saved user choice stays quiet. Showing the review is not acknowledgment, and unchanged items reuse their saved classification. Name remaining gaps. Keep live model evidence separate from simulated code tests and reader acceptance.
+Confirm scope, actual Jev results, review delivery, saved receipt and unchanged rerun. Leave one item untouched and verify it resurfaces while a saved clear/assignment/correction stays quiet. If using Remind me, verify it returns next review or at the first review after the custom time; it creates no separate notification. Showing the review is not acknowledgment, and unchanged items reuse their saved classification. Name remaining gaps. Keep live model evidence separate from simulated code tests and reader acceptance.
 
 Stop before creating a schedule unless explicitly asked. [Scheduling](../workflow/docs/scheduling.md) · [Technical reference](../workflow/docs/agent-reference.md) · [Rubric pressure test](../workflow/docs/rubric-check.md).
 
