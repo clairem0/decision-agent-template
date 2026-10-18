@@ -6,7 +6,9 @@ The agent uses the Gmail connector available in the current host, then supplies 
 
 ## Without an email connection
 
-Ask the reader for a few complete conversations pasted into chat, with relevant replies, dates and context. Explain that the chat host may retain what they paste. Use only that supplied sample; do not require Gmail setup or a Jev key. If they prefer not to share any email, show the [fictional demo](../workflow/README.md#try-the-fictional-demo). Its fixed judgments demonstrate the interface, not personal rubric fit.
+Offer the [bundled synthetic inbox](../workflow/README.md#try-synthetic-emails-without-a-connector) to try fresh classification and review without any connector or personal data. The coding agent can use its fictional rubric and examples without a Jev key; Jev is optional. Skip personal-inbox setup and connector checks on this path. For a quick interface preview, the [fictional demo](../workflow/README.md#try-the-fictional-demo) uses fixed simulated judgments instead.
+
+If the reader prefers their own emails, ask for a few complete conversations pasted into chat, with relevant replies, dates and context. Explain that the chat host may retain what they paste. Use only that supplied sample; do not require Gmail setup or a Jev key.
 
 For a pasted sample, use stable sample IDs such as `sample:batch-1:thread-1`, preserve those IDs on rereads and set coverage to the supplied sample only. Do not invent an account, inbox coverage or original-email URL. Ask about missing replies or attachments; unresolved retrieval gaps stay on hold. Continue the same example discussion, approved rubric and [first review](README.md#3-review-a-first-run). Either classifier can use a complete pasted sample, but Jev requires separate setup and agreement to transmit it. A pasted sample cannot supply new emails to a daily schedule.
 

@@ -4,14 +4,14 @@ Follow the article: **explore examples → approve the rubric → test and revie
 
 Follow the reader's current prompt. If they ask to download or explain the template, briefly orient them and stop there. If they ask for the fictional demo, show it and stop there. During setup, pause for their judgments and rubric approval; do not jump ahead to keys, scheduling or a large inbox run.
 
-Want to try Jev without personal data? Use the [50-thread synthetic inbox](../workflow/README.md#try-jev-without-gmail). That path does not require Gmail, personal context or the setup steps below; finish there unless the reader asks to connect their own inbox.
+Want to try the workflow without connecting email or sharing personal data? Use the [50-thread synthetic inbox](../workflow/README.md#try-synthetic-emails-without-a-connector) with the coding agent, or Jev if requested. Use its included fictional rubric and examples; no personal discovery or connector checks are needed. Finish there unless the reader asks to set up their own workflow.
 
 ## 1. Explore examples together
 
 Check Python 3.11+, file access, existing email connectors and a review surface. Use an existing supported runtime; do not install tools or connect accounts automatically. Without a native review surface, use local HTML or numbered chat.
 
 - **Connected email:** follow the [Gmail notes](gmail.md) to confirm the account and a small read-only scope. Read complete conversations, including relevant sent replies and attachments.
-- **No connected email:** use the [pasted-sample path](gmail.md#without-an-email-connection), or show the fictional demo if the reader wants to explore without personal data. Do not require a connector or API key to continue.
+- **No connected email:** offer the [synthetic inbox](../workflow/README.md#try-synthetic-emails-without-a-connector) to try classification and review, or the fictional demo for a quick interface preview. Use the [pasted-sample path](gmail.md#without-an-email-connection) only if the reader prefers their own examples. Do not require a connector or API key to continue.
 
 Discuss a small batch with the reader. Offer preliminary categories and ask what they would change; explore another batch if needed. Look at sender, content, obligations and later replies together. Treat these as discovery, not an approved rubric or permission to save full teaching examples. Explain that ordinary source stays in memory by default, private metadata stays in ignored `local/`, and host transcripts may retain reads.
 

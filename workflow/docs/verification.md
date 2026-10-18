@@ -16,6 +16,8 @@
 
 - **Article setup flow:** the five reader-setup tests pass. A clean extracted download also passed the no-Jev, no-connector path with a wholly fictional pasted sample: full request preparation, simulated acceptance, both review outputs, exact receipt readback, unchanged reuse and reassessment on evaluator change without losing history. No key or provider call was used, source bodies stayed out of managed artifacts, and the separate synthetic preview remained read-only. All 94 relative Markdown links and anchors resolve. This proves command compatibility; a reader-led example discussion and fresh coding-agent judgments through the revised onboarding remain unverified.
 
+- **Connector-free synthetic path:** the five reader-setup tests and 51-file package audit pass. A fresh download prepared all 50 complete synthetic requests with their fictional rubric and six teaching examples, then passed simulated acceptance, both review outputs, receipt readback and unchanged reuse; all 49 untouched items remained due after one saved clear. The separate Jev preview made no API calls or state writes. No personal configuration, credentials or target answer keys were used. All 103 relative Markdown links and anchors resolve. This verifies the documented commands, not fresh coding-agent judgment quality or reader acceptance.
+
 The demo uses four fictional examples of everyday inbox situations with saved, simulated judgments. Its preview does not call Jev or read Gmail. The revised examples and styling are ready for reader feedback.
 
 ## Still to verify

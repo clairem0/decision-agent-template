@@ -10,13 +10,15 @@ Open this folder in an AI agent with local file access, such as ChatGPT Work/Cod
 >
 > Start with my examples and any rubric we've already drafted. Explore what belongs in Needs action, Worth seeing and Skip. Show the proposed rubric as three rows with “Belongs here” and “Goes elsewhere” examples, and get my approval.
 >
-> Use your own classification to test our rubric on a small agreed sample and show the review UI. Save my submitted choices and help me improve the rubric. If I haven't connected email, help me use complete pasted conversations or the fictional demo. Leave my inbox unchanged and stop before scheduling or adding Jev unless I've asked for those.
+> Use your own classification to test our rubric on a small agreed sample and show the review UI. Save my submitted choices and help me improve the rubric. If I haven't connected email, offer the bundled synthetic inbox so I can try the workflow without sharing personal data. Leave my inbox unchanged and stop before scheduling or adding Jev unless I've asked for those.
 
 ## Start without Jev or an email connection
 
 - **No Jev:** your AI agent applies the rubric and uses the same review interface and saved choices. You don't need a TypeSafe account or API key.
-- **No email connection:** paste a few complete conversations, including relevant replies and context, to develop and test your own rubric. The chat host may retain what you paste. This reviews the supplied sample; it cannot fetch new mail automatically.
+- **No email connection:** ask **“Help me try the workflow with the bundled synthetic emails.”** Your AI agent classifies the [50 fictional conversations](workflow/README.md#try-synthetic-emails-without-a-connector) using their included rubric, then shows the review so you can try choices and corrections. No connector, personal emails or Jev key needed. You can use Jev on the same inbox later if you prefer.
 - **Just exploring:** ask **“Can you show me the fictional demo?”** It uses four invented emails and saved, simulated judgments. No email connection or Jev key is needed.
+
+If you'd rather try your own emails without a connector, you can paste a few complete conversations with relevant replies and context. The chat host may retain what you paste. Neither path fetches new mail automatically.
 
 All collected emails appear for review, including **Skip** recommendations. Untouched items return at the next review; only a submitted choice clears or defers them. Filtering future emails requires an explicitly requested rule in your email account.
 

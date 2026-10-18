@@ -31,9 +31,29 @@ python3 workflow/decision.py demo
 
 The local review is written to `local/email-demo/review/index.html`. For an in-chat review, follow the [display instructions](docs/inline-review.md). The examples that teach the rubric live separately in [rubric/examples.json](../rubric/examples.json).
 
+## Try synthetic emails without a connector
+
+This separate inbox contains **50 distinct fictional conversations**: supplier approvals, billing, reservations, deliveries, repairs, classes, equipment loans, travel, account notices and project work. Some are single messages; others contain sent replies, unsent drafts, resolved requests or conflicting details. Roles, situations and reading preferences were invented from scratch. No personal inbox, user profile, business identity, account IDs or real source links were used.
+
+Ask **“Help me try the workflow with the bundled synthetic emails.”** Your coding agent makes fresh classifications using the included fictional rubric, then shows the same review and saves your submitted choices. No connector or Jev key is needed. The four-email demo above stays a separate, fixed interface preview. If you choose Jev, use [the live test below](#try-jev-without-gmail) instead.
+
+For your agent:
+
+1. Check Python 3.11+, local file access and a review surface. Skip personal discovery, connector checks and credentials. Use only [synthetic/inbox.json](synthetic/inbox.json), [synthetic/rubric.json](synthetic/rubric.json) and [synthetic/examples.json](synthetic/examples.json).
+2. Use a dedicated `local/synthetic-agent/` root; if it already contains unrelated work, leave it untouched and choose a fresh root. Prepare with the actual available model identity in place of MODEL:
+
+   ```sh
+   python3 workflow/decision.py prepare --root local/synthetic-agent --inputs workflow/synthetic/inbox.json --rubric workflow/synthetic/rubric.json --references workflow/synthetic/examples.json --evaluator 'coding-agent:MODEL:prompt-v1'
+   ```
+
+3. Follow [Classify without Jev](docs/agent-reference.md#classify-without-jev) from reading the complete prepared requests through acceptance and review, replacing every `local/my-review` path with this synthetic root. Do not read `synthetic/expected.json` before saving original judgments. If the full batch exceeds context, prepare smaller batches from the same inbox in memory; never truncate a conversation or classify from the metadata manifest.
+4. Show the review and save submitted choices with receipt readback. These are fictional situations: follow-up choices can demonstrate drafting in chat, but do not contact anyone or change accounts. Reuse the same fixture, rubric, references and evaluator arguments for an unchanged rerun. Keep bundled files unchanged; move to a separate personalized workflow if the reader wants their own rubric.
+
+This tests classification and review on supplied data; it cannot fetch new mail. It does not run the Jev timing report.
+
 ## Try Jev without Gmail
 
-This separate inbox contains **50 distinct fictional conversations**: supplier approvals, billing, reservations, deliveries, repairs, classes, equipment loans, travel, account notices and project work. Some are single messages; others contain sent replies, unsent drafts, resolved requests or conflicting details. Roles, situations and reading preferences were invented from scratch. No personal inbox, user profile, business identity, account IDs or real source links were used. The four-email offline demo above is unchanged.
+Use the same 50-thread synthetic inbox above with Jev to test the API and see the timing breakdown. No email connector or personal data is needed; live classification requires your own TypeSafe key.
 
 Your agent handles these steps:
 
