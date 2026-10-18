@@ -14,8 +14,8 @@ Jev is the default classifier; follow setup/jev.md. The fictional demo is option
 - Classifiers receive full source, rubric and approved examples, without target answer keys, prior predictions, operational review history or action tools.
 - Preserve earlier assessments, failed-source records and receipts. Reuse decisions only when inputs and evaluator contract match.
 - Save submitted choices and read back receipts before claiming persistence. Follow-up notes authorize their requested work; classification alone does not. Sending messages, changing accounts and scheduling require the corresponding user instruction.
-- Resurface untouched decisions at the next review, even if they were already shown. Delivery is audit history, not acknowledgment. Only a saved user choice quiets an unchanged decision; do not infer a choice from silence or unsubmitted UI edits.
-- After a saved correction, offer a rubric tweak, a teaching example or both, even without a teaching-example request. Check evidence first, show the exact proposed rule and obtain approval before updating the saved rubric. Follow the [correction loop](workflow/docs/agent-reference.md#improve-the-rubric-with-the-reader).
+- Show every collected email, including Skip recommendations. Resurface untouched decisions at the next review, even if they were already shown. Delivery is audit history, not acknowledgment. Only a saved user choice quiets an unchanged decision; do not infer a choice from silence or unsubmitted UI edits.
+- After a saved correction, offer a rubric tweak, a teaching example or both, even without a rubric-update request. “Use to update rubric” requests a proposed rule change, not source retention or an inbox filter. Check evidence first, show the exact proposed rule and obtain approval before updating the saved rubric. Follow the [correction loop](workflow/docs/agent-reference.md#improve-the-rubric-with-the-reader).
 - Do not install tools, connect accounts or read credentials from unrelated projects automatically. Keep private state in ignored `local/`.
 
 ## Changing the starter itself

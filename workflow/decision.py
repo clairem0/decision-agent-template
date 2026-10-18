@@ -32,11 +32,13 @@ HANDOFF = (
     'check task progress and do not repeat completed or uncertain work. Ask for approval before sending messages, '
     'changing source accounts, creating schedules or taking other actions outside the authorized scope. '
     'After each successfully saved correction, discuss whether it reflects missing evidence, a one-off exception or a reusable preference, '
-    'even when propose_teaching is false. Offer a rubric tweak, a teaching example or both, explaining which would help. '
+    'even when update_rubric is false. Offer a rubric tweak, a teaching example or both, explaining which would help. '
+    'For update_rubric=true (Use to update rubric), use the correction to propose the exact rule change and its limits for approval. '
+    'This requests a rubric update, not full-source retention or an email filter. '
     'Follow workflow/docs/agent-reference.md#improve-the-rubric-with-the-reader: '
     'check the source and current rubric, propose any exact before/after rule change with its limits, and obtain explicit approval before editing the saved rubric. '
     'Do not treat a corrected category as permission to change future classifications or retain full source. '
-    'For propose_teaching=true, show a teaching proposal; only a separate explicit approval authorizes workflow/decision.py teach. '
+    'For a legacy propose_teaching=true receipt, show a teaching proposal; only a separate explicit approval authorizes workflow/decision.py teach. '
     'Seen & clear is acknowledgment, not task completion. These choices grant no permission to send, archive or schedule.'
 )
 
@@ -255,14 +257,17 @@ def accept(root, batch, response):
 
 def review(root, choice, reminder_resolution=None):
     """Apply only an explicit reader choice. An acknowledgment never completes a task."""
-    if set(choice) - {'receipt_id', 'id', 'decision_id', 'action', 'label', 'note', 'propose_teaching', 'reminder'}:
+    if set(choice) - {'receipt_id', 'id', 'decision_id', 'action', 'label', 'note', 'propose_teaching', 'update_rubric', 'reminder'}:
         raise Hold('Review receipts accept metadata only, not source snapshots.')
     if ('note' in choice and not isinstance(choice['note'], str) or
             'propose_teaching' in choice and type(choice['propose_teaching']) is not bool or
+            'update_rubric' in choice and type(choice['update_rubric']) is not bool or
             'label' in choice and (not isinstance(choice['label'], str) or choice['label'] not in LABELS)):
         raise Hold('Review notes must be text, proposal flags boolean and labels allowed categories.')
     for k in ('receipt_id', 'id', 'decision_id', 'action'):
         require_text(choice.get(k), k)
+    if choice.get('update_rubric') and choice['action'] != 'correct':
+        raise Hold('Use to update rubric belongs to a classification correction.')
     if choice['action'] == 'remind':
         validate_reminder(choice.get('reminder'), allow_request=True)
     elif 'reminder' in choice:
@@ -393,9 +398,7 @@ def summary(root, now=None):
     return {'coverage': state['scans'][-1] if state['scans'] else None,
             'items': [{'id': key, 'status': row['status'],
                        'label': ((row['decision']['correction'] or row['decision'])['label'] if row['status'] == 'current' and row['decision'] else None),
-                       'new_review': bool(row['status'] == 'current' and row['decision'] and
-                                          ((row['decision']['correction'] or row['decision'])['label'] != 'skip' or row['decision'].get('reminder')) and
-                                          review_due(row['decision'], now)),
+                       'new_review': bool(row['status'] == 'current' and review_due(row['decision'], now)),
                        'reminder': row['decision'].get('reminder') if row['status'] == 'current' and row['decision'] else None,
                        'uncertainty': row['decision'].get('uncertainty', '') if row['status'] == 'current' and row['decision'] else '',
                        'follow_up': row.get('task')}
@@ -410,10 +413,8 @@ ACTIONS = {'seen': 'Seen & clear', 'correct': 'Changed category', 'assign': 'Add
 REMINDER_JS = (Path(__file__).resolve().parent / 'review_assets' / 'reminder-controls.js').read_text(encoding='utf-8')
 
 REVIEW_CSS = '''
-:root{--bg:#f6f6f3;--card:#fff;--ink:#1d2320;--muted:#5f6862;--faint:#626b65;--line:#e4e5e0;--soft:#f1f1ed;
---accent:#1f5c4a;--focus:#2d6cdf;--act:#294e3b;--track:#2c6a9a;--read:#3b7a57;--quiet:#858b88;--held:#a86b12;--pending:#858b88}
-@media (prefers-color-scheme:dark){:root{--bg:#141716;--card:#1c201e;--ink:#e8ebe9;--muted:#a3aba6;--faint:#a3aba6;--line:#2e3431;--soft:#232826;
---accent:#7cc4a8;--focus:#8ab4ff;--act:#b9d4b5;--track:#7fb3de;--read:#82c49f;--quiet:#9aa19d;--held:#e0ac55;--pending:#9aa19d}}
+:root{color-scheme:light dark;--bg:transparent;--card:transparent;--field:light-dark(#fff,#242528);--ink:light-dark(#25262a,#eeeeef);--muted:light-dark(#64666c,#b4b5ba);--faint:var(--muted);--line:light-dark(#d7d8dd,#44464d);--soft:light-dark(#00000008,#ffffff0a);
+--accent:light-dark(#34558c,#b5cdf5);--onaccent:light-dark(#fff,#182a47);--focus:var(--accent);--button-bg:light-dark(#edf1fc,#263755);--button-ink:light-dark(#304d8a,#d6e3ff);--button-line:light-dark(#8298be,#7891b8);--act:light-dark(#176641,#91ddb0);--read:light-dark(#52735d,#adc9b6);--quiet:light-dark(#63666c,#b1b3b8);--held:var(--quiet);--pending:var(--quiet)}
 *{box-sizing:border-box}[hidden]{display:none!important}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
 main{max-width:780px;margin:0 auto;padding:40px 20px 72px}
@@ -424,9 +425,10 @@ p{margin:0 0 8px}pre{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;font:i
 :focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 .lede{color:var(--muted);margin:0 0 4px}.lede strong{color:var(--ink);font-weight:600}
 .status-line{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:14px;color:var(--muted);margin:14px 0 0}
-.ok{color:var(--read)}.warn{color:var(--held)}
+.ok,.warn{color:var(--muted)}
+a{color:inherit;text-underline-offset:3px}
 .guide{font-size:14px;color:var(--muted);margin-top:10px}.guide ul{margin:8px 0 0;padding-left:20px}
-summary{cursor:pointer}.more>summary{color:var(--accent);font-size:14px;font-weight:500;list-style:none;display:inline-flex;align-items:center;gap:6px}
+summary{cursor:pointer}.more>summary{color:var(--ink);font-size:14px;font-weight:500;list-style:none;display:inline-flex;align-items:center;gap:6px}
 .more>summary::-webkit-details-marker,.item>summary::-webkit-details-marker{display:none}
 .more>summary::before{content:"\\203A";display:inline-block;transition:transform .15s;font-size:18px;line-height:1}
 .more[open]>summary::before{transform:rotate(90deg)}
@@ -434,7 +436,7 @@ summary{cursor:pointer}.more>summary{color:var(--accent);font-size:14px;font-wei
 .item+.item{border-top:1px solid var(--line)}
 .item>summary{list-style:none;display:grid;grid-template-columns:10px minmax(0,1fr) auto;gap:2px 14px;align-items:center;padding:14px 18px}
 .item>summary:hover{background:var(--soft)}.item[open]>summary{background:var(--soft)}
-.dot{width:8px;height:8px;border-radius:50%;grid-row:1/3}.new .dot{background:var(--accent)}
+.dot{width:8px;height:8px;border-radius:50%;grid-row:1/3}.new .dot{background:var(--ink)}
 .subject{font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.new .subject{font-weight:650}
 .why{grid-column:2;font-size:14px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tags{grid-column:3;grid-row:1/3;display:flex;align-items:center;gap:8px;justify-content:flex-end}
@@ -446,13 +448,13 @@ color:var(--c);background:color-mix(in srgb,var(--c) 11%,transparent);white-spac
 .pill.held::before{border-radius:1px;transform:rotate(45deg)}.pill.pending::before{background:none;border:1.5px solid var(--c);width:5px;height:5px}
 .c-act{--c:var(--act)}.c-read{--c:var(--read)}.c-skip{--c:var(--quiet)}.c-held{--c:var(--held)}.c-pending{--c:var(--pending)}
 .chip{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 8px;white-space:nowrap}
-.chip.open{color:var(--track);border-color:color-mix(in srgb,var(--track) 35%,transparent)}
+.chip.open{color:var(--muted);border-color:var(--line)}
 .panel{padding:4px 18px 22px 42px;border-top:1px solid var(--line);background:var(--card)}
 .panel>section{margin-top:16px}
 .label{font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);margin:0 0 4px}
 .email{background:var(--soft);border-radius:8px;padding:12px 14px;max-height:22em;overflow:auto;font-size:15px}
 .context,.small{font-size:13px;color:var(--muted)}
-.note{border-left:3px solid var(--c,var(--line));padding:2px 0 2px 12px;margin:8px 0}
+.note{border-left:3px solid var(--line);padding:2px 0 2px 12px;margin:8px 0}
 .stack>*+*{margin-top:12px}
 .card{border:1px solid var(--line);border-radius:8px;padding:10px 12px}.card .email{margin:8px 0;max-height:14em}
 .history li{margin-bottom:10px}.history ul,.rules{padding-left:18px;margin:6px 0}
@@ -462,8 +464,9 @@ fieldset{border:0;padding:0;margin:0 0 12px}legend{font-size:14px;font-weight:60
 .choices{display:flex;flex-wrap:wrap;gap:8px}
 .choices input,.cats input{position:absolute;opacity:0;pointer-events:none}
 .choices span{display:inline-block;padding:6px 14px;border:1px solid var(--line);border-radius:999px;font-size:14px;cursor:pointer;background:var(--card)}
+.choices input:is([value="seen"],[value="assign"],[value="remind"])+span{background:var(--button-bg);color:var(--button-ink);border-color:var(--button-line)}
 .choices label:hover span{border-color:var(--faint)}
-.choices input:checked+span{background:var(--accent);border-color:var(--accent);color:var(--card)}
+.choices input:checked+span,.choices input:is([value="seen"],[value="assign"],[value="remind"]):checked+span{background:var(--accent);border-color:var(--accent);color:var(--onaccent)}
 .choices input:focus-visible+span,.cats input:focus-visible+span{outline:2px solid var(--focus);outline-offset:2px}
 .cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
 .cats span{display:block;height:100%;padding:8px 12px;border:1px solid var(--line);border-radius:8px;cursor:pointer;font-size:13px;color:var(--muted)}
@@ -472,19 +475,19 @@ fieldset{border:0;padding:0;margin:0 0 12px}legend{font-size:14px;font-weight:60
 .cats input:checked+span{border-color:var(--c);box-shadow:inset 0 0 0 1px var(--c);background:color-mix(in srgb,var(--c) 6%,transparent)}
 .cats input:disabled+span{opacity:.55;cursor:default}
 .field{display:block;margin:4px 0 12px}.field>span{display:block;font-size:14px;font-weight:600;margin-bottom:4px}
-textarea{width:100%;font:inherit;font-size:15px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;resize:vertical}
+textarea{width:100%;font:inherit;font-size:15px;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:8px;padding:8px 10px;resize:vertical}
 textarea:focus{border-color:var(--accent)}
 .reminder-fields label{display:block;margin:8px 0}.reminder-fields p{font-size:14px;color:var(--muted)}
-.teach{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:8px;background:var(--soft);font-size:14px;cursor:pointer}
-.teach input{margin-top:4px;accent-color:var(--accent)}.teach small{display:block;color:var(--muted)}
-button{font:inherit;font-size:14px;font-weight:600;border-radius:8px;padding:8px 16px;cursor:pointer;border:1px solid var(--accent);background:var(--accent);color:var(--card)}
+.rubric-update{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:8px;background:var(--soft);font-size:14px;cursor:pointer}
+.rubric-update input{margin-top:4px;accent-color:var(--accent)}.rubric-update small{display:block;color:var(--muted)}
+button{font:inherit;font-size:14px;font-weight:600;border-radius:8px;padding:8px 16px;cursor:pointer;border:1px solid var(--accent);background:var(--accent);color:var(--onaccent)}
 button.quiet{background:transparent;color:var(--accent)}
-.error{color:var(--act);font-size:14px;margin:8px 0 0}
-.handoff{margin-top:16px;padding:14px;border-radius:10px;border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);background:color-mix(in srgb,var(--accent) 5%,var(--card))}
+.error{color:var(--ink);font-size:14px;margin:8px 0 0}
+.handoff{margin-top:16px;padding:14px;border-radius:10px;border:1px solid var(--line);background:transparent}
 .handoff textarea{font:13px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace;margin:8px 0;color:var(--muted)}
 .handoff .row{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
 .empty{padding:18px;color:var(--muted)}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.sr{position:absolute;left:0;top:0;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media (max-width:600px){main{padding:24px 14px 56px}h1{font-size:24px}
 .item>summary{grid-template-columns:10px minmax(0,1fr);padding:12px 14px}.tags{grid-column:2;grid-row:auto;justify-content:flex-start;margin-top:4px}
 .why{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
@@ -520,8 +523,8 @@ document.querySelectorAll('form.review').forEach(form => {
     if (!action) return fail('Choose what to do first.');
     if (action === 'correct' && !picked('label')) return fail('Choose the category it should be.', form.querySelector('.cats input:not(:disabled)'));
     if (field && action !== 'remind' && !note) return fail(field.dataset.need, field);
-    const teach = action === 'correct' && form.querySelector('[name=teach]').checked;
-    const choice = {receipt_id: crypto.randomUUID(), id: form.dataset.id, decision_id: form.dataset.decision, action, note, propose_teaching: teach};
+    const updateRubric = action === 'correct' && form.querySelector('[name=update_rubric]').checked;
+    const choice = {receipt_id: crypto.randomUUID(), id: form.dataset.id, decision_id: form.dataset.decision, action, note, update_rubric: updateRubric};
     if (action === 'correct') choice.label = picked('label');
     if (action === 'remind') {
       try { choice.reminder = readReminder(reminderFieldsRoot); }
@@ -584,8 +587,8 @@ def render(root, now=None):
 <div class="reminder-fields" data-for="remind"></div>
 <div data-for="correct"><fieldset><legend>What category should it be?</legend><div class="cats">{cats}</div></fieldset>
 {note('correct', 'Why? One sentence is enough.', 'e.g. The reply already settled this, so nothing is left to do.', 'Add a short reason for the change.')}
-<label class="teach"><input type="checkbox" name="teach"><span>Also propose this as a teaching example
-<small>Your agent will show you the example and when it applies. It is only used for future emails after you approve it.</small></span></label></div>
+<label class="rubric-update"><input type="checkbox" name="update_rubric"><span>Use to update rubric
+<small>Your agent will suggest the rule change in chat for your approval.</small></span></label></div>
 <div data-for="assign">{note('assign', 'What should happen next?', 'e.g. Reply to confirm HDMI works by April 9.', 'Describe the follow-up.')}
 <p class="small">After you submit this in chat, your agent saves the instruction and begins the requested work. Sending messages or changing accounts needs your approval.</p></div>
 {note('complete', 'How was it done?', 'e.g. Replied on April 8 confirming HDMI.', 'Say how the follow-up was completed.')}
@@ -664,6 +667,7 @@ def render(root, now=None):
             f'<li><b>{esc(ACTIONS.get(r["action"], r["action"]))}</b>'
             + (f' → {esc(NAMES.get(r["label"], r["label"]))}' if r.get('label') else '')
             + (f': {esc(r["note"])}' if r.get('note') else '')
+            + ('<br><span class="small">Use to update rubric</span>' if r.get('update_rubric') else '')
             + (f': {esc(r["reminder"].get("text", r["reminder"].get("at", "Next review")))}' if r.get('reminder') else '')
             + (f'<br><span class="small">Resolved: {esc(state["reminder_resolutions"][r["receipt_id"]].get("at", "Next review"))}</span>' if r['receipt_id'] in state.get('reminder_resolutions', {}) else '')
             + f'<br><span class="small">Receipt {esc(r["receipt_id"])}</span></li>'
@@ -702,7 +706,7 @@ def render(root, now=None):
 <p class="lede">Open an email to check its category. Choices are <strong>not saved</strong> until you paste them into your coding agent chat and it confirms.</p>
 <p class="status-line">{''.join(f'<span>{part}</span>' for part in line)}</p>
 <p class="small">{esc(coverage.get('scope', ''))}{' · ' + esc(coverage.get('detail', '')) if status == 'complete' else ''}</p>
-{details('How this works', '<ul><li>Categories are suggestions. They never give permission to send, archive or delete.</li><li><b>Seen &amp; clear</b> marks an email reviewed; it does not complete a follow-up.</li><li>Changing a category affects this email only. To help future emails, also propose it as a teaching example; your agent asks for your approval before using it.</li><li>This page cannot save or send anything itself.</li></ul>', 'more guide')}
+{details('How this works', '<ul><li>Categories are suggestions. They never give permission to send, archive or delete.</li><li><b>Seen &amp; clear</b> marks an email reviewed; it does not complete a follow-up.</li><li>Changing a category affects this email only. Select Use to update rubric to request a rule change for future reviews; your agent shows the proposed wording for approval.</li><li>This page cannot save or send anything itself.</li></ul>', 'more guide')}
 </header>
 <h2>Emails</h2><div class="list">{''.join(r[1] for r in classified) or '<p class="empty">Nothing classified yet.</p>'}</div>'''
     if waiting:

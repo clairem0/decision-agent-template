@@ -98,6 +98,37 @@ class DecisionTests(unittest.TestCase):
         self.assertEqual(item['label'],'read'); self.assertFalse(item['new_review'])
         self.assertEqual(len(d.read_state(self.root)['items']['mail-demo-a']['reviews']),1)
 
+    def test_rubric_update_request_preserves_receipt_without_changing_rubric_or_examples(self):
+        self.accepted()
+        for name, data in [('rubric.json', self.rubric), ('references.json', self.refs)]:
+            (self.root/name).write_text(json.dumps(data))
+        before = {name: (self.root/name).read_bytes() for name in ('rubric.json', 'references.json')}
+        choice = self.choice('correct', label='read', note='This is wanted reading.', update_rubric=True)
+        self.assertEqual(d.review(self.root, choice), 'saved')
+        self.assertEqual(d.review(self.root, choice), 'already saved')
+        state = d.read_state(self.root)
+        self.assertEqual(state['receipts'][choice['receipt_id']], choice)
+        self.assertEqual(state['items'][choice['id']]['reviews'], [choice])
+        self.assertNotIn('propose_teaching', state['receipts'][choice['receipt_id']])
+        for name, content in before.items():
+            self.assertEqual((self.root/name).read_bytes(), content)
+        # A request alone cannot authorize storing a full-source teaching example.
+        with self.assertRaises(d.Hold):
+            d.teach(self.root, {'receipt_id': choice['receipt_id']}, self.refs, self.inputs['items'][0])
+        self.assertEqual(self.prepare()['requests'], [])
+        self.assertIn('Use to update rubric', d.render(self.root).read_text())
+
+    def test_invalid_rubric_update_requests_do_not_write(self):
+        self.accepted()
+        before = (self.root/'state.json').read_bytes()
+        for flag in ('yes', 1, None, {}):
+            with self.subTest(flag=flag), self.assertRaises(d.Hold):
+                d.review(self.root, self.choice('correct', label='read', note='Wanted reading.', update_rubric=flag))
+            self.assertEqual((self.root/'state.json').read_bytes(), before)
+        with self.assertRaises(d.Hold):
+            d.review(self.root, self.choice('seen', update_rubric=True))
+        self.assertEqual((self.root/'state.json').read_bytes(), before)
+
     def test_changed_inputs_rubric_reference_and_evaluator_reassess(self):
         self.accepted()
         stale=self.choice('seen')
@@ -194,12 +225,19 @@ class DecisionTests(unittest.TestCase):
         self.assertEqual(len(row['history']), 2)
         self.assertEqual(row['reviews'][0]['reminder']['at'], '2099-01-01T00:00:00Z')
 
-    def test_user_reminder_brings_skip_to_attention_without_changing_its_category(self):
+    def test_skip_stays_visible_until_user_choice_and_can_be_reminded_without_reclassification(self):
         self.accepted()
         item = d.summary(self.root)['items'][-1]
         self.assertEqual(item['label'], 'skip')
-        self.assertFalse(item['new_review'])
+        self.assertTrue(item['new_review'])
         row = d.read_state(self.root)['items'][item['id']]
+        d.review(self.root, {'id': item['id'], 'decision_id': row['decision']['id'],
+                            'receipt_id': 'skip-shown', 'action': 'delivered', 'note': 'Shown in review.'})
+        self.assertEqual(self.prepare()['requests'], [])
+        self.assertTrue(d.summary(self.root)['items'][-1]['new_review'])
+        d.review(self.root, {'id': item['id'], 'decision_id': row['decision']['id'],
+                            'receipt_id': 'skip-confirmed', 'action': 'seen'})
+        self.assertFalse(d.summary(self.root)['items'][-1]['new_review'])
         choice = {'id': item['id'], 'decision_id': row['decision']['id'], 'receipt_id': 'skip-reminder',
                   'action': 'remind', 'reminder': {'when': 'at', 'at': '2000-01-01T00:00:00Z'}}
         # A delayed submission is still valid and already due, not quietly lost.

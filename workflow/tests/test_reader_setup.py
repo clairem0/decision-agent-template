@@ -20,7 +20,7 @@ class ReaderSetupTests(unittest.TestCase):
                              {'act', 'read', 'skip'})
             skipped = [row for row in d.summary(directory)['items'] if row['label'] == 'skip']
             self.assertTrue(skipped)
-            self.assertTrue(all(not row['new_review'] for row in skipped))
+            self.assertTrue(all(row['new_review'] for row in skipped))
 
     def test_personalized_prepare_streams_source_and_uses_saved_rubric_and_references(self):
         with tempfile.TemporaryDirectory() as directory:

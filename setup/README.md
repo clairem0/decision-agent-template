@@ -14,7 +14,7 @@ Use just three categories:
 
 - **Needs action:** an unfinished reply, task or decision for the reader, urgent or not.
 - **Worth seeing:** no action needed, but wanted reading or an update that affects plans or understanding.
-- **Skip:** neither. Leave out of this review; do not alter the inbox or make future-mail rules.
+- **Skip:** neither. Recommend skipping, but still show it for the reader to confirm. Do not alter the inbox or make future-mail rules.
 
 Visualize definitions with gold and anti-gold examples when the host supports it; otherwise show a compact table. Probe an unresolved request versus its resolved thread; an unwanted invitation versus an agreed commitment; and a useful update versus routine acknowledgment. Keep timing separate from the category. Missing substantive context gets an uncertainty flag; incomplete retrieval stays on hold.
 
@@ -32,7 +32,7 @@ Pass fresh complete conversations to `workflow/pipeline.py` through stdin, using
 
 Show all categories, uncertainties, holds and original links. Jev does not write reasons: the default review text is explicitly a category definition. If the reader asks why, inspect the original and identify your explanation as the coding agent's interpretation.
 
-Use [review display and receipts](../workflow/docs/inline-review.md). Save each submitted correction, acknowledgment or follow-up instruction and read back its receipt. An unchanged rerun should preserve those choices without another Jev call. After a correction, [discuss whether the rubric should change](../workflow/docs/agent-reference.md#improve-the-rubric-with-the-reader), even without a teaching-example request. Offer a rubric tweak, a teaching example or both. Show exact proposed wording and get approval before saving it. Full teaching examples need separate approval. Test an approved change on a fresh similar case plus a contrast; never claim a cached rerun proves learning.
+Use [review display and receipts](../workflow/docs/inline-review.md). Save each submitted correction, acknowledgment or follow-up instruction and read back its receipt. An unchanged rerun should preserve those choices without another Jev call. After a correction, [discuss whether the rubric should change](../workflow/docs/agent-reference.md#improve-the-rubric-with-the-reader), even without a rubric-update request. **Use to update rubric** asks for a rule-change proposal, not full-source retention. Offer a rubric tweak, a teaching example or both. Show exact proposed wording and get approval before saving it. Full teaching examples need separate approval. Test an approved change on a fresh similar case plus a contrast; never claim a cached rerun proves learning.
 
 Follow-up notes authorize the specified work; classification alone does not. Sending, changing accounts and scheduling require their corresponding user instruction.
 

@@ -2,7 +2,7 @@
 
 Teach your AI what needs your attention. Your coding agent reads Gmail, Jev applies your rubric, and you review the results together: **Needs action**, **Worth seeing** or **Skip**. Your inbox stays unchanged.
 
-Leave an item untouched and it stays in the next review. Only a submitted choice clears it from that review; simply showing it does not count as acknowledgment.
+All collected emails appear for review, including **Skip** recommendations. Leave an item untouched and it stays in the next review. Only a submitted choice clears it from that review; simply showing it does not count as acknowledgment. Filtering future emails requires a separately approved rule in your email account.
 
 ## Start here
 
@@ -22,4 +22,4 @@ Open this folder in Claude Code or Codex and paste the prompt below. You'll need
 
 Your agent saves your approved versions in `local/my-review/rubric.json` and `local/my-review/references.json`. Those are the files to revisit when you want to change the judgment.
 
-When you correct a classification, your agent saves it and offers a rubric tweak, a teaching example, or both to improve similar decisions. You review and approve each proposal before it is saved; keeping a full message as an example is a separate choice.
+When you correct a classification, select **Use to update rubric** to ask your agent to improve the rule for similar decisions. You review and approve each proposal before it is saved; keeping a full message as an example is a separate choice.

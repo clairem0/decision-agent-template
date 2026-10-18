@@ -32,7 +32,7 @@ Construct fresh inputs in memory following the example shape:
 
 Show all three categories and any held items using the [review interface or chat fallback](inline-review.md). Save submitted choices and read back their receipts before confirming them. An unchanged rerun must preserve the choices without another Jev call. A correction applies to that assessment; then discuss [whether the rubric should change](#improve-the-rubric-with-the-reader).
 
-Inspect the full review page. `new_review` identifies current, unacknowledged Needs action/Worth seeing decisions that are due for review, including those already shown. It also includes due reminders explicitly requested for Skip items. Resurface untouched decisions at the next review. Only a saved user choice (Seen & clear, Assign follow-up or Correct classification) quiets an unchanged assessment; a saved reminder defers it until due. Silence and unsubmitted UI edits are not acknowledgment. Skip remains available for inspection; only an explicit user reminder brings it into the attention list.
+Inspect the full review page. `new_review` identifies current, unacknowledged decisions in every category that are due for review, including Skip recommendations and items already shown. Resurface untouched decisions at the next review. Only a saved user choice (Seen & clear, Assign follow-up or Correct classification) quiets an unchanged assessment; a saved reminder defers it until due. Silence and unsubmitted UI edits are not acknowledgment. Show every collected email so the reader can confirm Skip recommendations. Do not filter review results by category; only a separately approved mail-account rule can filter future source collection.
 
 Generated HTML is not proof of delivery. Only after actual chat delivery, save a `delivered` receipt with evidence in `note` using the review command. It records presentation without suppressing the next review. Reuse the existing classification when inputs match; resurfacing does not require another Jev call. The full page retains all items, failures and earlier assessments; missing scan entries do not close tasks or retire items.
 
@@ -62,7 +62,7 @@ Generate a fresh review on each run rather than reopening an old snapshot. Due r
 
 ## Improve the rubric with the reader
 
-After each successfully saved correction, briefly discuss what should change for future decisions. Offer a rubric tweak, a teaching example or both, explaining which would help. This applies even when the teaching-example checkbox is unchecked. Group related corrections into one proposal and check earlier approvals before repeating a discussion.
+After each successfully saved correction, briefly discuss what should change for future decisions. Offer a rubric tweak, a teaching example or both, explaining which would help. This applies even when **Use to update rubric** is unchecked. A checked `update_rubric` flag specifically asks for a proposed rubric change; it does not authorize saving full source as an example. Group related corrections into one proposal and check earlier approvals before repeating a discussion.
 
 1. **Find the cause.** Re-read relevant source and the current approved rubric. Distinguish missing replies/context, a misapplied existing rule, a one-off exception and a reusable preference. Fix missing evidence before proposing a preference change. Do not broaden a rule just to fit one corrected label.
 2. **Propose the smallest useful change.** If a rule should change, show its exact current and proposed wording, a case it would affect and a contrast it should leave unchanged. For example: “Keep order updates Worth seeing, but Skip general sale promotions.” Ask the reader to approve or refine it. Offer a teaching example when a concrete case would make the distinction clearer, either alongside the rubric tweak or on its own. If the rubric already covers the correction, say so; do not invent a rule change. If neither is useful, explain why rather than adding redundant rules or examples.
@@ -71,7 +71,7 @@ After each successfully saved correction, briefly discuss what should change for
 
 ## Teach from a correction
 
-Save the correction and confirm its receipt first. Before proposing a reusable example, check for missing replies, attachments or context; fix that evidence and reassess before teaching a preference from the mistake. “Also propose this as a teaching example” requests a proposal, not adoption. Show the complete source, corrected label, distinction and limits in chat. Ask whether to retain and reuse that example. A general rubric edit needs separate approval; do not train on review history automatically.
+Save the correction and confirm its receipt first. Before proposing a reusable example, check for missing replies, attachments or context; fix that evidence and reassess before teaching a preference from the mistake. A teaching-example request in chat, or an older `propose_teaching=true` receipt, requests a proposal, not adoption. The current **Use to update rubric** checkbox requests a rubric change instead. Show the complete source, corrected label, distinction and limits in chat. Ask whether to retain and reuse that example. A general rubric edit needs separate approval; do not train on review history automatically.
 
 After approval, save an approval JSON under the same ignored root:
 
