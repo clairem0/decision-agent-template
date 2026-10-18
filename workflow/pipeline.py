@@ -9,6 +9,31 @@ import decision as d
 import jev_workflow as j
 
 
+class TemporaryInputError(d.Hold):
+    """A fixed, source-free message about temporary-input handling."""
+
+
+def consume_temporary_input(root, path):
+    """Read an explicitly approved handoff file, then remove it before processing."""
+    path = Path(os.path.abspath(path))
+    directory = Path(os.path.abspath(root)) / 'temporary-input'
+    if (path.parent.resolve() != directory.resolve() or path.suffix != '.json'
+            or path.is_symlink() or path.parent.is_symlink()
+            or directory.is_symlink() or not path.is_file()):
+        raise TemporaryInputError(
+            'Temporary input refused: use a regular .json file directly in the chosen '
+            'root/temporary-input directory, without symlinks. No file was removed.')
+    try:
+        return d.load_json(path)
+    finally:
+        try:
+            path.unlink()
+        except OSError:
+            raise TemporaryInputError(
+                'Temporary input could not be removed. No Jev call was made. '
+                'Remove the approved file and confirm cleanup before continuing.') from None
+
+
 def load_key(path):
     """Read only the named key from an explicitly selected file; never execute it."""
     values = []
@@ -37,17 +62,25 @@ def run(root, inputs, *, live=False, max_requests=0):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--root', default='local/my-review')
+    parser.add_argument('--temporary-input', metavar='PATH',
+                        help='Reader-approved .json in ROOT/temporary-input; deleted after reading, even in preview')
     parser.add_argument('--env-file', help='Explicit local key file; never loaded by default')
     parser.add_argument('--live', action='store_true')
     parser.add_argument('--max-requests', type=int, default=0)
     args = parser.parse_args()
     try:
+        inputs = (consume_temporary_input(args.root, args.temporary_input)
+                  if args.temporary_input else d.read_stdin_json())
         if args.live and args.env_file:
             load_key(args.env_file)
-        result = run(args.root, d.read_stdin_json(), live=args.live, max_requests=args.max_requests)
+        result = run(args.root, inputs, live=args.live, max_requests=args.max_requests)
+        if args.temporary_input:
+            result['temporary_input_removed'] = True
         print(json.dumps(result))
         if args.live and result['pending']:
             parser.exit(2, 'Partial review saved; inspect the listed holds. No automatic retry.\n')
+    except TemporaryInputError as exc:
+        parser.exit(2, str(exc)+'\n')
     except (d.Hold, OSError, ValueError, KeyError, TypeError):
         parser.exit(2, 'Held: check setup, source coverage and saved attempts. See setup/README.md.\n')
 

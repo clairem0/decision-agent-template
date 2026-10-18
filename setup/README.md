@@ -8,7 +8,7 @@ Want to try Jev without personal data? Use the [50-thread synthetic inbox](../wo
 
 Check Python 3.11+, file access, existing email connectors and a review surface. Use an existing supported runtime; do not install tools or connect accounts automatically. With no connector, offer a pasted sample or the fictional demo. Without a native review surface, use local HTML or numbered chat.
 
-Follow the [Gmail notes](gmail.md) to confirm the account and a small read-only scope. Read complete conversations and relevant sent replies and attachments. Explain that ordinary source stays in memory, private metadata stays in ignored `local/`, and host transcripts may retain reads. Saving full teaching examples needs separate approval.
+Follow the [Gmail notes](gmail.md) to confirm the account and a small read-only scope. Read complete conversations and relevant sent replies and attachments. Explain that ordinary source stays in memory by default, private metadata stays in ignored `local/`, and host transcripts may retain reads. Saving full teaching examples needs separate approval.
 
 ## 2. Review the rubric
 
@@ -30,7 +30,7 @@ If Jev is unavailable, pause this path. A fictional demo or explicitly chosen co
 
 ## 4. Review a first run
 
-Pass fresh complete conversations to `workflow/pipeline.py` through stdin, using the saved rubric, references and agreed request bound. Run the [command below](#command-for-the-agent) from the repository root. It prepares the requests, calls Jev, checks and saves the results, and generates the review. Each valid decision is saved independently. A failed call leaves only that conversation pending; the review still shows successful results and holds. Saved successful attempts can be reused after an interruption; failed or uncertain attempts are never automatically resent. A successful answer with an evidence flag is reviewable, including Skip; it is not a failed API call.
+Pass fresh complete conversations to `workflow/pipeline.py` through stdin, using the saved rubric, references and agreed request bound. If the host makes that handoff difficult, use the [reader-approved temporary-file option](gmail.md#hand-complete-conversations-to-jev). Run the [command below](#command-for-the-agent) from the repository root. It prepares the requests, calls Jev, checks and saves the results, and generates the review. Each valid decision is saved independently. A failed call leaves only that conversation pending; the review still shows successful results and holds. Saved successful attempts can be reused after an interruption; failed or uncertain attempts are never automatically resent. A successful answer with an evidence flag is reviewable, including Skip; it is not a failed API call.
 
 Show all categories, uncertainties, holds and original links. Jev does not write reasons: the default review text is explicitly a category definition. If the reader asks why, inspect the original and identify your explanation as the coding agent's interpretation.
 
@@ -46,7 +46,7 @@ Stop before creating a schedule unless explicitly asked. [Scheduling](../workflo
 
 ## Command for the agent
 
-Stream the connector's normalized input through stdin; do not save ordinary email bodies to a file:
+By default, stream the connector's normalized input through stdin without saving email bodies to a file:
 
 ```sh
 python3 workflow/pipeline.py --root local/my-review --env-file .env --live --max-requests 5

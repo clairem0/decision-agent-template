@@ -2,7 +2,7 @@
 
 Your agent supplies complete Gmail conversations to [pipeline.py](pipeline.py). It sends each email with your approved rubric and teaching examples to Jev, checks the returned classifications and saves the results. Start with the [setup instructions](../setup/README.md#command-for-the-agent).
 
-Run all commands from the repository root with Python 3.11+. Personal state stays in ignored `local/`; ordinary email bodies stay in memory. See [storage](docs/storage.md) for details.
+Run all commands from the repository root with Python 3.11+. Personal state stays in ignored `local/`; ordinary email bodies stay in memory by default, with an explicitly approved temporary-file handoff available. See [storage](docs/storage.md) for details.
 
 ## Review the results
 
