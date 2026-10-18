@@ -12,6 +12,8 @@ If your workplace approves OpenAI’s API for this data instead, ask your coding
 2. Copy [.env.example](../.env.example) to `.env` at the repository root and enter your key locally. The pipeline reads it with `--env-file .env`; you can also supply `JEV_API_KEY` in the process environment. Keep it outside chat and Git.
 3. Check current pricing and the provider's data policy with your agent. Full messages, relevant context, your rubric and approved teaching examples go to TypeSafe. Begin with one fictional email, then agree on a small real-email batch.
 
+For a separate live test with no Gmail connection, use the [50-thread synthetic inbox](../workflow/README.md#try-jev-without-gmail). It supplies its own fictional rubric and teaching examples and reports measured timings. The offline four-email demo remains simulated.
+
 ## Run the pipeline
 
 Use the [standard pipeline command](README.md#command-for-the-agent). It loads your approved rubric and examples from `local/my-review/`, takes complete messages through stdin, calls Jev and saves the review. It does not fetch Gmail itself. Removing `--live` gives a metadata-only preview without a key or network call.

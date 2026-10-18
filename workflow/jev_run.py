@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import re
 import sys
+import time
 import urllib.error
 import urllib.request
 
@@ -82,7 +83,7 @@ def validate(response, payload):
     return result
 
 
-def run(batch, item_id, root, *, live=False, max_requests=0):
+def run(batch, item_id, root, *, live=False, max_requests=0, metrics=None):
     payload = build_payload(batch, item_id, MODEL)
     if not live:
         return {'mode': 'preview', 'destination': ENDPOINT, 'payload': payload}
@@ -102,7 +103,11 @@ def run(batch, item_id, root, *, live=False, max_requests=0):
                    'target_id': payload['state']['target']['id'], 'max_requests': 1}
         d.atomic_write(path, d.encoded(attempt))
         try:
-            raw = post(payload, key)
+            started = time.perf_counter()
+            try:
+                raw = post(payload, key)
+            finally:
+                attempt['request_seconds'] = time.perf_counter() - started
             result = validate(raw, payload)
         except BaseException as error:
             attempt['status'] = ('http_failed' if isinstance(error, urllib.error.HTTPError) else
@@ -113,8 +118,13 @@ def run(batch, item_id, root, *, live=False, max_requests=0):
             if isinstance(error, (KeyboardInterrupt, SystemExit)):
                 raise
             raise d.Hold('Jev attempt '+attempt['status']+'. Inspect the attempt record before any deliberate retry; no response body was saved.') from None
-        attempt.update(status='succeeded', result=result)
-        d.atomic_write(path, d.encoded(attempt))
+        else:
+            attempt.update(status='succeeded', result=result)
+            d.atomic_write(path, d.encoded(attempt))
+        finally:
+            if metrics is not None:
+                metrics.append({'target_id': item_id, 'seconds': attempt['request_seconds'],
+                                'status': attempt['status'], 'usage': attempt.get('result', {}).get('usage')})
     return {'mode': 'jev', 'attempt_file': str(path), **attempt}
 
 

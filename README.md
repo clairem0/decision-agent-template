@@ -4,7 +4,15 @@ Teach your AI what needs your attention. Your coding agent reads Gmail, Jev appl
 
 All collected emails appear for review, including **Skip** recommendations. Leave an item untouched and it stays in the next review. Only a submitted choice clears it from that review; simply showing it does not count as acknowledgment. Filtering future emails requires a separately approved rule in your email account.
 
-## Start here
+## Try it without connecting Gmail
+
+Keep the [offline demo](workflow/README.md#try-the-fictional-demo) for a quick look at the interface, or test Jev on a **separate inbox of 50 fully fictional email threads**:
+
+> Help me try Jev on the bundled synthetic inbox. Follow workflow/README.md#try-jev-without-gmail. Use only its fictional emails, rubric and examples; do not connect Gmail or use any personal context. Preview first, then help me run the live test and show the timing breakdown.
+
+The synthetic test needs Python and your own TypeSafe key for the live run. It shows fresh API calls, reused results, timing and agreement with author-written expectations. [See the simple test flow](workflow/README.md#try-jev-without-gmail).
+
+## Set up your own inbox
 
 Open this folder in Claude Code or Codex and paste the prompt below. You'll need Gmail access, Python 3.11+ and a TypeSafe API key; your agent can help check and set these up.
 

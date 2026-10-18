@@ -58,6 +58,12 @@ Validate all typed answers, probabilities, usage, model and matching payload has
 
 Successful attempts can resume an interrupted batch without another call. Failed or uncertain attempts require reconciliation. Skip plus missing-evidence keeps the batch pending; never silently relabel or hide it. An unchanged operational rerun reuses decisions; it is not a repeatability test. Use separate named roots for deliberately authorized trials.
 
+### Synthetic Jev test
+
+Keep the existing four-email simulated demo unchanged. Provide a separate, fixed 50-conversation synthetic inbox with its own wholly invented reader profile, rubric, teaching examples and withheld author expectations. Never derive these from personal sources or load a reader's local configuration. Default to a read-only preview with no key, expected-answer read, network call or state write. Live execution is explicit and bounded to the agreed 50-call run. Use the existing validated Jev transport and saved review contract; do not silently substitute simulated labels.
+
+Measure sample loading, request preparation, classification/persistence, comparison and review generation with a monotonic clock. Separately record actual API round trips (including networking), new calls, reused results and new-call token usage. Never treat a cached run or omitted email retrieval as fresh provider speed. Preserve reports and original provider predictions before reading expected answers; compare original categories and evidence flags, not subsequent user corrections. Refuse unrelated output folders and changed dataset identities. Preserve failure timings and attempts without automatic retries. A successful mocked run is implementation proof, not live-provider speed or accuracy proof.
+
 ### Distribution and scope
 
 The root README is the single reader starting point and includes the setup prompt. Keep the starter rubric and teaching examples together in `rubric/`, onboarding and connector instructions in `setup/`, and scripts, demo data, review assets, tests and technical references in `workflow/`. Commands run from the repository root; reader-approved configuration and saved state remain in ignored `local/`.

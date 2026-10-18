@@ -43,3 +43,9 @@ workflow/tests/test_pipeline.py
 workflow/tests/test_reader_setup.py
 workflow/tests/test_serve.py
 workflow/tests/test_storage_policy.py
+workflow/try_jev.py
+workflow/synthetic/inbox.json
+workflow/synthetic/rubric.json
+workflow/synthetic/examples.json
+workflow/synthetic/expected.json
+workflow/tests/test_synthetic_inbox.py

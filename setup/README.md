@@ -2,6 +2,8 @@
 
 Follow **examples → approved rubric → connect Jev → saved review**. Use an existing approved rubric as the starting point. Do the technical work; keep the reader's choices about judgment, source scope and review.
 
+Want to try Jev without personal data? Use the [50-thread synthetic inbox](../workflow/README.md#try-jev-without-gmail). That path does not require Gmail, personal context or the setup steps below; finish there unless the reader asks to connect their own inbox.
+
 ## 1. Start with examples
 
 Check Python 3.11+, file access, existing email connectors and a review surface. Use an existing supported runtime; do not install tools or connect accounts automatically. With no connector, offer a pasted sample or the fictional demo. Without a native review surface, use local HTML or numbered chat.

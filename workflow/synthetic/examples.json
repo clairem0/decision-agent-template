@@ -1,0 +1,89 @@
+{
+  "references": [
+    {
+      "id": "lesson-reply",
+      "source_id": "teaching-lesson-reply",
+      "kind": "email",
+      "status": "approved",
+      "title": "Choose a display size",
+      "content": "Supplier: Please choose a small or medium notice board.\nReader — sent: I will check the wall space.\nSupplier: Thanks. We still need the size choice.",
+      "context": "Entirely fictional teaching conversation, separate from the 50 test targets. The reader ordered a notice board and has not chosen its size.",
+      "label": "act",
+      "contrast_ids": [
+        "lesson-settled"
+      ],
+      "distinction": "Promising to decide is not the decision; the supplier is still waiting."
+    },
+    {
+      "id": "lesson-settled",
+      "source_id": "teaching-lesson-settled",
+      "kind": "email",
+      "status": "approved",
+      "title": "Display size confirmed",
+      "content": "Supplier: Please choose a small or medium notice board.\nReader — sent: Medium, please.\nSupplier: Medium confirmed. No other changes.",
+      "context": "Entirely fictional teaching conversation, separate from the 50 test targets. The size choice was sent and no further work is owed.",
+      "label": "skip",
+      "contrast_ids": [
+        "lesson-reply"
+      ],
+      "distinction": "A later sent reply settles the earlier request; a routine acknowledgment need not create another task."
+    },
+    {
+      "id": "lesson-wanted",
+      "source_id": "teaching-lesson-wanted",
+      "kind": "email",
+      "status": "approved",
+      "title": "A guide the reader requested",
+      "content": "Reading desk: You asked about furniture joints. A loose joint can move because the glue bond has failed or the wood has changed shape. Inspect the fit before adding more material. No reply or exercise is required.",
+      "context": "Entirely fictional teaching conversation, separate from the 50 test targets. The fictional reader requested practical furniture-repair reading.",
+      "label": "read",
+      "contrast_ids": [
+        "lesson-unwanted"
+      ],
+      "distinction": "Wanted reading can be worth seeing even without a task."
+    },
+    {
+      "id": "lesson-unwanted",
+      "source_id": "teaching-lesson-unwanted",
+      "kind": "email",
+      "status": "approved",
+      "title": "Optional promotional bundle",
+      "content": "Offers desk: Buy a bundle of decorative stickers before the offer ends tonight. There is no existing order and no payment is due.",
+      "context": "Entirely fictional teaching conversation, separate from the 50 test targets. The reader does not want decorative sticker promotions and has promised no reply.",
+      "label": "skip",
+      "contrast_ids": [
+        "lesson-wanted"
+      ],
+      "distinction": "A promotional deadline does not create a reader obligation or useful information."
+    },
+    {
+      "id": "lesson-waiting",
+      "source_id": "teaching-lesson-waiting",
+      "kind": "email",
+      "status": "approved",
+      "title": "Waiting for the stand maker",
+      "content": "Stand maker: We have your final specifications and will send the completed design on April 12. Nothing else is needed from you.",
+      "context": "Entirely fictional teaching conversation, separate from the 50 test targets. It is April 8. The reader wants to know this newly confirmed delivery date, and no follow-up is due.",
+      "label": "read",
+      "contrast_ids": [
+        "lesson-clarify"
+      ],
+      "distinction": "A useful update while someone else owns the next step is information, not a reader task."
+    },
+    {
+      "id": "lesson-clarify",
+      "source_id": "teaching-lesson-clarify",
+      "kind": "email",
+      "status": "approved",
+      "title": "Which finish should we use?",
+      "content": "Maker: Please approve the finish we discussed.\nReader — sent: I do not have the finish options. Can you send them?\nMaker: Please choose the finish before we start.",
+      "context": "Entirely fictional teaching conversation, separate from the 50 test targets. All available messages are present, but no finish options or prior agreement are available.",
+      "label": "act",
+      "contrast_ids": [
+        "lesson-waiting"
+      ],
+      "distinction": "The reader owes a clarification, not an invented approval. Missing substantive detail must remain visible.",
+      "uncertainty": "The finish options are missing."
+    }
+  ]
+}

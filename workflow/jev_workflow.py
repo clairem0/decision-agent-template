@@ -9,7 +9,7 @@ import jev_run as j
 EVALUATOR = 'jev:jev-1.13.0:email-v3'
 
 
-def run(root, batch, *, live=False, max_requests=0):
+def run(root, batch, *, live=False, max_requests=0, metrics=None):
     root = Path(root)
     state = d.read_state(root)
     if batch.get('contract') != d.CONTRACT:
@@ -38,7 +38,7 @@ def run(root, batch, *, live=False, max_requests=0):
                     attempt.get('target_id') != item_id or attempt.get('endpoint') != j.ENDPOINT):
                 raise d.Hold('Reconcile the existing failed or uncertain attempt; it was not retried.')
         else:
-            attempt = j.run(batch, item_id, root/'attempts', live=True, max_requests=1)
+            attempt = j.run(batch, item_id, root/'attempts', live=True, max_requests=1, metrics=metrics)
         provider = j.validate(attempt['result'], payload)
         label = provider['answers']['email_category']['choice']
         if label == 'skip' and provider['requires_review']:

@@ -1,0 +1,461 @@
+{
+  "version": "synthetic-inbox-v1",
+  "provenance": "Composed from scratch for this starter. No personal messages, identities, companies, preferences, account IDs or source links were used. All situations and roles are fictional.",
+  "coverage": {
+    "scope": "Synthetic inbox: 50 fictional conversations",
+    "status": "complete",
+    "detail": "All 50 bundled conversations are included. No email account was connected or queried."
+  },
+  "items": [
+    {
+      "id": "synthetic-001",
+      "kind": "email",
+      "title": "One choice left before the signs go to print",
+      "sender": "Print supplier",
+      "status": "complete",
+      "content": "Message 1 — Print supplier\nThe sample signs are ready. Both layouts use the same recycled board and fit the display stands. Layout A has the larger heading; layout B has room for the equipment-return instructions. Please choose one by April 9 so we can start the print run.\n\nMessage 2 — Reader — sent\nCould you confirm whether layout B still has a readable heading from across the room?\n\nMessage 3 — Print supplier\nYes. We increased the heading size without removing the return instructions. The price and delivery date are unchanged. We are waiting for your layout choice before printing.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader manages the fictional tool-lending studio and must approve its signs. No approval has been sent."
+    },
+    {
+      "id": "synthetic-002",
+      "kind": "email",
+      "title": "Your leaflets will arrive in two deliveries",
+      "sender": "Print supplier",
+      "status": "complete",
+      "content": "Message 1 — Print supplier\nThe first half of your approved leaflet order will arrive on April 10; the remaining half will arrive on April 12. The total quantity and price are unchanged. No reply is needed. We wanted you to have the dates for planning the welcome desk.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader runs the welcome desk and needs to plan available supplies. The new split delivery was not previously known."
+    },
+    {
+      "id": "synthetic-003",
+      "kind": "email",
+      "title": "Re: Final approval for the price cards",
+      "sender": "Print supplier",
+      "status": "complete",
+      "content": "Message 1 — Print supplier\nPlease approve the corrected price cards before we print them.\n\nMessage 2 — Reader — sent\nApproved. Please print the corrected version.\n\nMessage 3 — Print supplier\nThanks, approval received. Everything is proceeding on the agreed schedule.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader actually sent the approval. The final acknowledgment introduces no new details or tasks."
+    },
+    {
+      "id": "synthetic-004",
+      "kind": "email",
+      "title": "Your next renewal could not be processed",
+      "sender": "Editing service · Billing",
+      "status": "complete",
+      "content": "Message 1 — Billing\nThe payment method for your editing workspace has expired. We could not process the scheduled renewal. Please replace it by April 11 if you want the workspace to remain active. Your saved projects are still available during this grace period.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader pays for this fictional editing service, wants to keep it, and has not updated the payment method."
+    },
+    {
+      "id": "synthetic-005",
+      "kind": "email",
+      "title": "Exports unavailable during the evening maintenance window",
+      "sender": "Editing service · Operations",
+      "status": "complete",
+      "content": "Message 1 — Operations\nOn April 9 from 18:00 to 20:00 UTC, exports will be unavailable while we move the rendering service. Editing and viewing projects will remain available. No settings changes are required. Scheduled exports will resume after the maintenance window.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader uses exports regularly but has nothing due during this window; queued exports resume automatically. This maintenance window is new information."
+    },
+    {
+      "id": "synthetic-006",
+      "kind": "email",
+      "title": "Receipt for the renewal you already confirmed",
+      "sender": "Editing service · Billing",
+      "status": "complete",
+      "content": "Message 1 — Billing\nYour monthly editing workspace renewal was paid successfully. The amount and billing interval are unchanged. This is a receipt for your records; no action is required.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader already verified this exact payment in the account. There is no discrepancy, reimbursement task or recordkeeping obligation left."
+    },
+    {
+      "id": "synthetic-007",
+      "kind": "email",
+      "title": "Please confirm the room setup for May",
+      "sender": "Room coordinator",
+      "status": "complete",
+      "content": "Message 1 — Room coordinator\nWe have held the demonstration room for your May 6 session. Would you like tables in small groups or one long row? Please confirm by April 22; there is no need to reply this week.\n\nMessage 2 — Reader — sent\nThanks for holding it. I will check what setup works best.\n\nMessage 3 — Room coordinator\nNo problem. We still need the final layout choice before the reservation is complete.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader agreed to organize the session. An acknowledgment was sent, but no layout choice was sent."
+    },
+    {
+      "id": "synthetic-008",
+      "kind": "email",
+      "title": "Arrival instructions have changed for your confirmed session",
+      "sender": "Room coordinator",
+      "status": "complete",
+      "content": "Message 1 — Room coordinator\nYour room reservation is confirmed. The usual entrance is closed for repairs, so use the courtyard entrance beside the sign marked Events. The room, date and start time are unchanged. Our team will put directions outside. You do not need to acknowledge this message.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader will attend this already confirmed session. The alternate entrance is new information."
+    },
+    {
+      "id": "synthetic-009",
+      "kind": "email",
+      "title": "LAST CHANCE: reserve an extra room at a special rate",
+      "sender": "Room offers",
+      "status": "complete",
+      "content": "Message 1 — Room offers\nOur special extra-room offer expires tonight. Add another room to any booking and receive the advertised promotional rate. Click through if you want it. This is an optional offer, not a change to your existing reservation.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader has all the space needed and does not want additional rooms. No purchase or reply was promised."
+    },
+    {
+      "id": "synthetic-010",
+      "kind": "email",
+      "title": "Choose what happens to the damaged shelf order",
+      "sender": "Parcel support",
+      "status": "complete",
+      "content": "Message 1 — Parcel support\nOne shelf in your order was damaged before dispatch. We can send a replacement next week or refund that shelf now. The other shelves are ready. Please tell us which option you prefer so we can complete the order.\n\nMessage 2 — Reader — sent\nWill the replacement have the same finish?\n\nMessage 3 — Parcel support\nYes, the finish and dimensions match. We have not selected an option for you. Please reply with replacement or refund.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader placed this order and is responsible for resolving it. No final choice has been sent."
+    },
+    {
+      "id": "synthetic-011",
+      "kind": "email",
+      "title": "Delivery moved to April 12",
+      "sender": "Parcel updates",
+      "status": "complete",
+      "content": "Message 1 — Parcel updates\nYour storage-box delivery has moved from April 10 to April 12 because the final shipment arrived late at the depot. No signature is required and you do not need to contact us. We will send another update if the date changes again.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader expected these boxes for a planned storage project. This is the first notice of the new date."
+    },
+    {
+      "id": "synthetic-012",
+      "kind": "email",
+      "title": "Re: Delivery date confirmed",
+      "sender": "Parcel updates",
+      "status": "complete",
+      "content": "Message 1 — Parcel updates\nYour hooks will arrive on April 10.\n\nMessage 2 — Reader — sent\nThanks, I have noted April 10.\n\nMessage 3 — Parcel updates\nConfirmed: April 10. No other changes.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader already knows the delivery date. The final message is a duplicate confirmation without new instructions."
+    },
+    {
+      "id": "synthetic-013",
+      "kind": "email",
+      "title": "Approval needed for the lamp repair quote",
+      "sender": "Repair desk",
+      "status": "complete",
+      "content": "Message 1 — Repair desk\nWe inspected the studio lamp. The switch needs replacing; the wiring and base passed inspection. The total repair price is 32 fictional dollars, including parts, labor and the final check. Please approve the work or ask us to return the lamp unrepaired.\n\nMessage 2 — Reader — sent\nDoes the quote include checking the dimmer after the replacement?\n\nMessage 3 — Repair desk\nYes. We will test the dimmer and all three brightness settings. We have not started the repair; we still need your approval.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader owns the lamp and requested the inspection. The quote is complete and available in the message; approval has not been sent."
+    },
+    {
+      "id": "synthetic-014",
+      "kind": "email",
+      "title": "Replacement part ordered; collection will be later",
+      "sender": "Repair desk",
+      "status": "complete",
+      "content": "Message 1 — Repair desk\nWe have ordered the part for your approved display-stand repair. The supplier expects it on April 15, so collection moves to April 17. You do not need to approve anything else. We will contact you once the stand is ready.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader already approved this repair. The collection date changed and affects equipment planning; no follow-up is due yet."
+    },
+    {
+      "id": "synthetic-015",
+      "kind": "email",
+      "title": "Your completed collection is recorded",
+      "sender": "Repair desk",
+      "status": "complete",
+      "content": "Message 1 — Repair desk\nThe repaired fan is ready to collect.\n\nMessage 2 — Reader — sent\nI collected it this morning and checked it works. Thank you.\n\nMessage 3 — Repair desk\nCollection recorded. Thanks again.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader has already collected and tested the fan. There is no payment or warranty task outstanding."
+    },
+    {
+      "id": "synthetic-016",
+      "kind": "email",
+      "title": "Please upload the exercise you agreed to submit",
+      "sender": "Course tutor",
+      "status": "complete",
+      "content": "Message 1 — Course tutor\nThe lighting exercise is due April 14. Please upload your three annotated images and a short explanation of the changes you made. A saved draft is not a submission.\n\nMessage 2 — Reader — unsent draft\nI have finished the exercise and will upload it after checking the captions.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader enrolled in the course and intends to complete it. The draft is unsent and no upload has occurred. All instructions are included here."
+    },
+    {
+      "id": "synthetic-017",
+      "kind": "email",
+      "title": "A guide to soft lighting for your reading list",
+      "sender": "Course tutor",
+      "status": "complete",
+      "content": "Message 1 — Course tutor\nYou asked for a practical guide to soft lighting. Start by placing a large diffuser close to the object, then move the light rather than the object when comparing shadows. The attached concept is reproduced here in full: a larger apparent light source creates a softer transition between light and shadow. Try it when convenient; this is optional reading, not an assignment.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader explicitly requested this topic and has not read these tips. The full useful text is present; no attachment retrieval is needed."
+    },
+    {
+      "id": "synthetic-018",
+      "kind": "email",
+      "title": "Another copy of your completed module confirmation",
+      "sender": "Course notices",
+      "status": "complete",
+      "content": "Message 1 — Course notices\nModule completion confirmed. This is a duplicate of the confirmation sent yesterday. There are no additional exercises, forms or deadlines in this message.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader already saw the original confirmation and has no need to retain a second copy."
+    },
+    {
+      "id": "synthetic-019",
+      "kind": "email",
+      "title": "Renew or return the borrowed label maker",
+      "sender": "Equipment library",
+      "status": "complete",
+      "content": "Message 1 — Equipment library\nYour label maker loan ends on April 12. Please renew it before then or return it at the desk. The label maker is eligible for one renewal. Reply with your choice; we will not renew automatically.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader borrowed the label maker and still has it. Neither a renewal nor a return has been arranged."
+    },
+    {
+      "id": "synthetic-020",
+      "kind": "email",
+      "title": "Pickup desk moved for your reserved tripod",
+      "sender": "Equipment library",
+      "status": "complete",
+      "content": "Message 1 — Equipment library\nYour tripod reservation is still ready for April 10. The regular desk is being repainted, so collection will be at the side counter inside the same building. Staff will direct you. Your reservation needs no changes.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader intends to collect the tripod and has not seen the new location notice."
+    },
+    {
+      "id": "synthetic-021",
+      "kind": "email",
+      "title": "Return receipt: nothing left on the loan",
+      "sender": "Equipment library",
+      "status": "complete",
+      "content": "Message 1 — Equipment library\nThe borrowed extension reel was returned and checked in. The loan is closed, with no damage charge or other balance. This repeats the confirmation shown at the return desk.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader personally returned the reel and already saw the closed-loan confirmation."
+    },
+    {
+      "id": "synthetic-022",
+      "kind": "email",
+      "title": "Can you cover the opening shift you offered to help with?",
+      "sender": "Studio roster",
+      "status": "complete",
+      "content": "Message 1 — Roster coordinator\nThe April 13 opening shift needs cover. You said you might be available; can you confirm yes or no by April 10? We need a reply either way to finish the roster.\n\nMessage 2 — Reader — sent\nI can check my plans this afternoon.\n\nMessage 3 — Roster coordinator\nThanks. We still need your final yes or no.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader agreed to give a definite answer about this shift and has not done so."
+    },
+    {
+      "id": "synthetic-023",
+      "kind": "email",
+      "title": "The closing shift is covered",
+      "sender": "Studio roster",
+      "status": "complete",
+      "content": "Message 1 — Roster coordinator\nAnother volunteer has taken the April 14 closing shift. Your own opening slot is unchanged. This completes the day’s staffing plan. No reply is needed; the shared roster now shows the coverage.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader coordinates equipment access and needs to know the final staffing plan. They have no staffing task left for this date."
+    },
+    {
+      "id": "synthetic-024",
+      "kind": "email",
+      "title": "Re: Nice work on the display",
+      "sender": "Studio chat digest",
+      "status": "complete",
+      "content": "Message 1 — Reader — sent\nThe display is installed, the checklist is complete, and the room is ready.\n\nMessage 2 — Volunteer\nLooks great!\n\nMessage 3 — Another volunteer\nAgreed, thanks everyone.\n\nMessage 4 — Roster coordinator\nAdding my thanks too.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. This is the complete thread. All work was finished before the praise arrived; no changes or requests were added."
+    },
+    {
+      "id": "synthetic-025",
+      "kind": "email",
+      "title": "A sign-in you do not recognize",
+      "sender": "File service · Security",
+      "status": "complete",
+      "content": "Message 1 — Security notice\nA new device signed into your file workspace. If this was you, nothing is needed. If it was not you, review active sessions through the account settings and secure the account.\n\nMessage 2 — Reader — unsent note\nI do not recognize that device and was not using the service at that time.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. This is a fictional legitimate notice from a service the reader uses. The reader does not recognize the sign-in and has not investigated. No real device IDs, locations or account links are included."
+    },
+    {
+      "id": "synthetic-026",
+      "kind": "email",
+      "title": "Scheduled sign-in screen change",
+      "sender": "File service · Operations",
+      "status": "complete",
+      "content": "Message 1 — Operations\nOn April 16 we are moving the sign-in button to the top-right corner. Your existing credentials and recovery settings will stay the same. No migration, confirmation or reset is needed. We are sharing this so the new screen is familiar when you next use it.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader uses the service daily and has not seen the new layout notice."
+    },
+    {
+      "id": "synthetic-027",
+      "kind": "email",
+      "title": "Password change confirmation",
+      "sender": "File service · Security",
+      "status": "complete",
+      "content": "Message 1 — Security notice\nYour requested password change is complete. If you made this change, you do not need to respond.\n\nMessage 2 — Reader — sent note to self\nI made this change and have verified that the new password works.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The change was requested and completed by the fictional reader. No credentials or actual account identifiers are present."
+    },
+    {
+      "id": "synthetic-028",
+      "kind": "email",
+      "title": "Please confirm your promised demonstration slot",
+      "sender": "Community event desk",
+      "status": "complete",
+      "content": "Message 1 — Event desk\nYou agreed to demonstrate the folding workbench at our open day. We have reserved the 11:00 slot. Please confirm by April 12 so we can publish the schedule.\n\nMessage 2 — Reader — sent\nI am still planning to take part. I need to check the setup time before confirming the slot.\n\nMessage 3 — Event desk\nYou can set up from 10:15. Does the 11:00 slot work?",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader accepted the demonstration commitment but has not confirmed the proposed slot."
+    },
+    {
+      "id": "synthetic-029",
+      "kind": "email",
+      "title": "Repair fair now starts at 10:30",
+      "sender": "Community event desk",
+      "status": "complete",
+      "content": "Message 1 — Event desk\nThe April 21 repair fair will start at 10:30 instead of 10:00. Your already confirmed afternoon demonstration remains at 14:00. No acknowledgment is required; please use the revised opening time when planning your arrival.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader is attending this event. The opening-time change was not previously known."
+    },
+    {
+      "id": "synthetic-030",
+      "kind": "email",
+      "title": "An invitation to exhibit at an unrelated expo",
+      "sender": "Event promotions",
+      "status": "complete",
+      "content": "Message 1 — Event promotions\nWould you like a paid stand at our autumn expo? Early-booking rates end tomorrow. Participation is optional, and this invitation does not reserve a stand or create a charge.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader has no interest in this expo and made no promise to reply or attend."
+    },
+    {
+      "id": "synthetic-031",
+      "kind": "email",
+      "title": "Approve the substitute material or cancel that item",
+      "sender": "Order support",
+      "status": "complete",
+      "content": "Message 1 — Order support\nThe blue fabric in your confirmed order is unavailable. We can substitute gray fabric with the same weight and finish, or cancel that item and refund it.\n\nMessage 2 — Reader — sent\nPlease do not substitute anything until I check the display plan.\n\nMessage 3 — Order support\nUnderstood. The item is on hold. Please tell us whether to use gray or cancel it.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader placed the order, asked for a hold, and has not provided the final decision."
+    },
+    {
+      "id": "synthetic-032",
+      "kind": "email",
+      "title": "Refund issued for the canceled tray",
+      "sender": "Order support",
+      "status": "complete",
+      "content": "Message 1 — Order support\nWe have issued the agreed refund for the tray you canceled. It should appear through the original payment method within three to five business days. No form or reply is needed.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader requested this refund and is waiting for the first confirmation that it was issued. The expected processing period has not elapsed."
+    },
+    {
+      "id": "synthetic-033",
+      "kind": "email",
+      "title": "URGENT: the sale has been extended again",
+      "sender": "Homeware offers",
+      "status": "complete",
+      "content": "Message 1 — Homeware offers\nThe weekend sale has been extended through tonight. Selected baskets and organizers are discounted. Shop if you like; no existing order or account is affected.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader does not want general shopping promotions and has no pending purchase from this offer."
+    },
+    {
+      "id": "synthetic-034",
+      "kind": "email",
+      "title": "Waiting for the two comments you offered",
+      "sender": "Guide editor",
+      "status": "complete",
+      "content": "Message 1 — Guide editor\nThanks for offering to review our repair guide. Could you send your two most useful comments by April 18? The full draft text was already supplied in a separate completed reading task; we are asking only for the comments you promised.\n\nMessage 2 — Reader — sent\nI have read it and will send comments after checking my notes.\n\nMessage 3 — Guide editor\nGreat. We are still waiting for those comments before the final edit.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader volunteered to provide feedback, finished reading, and has not sent their comments. Deciding that a reply is owed does not require recovering the draft."
+    },
+    {
+      "id": "synthetic-035",
+      "kind": "email",
+      "title": "Why a drawer catches halfway closed",
+      "sender": "Repair Notes newsletter",
+      "status": "complete",
+      "content": "Message 1 — Repair Notes\nA drawer that catches halfway closed may have a runner that is slightly out of parallel. Empty the drawer before inspecting it. Compare the gaps at the front and rear; a narrowing gap can reveal the alignment problem. A rubbing mark may show where movement stops. This issue also explains why forcing the drawer can damage an otherwise repairable runner. This is optional reading, with no reply requested.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The fictional reader requested practical furniture-repair tips and has not seen this issue. They are not committed to repairing anything today."
+    },
+    {
+      "id": "synthetic-036",
+      "kind": "email",
+      "title": "Daily headlines from a topic you never subscribed to",
+      "sender": "Unrequested newsletter",
+      "status": "complete",
+      "content": "Message 1 — Newsletter desk\nHere is another digest of luxury resort openings and promotional travel packages. Subscription offers are available if you want more.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader did not request this newsletter and has no interest in its topic. Unsubscribing is not assumed to be an assigned task."
+    },
+    {
+      "id": "synthetic-037",
+      "kind": "email",
+      "title": "One form needed for the refund you requested",
+      "sender": "Travel support",
+      "status": "complete",
+      "content": "Message 1 — Travel support\nWe can complete your requested ticket refund after you confirm which of the two canceled legs it covers. Please return the selection form by April 20. The available choices are fully stated here: outbound only, return only, or both.\n\nMessage 2 — Reader — sent\nBoth were canceled. I will complete the selection.\n\nMessage 3 — Travel support\nWe still need your submitted selection; the message alone did not complete that step.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader wants this refund and has not completed the required selection. This is a fictional administrative deadline, not legal advice."
+    },
+    {
+      "id": "synthetic-038",
+      "kind": "email",
+      "title": "Departure platform changed for your booked trip",
+      "sender": "Rail updates",
+      "status": "complete",
+      "content": "Message 1 — Rail updates\nYour booked departure is using platform 4 instead of platform 2. The departure time and ticket remain valid. You do not need to rebook or confirm. Follow the station signs for platform 4.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader is taking this fictional booked trip and has not seen the platform change. No real route, station or booking ID is included."
+    },
+    {
+      "id": "synthetic-039",
+      "kind": "email",
+      "title": "Duplicate receipt for the trip already recorded",
+      "sender": "Rail receipts",
+      "status": "complete",
+      "content": "Message 1 — Rail receipts\nThis is a duplicate receipt for your confirmed ticket. There are no changes to the journey, payment, seat or boarding instructions.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader already recorded the purchase and has no reimbursement or accounting task remaining."
+    },
+    {
+      "id": "synthetic-040",
+      "kind": "email",
+      "title": "Your requested export is ready for collection",
+      "sender": "Archive service",
+      "status": "complete",
+      "content": "Message 1 — Archive service\nThe export you requested is ready. It will be available until April 15, after which you would need to request it again. Please collect it through the service if you still want your copy.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader specifically requested this fictional export, intends to keep it, and has not collected it. No download link or personal archive content is included."
+    },
+    {
+      "id": "synthetic-041",
+      "kind": "email",
+      "title": "Storage use dropped after the cleanup finished",
+      "sender": "Archive service",
+      "status": "complete",
+      "content": "Message 1 — Archive service\nThe cleanup you already approved has finished. Storage use is now below the warning threshold, so the planned upgrade is no longer needed. No confirmation or purchase is required.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader was monitoring this threshold and had not seen the cleanup result. The service completed the action already authorized in this fictional scenario."
+    },
+    {
+      "id": "synthetic-042",
+      "kind": "email",
+      "title": "Weekly storage summary: no changes",
+      "sender": "Archive service",
+      "status": "complete",
+      "content": "Message 1 — Archive service\nThe weekly summary is unchanged: storage use, limits and backup status are identical to the report you already checked. There are no alerts or recommended tasks.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader already knows these figures and does not want duplicate summaries."
+    },
+    {
+      "id": "synthetic-043",
+      "kind": "email",
+      "title": "Your review is blocking the release checklist",
+      "sender": "Project notifications",
+      "status": "complete",
+      "content": "Message 1 — Project maintainer\nYou accepted the review of the search-label change. The release checklist is waiting for your approve-or-request-changes decision.\n\nMessage 2 — Reader — unsent draft\nThe wording looks clear, but I have not posted my review yet.\n\nMessage 3 — Project maintainer\nNo review has appeared yet. Please post the decision when you can.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader agreed to review the change. An unsent draft does not complete the review. No real repository, code or account name is present."
+    },
+    {
+      "id": "synthetic-044",
+      "kind": "email",
+      "title": "Search labels now support the display you are planning",
+      "sender": "Project release notes",
+      "status": "complete",
+      "content": "Message 1 — Release notes\nThe new version adds a compact search-label display. Existing settings continue to work, and upgrading is optional. The release notes explain how compact labels use less space while preserving the full text on focus. No migration is required.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader asked to follow this feature for a possible future project. There is no current implementation task or upgrade obligation."
+    },
+    {
+      "id": "synthetic-045",
+      "kind": "email",
+      "title": "Automated checks passed on a thread you follow",
+      "sender": "Project notifications",
+      "status": "complete",
+      "content": "Message 1 — Project bot\nAll checks passed on the documentation update. You are receiving this because you follow the repository. You are not assigned as a reviewer and no action was requested.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader does not need routine automated activity from this fictional project. No accepted responsibility or new relevant issue is present."
+    },
+    {
+      "id": "synthetic-046",
+      "kind": "email",
+      "title": "Choose what to do when your current locker term ends",
+      "sender": "Storage provider",
+      "status": "complete",
+      "content": "Message 1 — Storage desk\nYour current locker term ends on April 30. We need your choice: renew for another term or arrange removal of the stored equipment. Renewal is not automatic. Please reply by April 20 so we can plan access.\n\nMessage 2 — Reader — sent\nI am checking whether the studio will need the space next month.\n\nMessage 3 — Storage desk\nThanks. We have recorded no renewal or removal choice yet.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader is responsible for this active fictional storage arrangement and still has equipment in the locker."
+    },
+    {
+      "id": "synthetic-047",
+      "kind": "email",
+      "title": "Planned power interruption outside your session hours",
+      "sender": "Building notices",
+      "status": "complete",
+      "content": "Message 1 — Building notices\nPower will be off in the studio building from 06:00 to 07:00 UTC on April 11 for scheduled maintenance. The building will reopen at 07:30, before your booked 09:00 session. No response or rescheduling is requested. Please allow for the later opening if you planned an early setup.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader manages setup for the booked session and had planned to arrive early. The revised opening time is new and useful; no separate action has been assigned."
+    },
+    {
+      "id": "synthetic-048",
+      "kind": "email",
+      "title": "A paid call that was never booked",
+      "sender": "Consulting offers",
+      "status": "complete",
+      "content": "Message 1 — Consulting offers\nWe have slots available for a paid consultation about growing a studio. Choose one if interested. This message is an offer only: nothing has been booked and no fee is owed.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader does not want unsolicited consulting calls and has not agreed to one."
+    },
+    {
+      "id": "synthetic-049",
+      "kind": "email",
+      "title": "Can you take care of the remaining thing?",
+      "sender": "Event partner",
+      "status": "complete",
+      "content": "Message 1 — Event partner\nCan you take care of the remaining thing before the session? I thought we discussed it earlier.\n\nMessage 2 — Reader — sent\nI can help, but I do not know which task you mean. Please send the details.\n\nMessage 3 — Event partner\nIt is the item I mentioned in the earlier conversation. Please let me know whether you can handle it.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. All available messages are included. There is no accessible earlier discussion defining the task. The reader is coordinating this ongoing obligation within the fictional scenario, but the work and deadline are unspecified."
+    },
+    {
+      "id": "synthetic-050",
+      "kind": "email",
+      "title": "Two conflicting pickup instructions",
+      "sender": "Equipment courier",
+      "status": "complete",
+      "content": "Message 1 — Courier desk\nPlease have the packed display ready at the front desk by 09:00 on April 10.\n\nMessage 2 — Courier coordinator\nUse the rear loading point at 11:00 on April 10 instead.\n\nMessage 3 — Courier desk\nWe still have the front desk at 09:00 on our sheet. Please confirm where and when your display will be available.",
+      "context": "Fictional review at 09:00 UTC on April 8, 2030. These are the complete messages in this conversation, in chronological order. The reader arranged this pickup and must provide the display. Both conflicting instructions are present in full; no later message resolves which one is correct. The reader has not replied."
+    }
+  ]
+}

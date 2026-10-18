@@ -1,0 +1,255 @@
+{
+  "warning": "Author-written expectations, not provider predictions or real-inbox accuracy. Read only after freezing Jev predictions. Never include in a classifier request.",
+  "expectations": {
+    "synthetic-001": {
+      "label": "act",
+      "needs_review": false,
+      "reason": "A supplier is waiting for the reader to choose a layout."
+    },
+    "synthetic-002": {
+      "label": "read",
+      "needs_review": false,
+      "reason": "The changed delivery schedule affects planning but needs no reply."
+    },
+    "synthetic-003": {
+      "label": "skip",
+      "needs_review": false,
+      "reason": "The requested approval was sent and the reply adds nothing new."
+    },
+    "synthetic-004": {
+      "label": "act",
+      "needs_review": false,
+      "reason": "An active subscription needs a payment-method update."
+    },
+    "synthetic-005": {
+      "label": "read",
+      "needs_review": false,
+      "reason": "A maintenance window is useful information for a service the reader uses; no export deadline or manual change is needed."
+    },
+    "synthetic-006": {
+      "label": "skip",
+      "needs_review": false,
+      "reason": "This repeats an expected payment already verified."
+    },
+    "synthetic-007": {
+      "label": "act",
+      "needs_review": false,
+      "reason": "A room-layout decision is still owed even though the deadline is later."
+    },
+    "synthetic-008": {
+      "label": "read",
+      "needs_review": false,
+      "reason": "New arrival instructions are useful for an existing reservation."
+    },
+    "synthetic-009": {
+      "label": "skip",
+      "needs_review": false,
+      "reason": "Urgent promotional wording does not create a need to act."
+    },
+    "synthetic-010": {
+      "label": "act",
+      "needs_review": false,
+      "reason": "An existing order cannot proceed without a replacement-or-refund choice."
+    },
+    "synthetic-011": {
+      "label": "read",
+      "needs_review": false,
+      "reason": "A new delivery date changes the reader’s plans."
+    },
+    "synthetic-012": {
+      "label": "skip",
+      "needs_review": false,
+      "reason": "The delivery acknowledgment adds no new information."
+    },
+    "synthetic-013": {
+      "label": "act",
+      "needs_review": false,
+      "reason": "The repair shop is waiting for approval of the proposed repair."
+    },
+    "synthetic-014": {
+      "label": "read",
+      "needs_review": false,
+      "reason": "A changed collection date matters, but the repair team is handling the next step."
+    },
+    "synthetic-015": {
+      "label": "skip",
+      "needs_review": false,
+      "reason": "The repair and collection are complete."
+    },
+    "synthetic-016": {
+      "label": "act",
+      "needs_review": false,
+      "reason": "A promised course exercise has not been submitted."
+    },
+    "synthetic-017": {
+      "label": "read",
+      "needs_review": false,
+      "reason": "The guide covers a topic the reader asked to learn about."
+    },
+    "synthetic-018": {
+      "label": "skip",
+      "needs_review": false,
+      "reason": "A repeated completion notice contains nothing new."
+    },
+    "synthetic-019": {
+      "label": "act",
+      "needs_review": false,
+      "reason": "An active equipment loan needs a renewal-or-return decision."
+    },
+    "synthetic-020": {
+      "label": "read",
+      "needs_review": false,
+      "reason": "The new pickup location is relevant to an existing reservation."
+    },
+    "synthetic-021": {
+      "label": "skip",
+      "needs_review": false,
+      "reason": "A known, completed return has no remaining obligation."
+    },
+    "synthetic-022": {
+      "label": "act",
+      "needs_review": false,
+      "reason": "The roster coordinator is waiting for the promised answer."
+    },
+    "synthetic-023": {
+      "label": "read",
+      "needs_review": false,
+      "reason": "A completed staffing update is useful for planning access."
+    },
+    "synthetic-024": {
+      "label": "skip",
+      "needs_review": false,
+      "reason": "The thread contains only acknowledgments of completed work."
+    },
+    "synthetic-025": {
+      "label": "act",
+      "needs_review": false,
+      "reason": "An unrecognized sign-in needs investigation; the source itself authorizes no account changes."
+    },
+    "synthetic-026": {
+      "label": "read",
+      "needs_review": false,
+      "reason": "A relevant interface change is useful information without a required action."
+    },
+    "synthetic-027": {
+      "label": "skip",
+      "needs_review": false,
+      "reason": "The reader already recognizes and verified the completed change."
+    },
+    "synthetic-028": {
+      "label": "act",
+      "needs_review": false,
+      "reason": "An accepted commitment still needs a schedule confirmation."
+    },
+    "synthetic-029": {
+      "label": "read",
+      "needs_review": false,
+      "reason": "A new opening time affects arrival planning."
+    },
+    "synthetic-030": {
+      "label": "skip",
+      "needs_review": false,
+      "reason": "An unwanted optional invitation creates no obligation."
+    },
+    "synthetic-031": {
+      "label": "act",
+      "needs_review": false,
+      "reason": "An existing order remains blocked on a decision."
+    },
+    "synthetic-032": {
+      "label": "read",
+      "needs_review": false,
+      "reason": "This is a useful new milestone in an existing refund."
+    },
+    "synthetic-033": {
+      "label": "skip",
+      "needs_review": false,
+      "reason": "An unwanted promotion remains optional despite the urgent subject."
+    },
+    "synthetic-034": {
+      "label": "act",
+      "needs_review": false,
+      "reason": "A promised reply is still outstanding."
+    },
+    "synthetic-035": {
+      "label": "read",
+      "needs_review": false,
+      "reason": "The newsletter matches the fictional reader’s stated reading interests."
+    },
+    "synthetic-036": {
+      "label": "skip",
+      "needs_review": false,
+      "reason": "The content is unwanted and creates no task."
+    },
+    "synthetic-037": {
+      "label": "act",
+      "needs_review": false,
+      "reason": "The requested refund still requires a submission."
+    },
+    "synthetic-038": {
+      "label": "read",
+      "needs_review": false,
+      "reason": "A platform change is relevant new travel information."
+    },
+    "synthetic-039": {
+      "label": "skip",
+      "needs_review": false,
+      "reason": "The duplicate receipt contains no new information or obligation."
+    },
+    "synthetic-040": {
+      "label": "act",
+      "needs_review": false,
+      "reason": "A requested export still needs to be collected before availability ends."
+    },
+    "synthetic-041": {
+      "label": "read",
+      "needs_review": false,
+      "reason": "A useful result changes the reader’s capacity planning."
+    },
+    "synthetic-042": {
+      "label": "skip",
+      "needs_review": false,
+      "reason": "The report repeats known information without a new alert."
+    },
+    "synthetic-043": {
+      "label": "act",
+      "needs_review": false,
+      "reason": "An assigned project review has not been submitted."
+    },
+    "synthetic-044": {
+      "label": "read",
+      "needs_review": false,
+      "reason": "A wanted feature update informs future planning."
+    },
+    "synthetic-045": {
+      "label": "skip",
+      "needs_review": false,
+      "reason": "Routine automated activity does not create an assignment."
+    },
+    "synthetic-046": {
+      "label": "act",
+      "needs_review": false,
+      "reason": "An existing arrangement requires a renewal-or-removal decision."
+    },
+    "synthetic-047": {
+      "label": "read",
+      "needs_review": false,
+      "reason": "A new building-access constraint informs setup planning."
+    },
+    "synthetic-048": {
+      "label": "skip",
+      "needs_review": false,
+      "reason": "An unsolicited optional service is not an obligation."
+    },
+    "synthetic-049": {
+      "label": "act",
+      "needs_review": true,
+      "reason": "The reader needs to clarify an outstanding request; the requested work is missing."
+    },
+    "synthetic-050": {
+      "label": "act",
+      "needs_review": true,
+      "reason": "A required pickup needs clarification because the location and time conflict."
+    }
+  }
+}
