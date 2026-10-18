@@ -1,14 +1,14 @@
 # Run the workflow
 
-Your agent supplies complete Gmail conversations to [pipeline.py](pipeline.py). It sends each email with your approved rubric and teaching examples to Jev, checks the returned classifications and saves the results. Start with the [setup instructions](../setup/README.md#command-for-the-agent).
+Start with the [setup instructions](../setup/README.md). Your coding agent applies the approved rubric to complete connected-email or pasted-sample conversations using [Classify without Jev](docs/agent-reference.md#classify-without-jev), then saves the review. If you choose Jev, [pipeline.py](pipeline.py) sends the same full inputs, rubric and approved examples to Jev. Both paths use the same review and receipts.
 
 Run all commands from the repository root with Python 3.11+. Personal state stays in ignored `local/`; ordinary email bodies stay in memory by default, with an explicitly approved temporary-file handoff available. See [storage](docs/storage.md) for details.
 
 ## Review the results
 
-Ask your agent to show all three categories in chat. The [in-chat review interface](docs/inline-review.md) is optional; a numbered list or local review page works too. Jev returns categories, not written reasons. Your coding agent can discuss the original email with you.
+Ask your agent to show all three categories in chat. The [in-chat review interface](docs/inline-review.md) is optional; a numbered list or local review page works too. If you use Jev, it returns categories, not written reasons. Your coding agent can discuss the original email with you.
 
-Correct a decision and explain why; ask your agent to save the correction. Approve a teaching example separately if you want that distinction used for future emails. This changes the examples sent to Jev, not its model weights.
+Correct a decision and explain why; your agent saves it and discusses a rubric tweak, a teaching example or both. Approve each proposed rubric edit and separately approve any full teaching example retained. These changes guide future classifications; they do not change model weights.
 
 ## Try the fictional demo
 

@@ -12,6 +12,8 @@
 
 - **Optional temporary input:** offline tests verify full Unicode/newline transfer, deletion before key loading and provider calls, cleanup on parsing/configuration/read failures and interruption, refusal of unsafe paths, preservation of other files and refusal to proceed when deletion fails. Ordinary source markers do not reach saved artifacts or stdout. A fresh 51-file download passed stdin preview, temporary-file preview and malformed-input cleanup; all 74 relative links and anchors in the affected guides resolve. These tests use synthetic inputs and mocked provider calls; the real Windows connector handoff remains unverified.
 
+- **Article setup flow:** the five reader-setup tests pass. A clean extracted download also passed the no-Jev, no-connector path with a wholly fictional pasted sample: full request preparation, simulated acceptance, both review outputs, exact receipt readback, unchanged reuse and reassessment on evaluator change without losing history. No key or provider call was used, source bodies stayed out of managed artifacts, and the separate synthetic preview remained read-only. All 94 relative Markdown links and anchors resolve. This proves command compatibility; a reader-led example discussion and fresh coding-agent judgments through the revised onboarding remain unverified.
+
 The demo uses four fictional examples of everyday inbox situations with saved, simulated judgments. Its preview does not call Jev or read Gmail. The revised examples and styling are ready for reader feedback.
 
 ## Still to verify

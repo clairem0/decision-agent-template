@@ -1,31 +1,39 @@
 # Have your AI decide
 
-Teach your AI what needs your attention. Your coding agent reads Gmail, Jev applies your rubric, and you review the results together: **Needs action**, **Worth seeing** or **Skip**. Your inbox stays unchanged.
+Teach your AI what needs your attention. Explore examples together, agree on a rubric, then review your emails as **Needs action**, **Worth seeing** or **Skip**. Start with your regular AI agent; Jev is an optional classifier you can add later. Your inbox stays unchanged unless you explicitly ask for an action.
 
-All collected emails appear for review, including **Skip** recommendations. Leave an item untouched and it stays in the next review. Only a submitted choice clears it from that review; simply showing it does not count as acknowledgment. Filtering future emails requires a separately approved rule in your email account.
+## Get started
 
-## Try it without connecting Gmail
+Open this folder in an AI agent with local file access, such as ChatGPT Work/Codex or Claude Cowork/Code. Your agent checks Python 3.11+ and the available review interface. You can follow the article's prompts one at a time, or paste this:
 
-Keep the [offline demo](workflow/README.md#try-the-fictional-demo) for a quick look at the interface, or test Jev on a **separate inbox of 50 fully fictional email threads**:
+> Help me set up this email decision workflow. Read AGENTS.md and follow setup/README.md. Briefly explain what's here, then guide me one step at a time and handle the technical work.
+>
+> Start with my examples and any rubric we've already drafted. Explore what belongs in Needs action, Worth seeing and Skip. Show the proposed rubric as three rows with “Belongs here” and “Goes elsewhere” examples, and get my approval.
+>
+> Use your own classification to test our rubric on a small agreed sample and show the review UI. Save my submitted choices and help me improve the rubric. If I haven't connected email, help me use complete pasted conversations or the fictional demo. Leave my inbox unchanged and stop before scheduling or adding Jev unless I've asked for those.
+
+## Start without Jev or an email connection
+
+- **No Jev:** your AI agent applies the rubric and uses the same review interface and saved choices. You don't need a TypeSafe account or API key.
+- **No email connection:** paste a few complete conversations, including relevant replies and context, to develop and test your own rubric. The chat host may retain what you paste. This reviews the supplied sample; it cannot fetch new mail automatically.
+- **Just exploring:** ask **“Can you show me the fictional demo?”** It uses four invented emails and saved, simulated judgments. No email connection or Jev key is needed.
+
+All collected emails appear for review, including **Skip** recommendations. Untouched items return at the next review; only a submitted choice clears or defers them. Filtering future emails requires an explicitly requested rule in your email account.
+
+## Add Jev when you want to try it
+
+Ask **“Help me add Jev to our workflow using our approved rubric.”** Your agent follows [Jev setup](setup/jev.md), helps you store a TypeSafe key locally and tests one fictional email before an agreed real-email batch. Your rubric and review interface stay in place.
+
+To try Jev without any personal data, use the **separate inbox of 50 fully fictional email threads**:
 
 > Help me try Jev on the bundled synthetic inbox. Follow workflow/README.md#try-jev-without-gmail. Use only its fictional emails, rubric and examples; do not connect Gmail or use any personal context. Preview first, then help me run the live test and show the timing breakdown.
 
-The synthetic test needs Python and your own TypeSafe key for the live run. It shows fresh API calls, reused results, timing and agreement with author-written expectations. [See the simple test flow](workflow/README.md#try-jev-without-gmail).
-
-## Set up your own inbox
-
-Open this folder in Claude Code or Codex and paste the prompt below. You'll need Gmail access, Python 3.11+ and a TypeSafe API key; your agent can help check and set these up.
-
-> Help me set up this email decision workflow. Read AGENTS.md and follow setup/README.md. Do the technical work and guide me one step at a time.
->
-> Start with my examples and any rubric we've already drafted. Show me the three categories with gold and anti-gold examples so I can approve them.
->
-> Help me connect Jev, try a fictional email, then agree with me on a small batch of real messages to send. Show all three categories and save my corrections. Leave my inbox unchanged and stop before scheduling.
+The live synthetic test needs your own TypeSafe key. It uses a fictional reader's rubric, separate from your personal workflow, and reports fresh API calls, reused results, timing and agreement with author-written expectations. [See the test flow](workflow/README.md#try-jev-without-gmail).
 
 ## Where to look
 
-- **Review the judgment:** [rubric](rubric/rubric.json) and [gold/anti-gold examples](rubric/examples.json).
-- **Set it up with your agent:** [setup instructions](setup/README.md) and [.env.example](.env.example) for your Jev key.
+- **Review the judgment:** [starter rubric](rubric/rubric.json) and [teaching examples](rubric/examples.json).
+- **Set it up with your agent:** [setup instructions](setup/README.md).
 - **See how it runs:** [workflow](workflow/README.md), including the optional in-chat review.
 
 Your agent saves your approved versions in `local/my-review/rubric.json` and `local/my-review/references.json`. Those are the files to revisit when you want to change the judgment.

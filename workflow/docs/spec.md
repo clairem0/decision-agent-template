@@ -2,17 +2,19 @@
 
 Version 2 · 2026-10-18
 
-A companion to *Have Your AI Decide (A Lot of Things)*. The reader opens this folder in a coding agent and pastes one prompt. The agent does the technical work. The reader supplies judgment and approves the rubric. [Agent instructions](../../setup/README.md) give the setup sequence; the [command reference](agent-reference.md) supplies technical steps as needed; [verification](verification.md) separates implementation from live and human proof.
+A companion to *Have Your AI Decide (A Lot of Things)*. The reader opens this folder in a coding agent and follows the article's prompts or the README's combined prompt. The agent does the technical work. The reader supplies judgment and approves the rubric. [Agent instructions](../../setup/README.md) give the setup sequence; the [command reference](agent-reference.md) supplies technical steps as needed; [verification](verification.md) separates implementation from live and human proof.
 
 ## Reader journey
 
-1. **Start with examples.** Check Python, file access, existing connectors and review surface. Confirm a small read-only scope, read full conversations and discuss real gold and anti-gold examples.
-2. **Review the rubric.** Show three category definitions and contrasts. Approve the rubric and separately approve full teaching examples retained under ignored `local/`.
-3. **Connect Jev.** Use direct TypeSafe, a locally stored key and one fictional test. Confirm the content and scope of a small real-email batch before transmission.
-4. **Review a first run.** Jev classifies; the coding agent collects and presents; Python validates and saves choices. Review every category and uncertainty, save receipts and check an unchanged rerun. Test reusable teaching on a fresh similar case plus a contrast.
-5. **Schedule later.** After the manual walkthrough, explicitly agree on cadence, timezone, scope, destination and host availability.
+Follow the article's prompts one step at a time, or the root README's combined setup prompt. An explanation or demo request ends at that step; do not automatically continue to account setup or classification.
 
-Use an existing approved rubric as the starting point. The fictional demo is optional. A coding-agent classifier is an explicit alternative, never a silent substitute for Jev.
+1. **Explore examples.** Check Python, file access, the available source and review surface. Read a small agreed set of full conversations and discuss preliminary categories with the reader. Without an email connector, use complete pasted conversations; the fictional demo is also available to explore the interface without personal data. Mark sample coverage honestly.
+2. **Make the rubric.** Draft from the reader's feedback and show three horizontal rows with Category, Belongs here and Goes elsewhere. Approve the rubric and separately approve full teaching examples retained under ignored `local/`.
+3. **Review a first run.** Start with coding-agent classification, using `decision.py` for request preparation, answer validation, persistence and review. No Jev account or key is required. Review every category and uncertainty, save receipts and check an unchanged rerun. Test reusable teaching on a fresh similar case plus a contrast.
+4. **Schedule if requested.** After the manual walkthrough, explicitly agree on cadence, timezone, scope, destination and host availability. Preserve the chosen classifier. A pasted sample alone does not supply new inbox messages.
+5. **Add Jev if requested.** Use direct TypeSafe, a locally stored key and one fictional connection test in a separate test root. Confirm content and scope before sending a small real-email or pasted batch. Keep the approved rubric, examples, review interface and prior history; changing the evaluator requires reassessment. A separate synthetic inbox supports testing Jev without Gmail or personal data.
+
+Use an existing approved rubric and classifier as the starting point. The fictional demo is optional and uses fixed simulated judgments. Coding-agent classification produces fresh judgments; it is not an offline simulation. Never silently substitute coding-agent results for an explicitly requested Jev run.
 
 ## Rubric and evidence
 
@@ -52,9 +54,9 @@ The sole ordinary-source file exception is an explicitly reader-approved tempora
 
 `packet.json` is a metadata manifest, not complete classifier input. Losing the in-memory request requires re-reading and preparing again. Host transcripts and provider logs may retain full reads; the template does not control those policies. [Storage](storage.md) explains retention boundaries. Unsupported storage versions are refused without modifying them; choose a fresh state folder. Do not delete or silently rewrite prior user configuration; reconcile older treatment definitions with approval and reassess under the current contract.
 
-### Default Jev path
+### Optional Jev path
 
-`workflow/pipeline.py` is the normal entry point. It prepares the batch, calls `workflow/jev_workflow.py` to apply Jev and saves the review. Preview is offline; live mode requires an explicit request bound and `JEV_API_KEY` in the environment. Pin `jev-1.13.0` at the documented TypeSafe endpoint. Record each attempt before sending; refuse redirects and automatic retries. Keep ordinary source and keys out of saved records.
+`workflow/pipeline.py` is the entry point when Jev has been chosen. It prepares the batch, calls `workflow/jev_workflow.py` to apply Jev and saves the review. Preview is offline; live mode requires an explicit request bound and `JEV_API_KEY` in the environment. Pin `jev-1.13.0` at the documented TypeSafe endpoint. Record each attempt before sending; refuse redirects and automatic retries. Keep ordinary source and keys out of saved records.
 
 Validate all typed answers, probabilities, usage, model and matching payload hash. Save Jev provenance with each accepted assessment. Jev returns no written reason or reference citations: review text labels the category definition, and any coding-agent interpretation must be identified separately. Do not represent confidence as measured accuracy.
 

@@ -1,6 +1,6 @@
-# Connect Jev
+# Add Jev (optional)
 
-Jev applies your rubric. Your coding agent gathers complete emails, runs the pipeline and presents the review.
+Add Jev when you want a separate decision model to apply your approved rubric. You can complete the article's first review [without Jev](../workflow/docs/agent-reference.md#classify-without-jev). When adding it, keep your approved rubric, examples, review interface and state history. Your coding agent still gathers complete inputs and presents the review; this step changes the classifier.
 
 **Work emails:** Before sending work emails, make sure your organization has approved Jev/TypeSafe for the email content and context you’ll share, in line with its data privacy policies.
 
@@ -10,15 +10,15 @@ If your workplace approves OpenAI’s API for this data instead, ask your coding
 
 1. Open the [TypeSafe console](https://console.typesafe.ai/), create an account and API key, and set up billing if required.
 2. Copy [.env.example](../.env.example) to `.env` at the repository root and enter your key locally. The pipeline reads it with `--env-file .env`; you can also supply `JEV_API_KEY` in the process environment. Keep it outside chat and Git.
-3. Check current pricing and the provider's data policy with your agent. Full messages, relevant context, your rubric and approved teaching examples go to TypeSafe. Begin with one fictional email, then agree on a small real-email batch.
+3. Check current pricing and the provider's data policy with your agent. Full messages, relevant context, your rubric and approved teaching examples go to TypeSafe. Begin with one fictional email, then agree on a small real-email or pasted batch. For the one-email connection test, use only the first item from `workflow/demo/inputs.json` with the fictional starter rubric/examples in a separate `local/jev-connection-test/` root and `--max-requests 1`; do not overwrite your personal configuration. Your agent supplies the input through the pipeline handoff.
 
 For a separate live test with no Gmail connection, use the [50-thread synthetic inbox](../workflow/README.md#try-jev-without-gmail). It supplies its own fictional rubric and teaching examples and reports measured timings. The offline four-email demo remains simulated.
 
 ## Run the pipeline
 
-Use the [standard pipeline command](README.md#command-for-the-agent). It loads your approved rubric and examples from `local/my-review/`, takes complete messages through stdin, calls Jev and saves the review. It does not fetch Gmail itself. If needed, the [reader-approved temporary-file option](gmail.md#hand-complete-conversations-to-jev) deletes its input before contacting Jev. Removing `--live` gives a metadata-only preview without a key or network call.
+Use the [standard pipeline command](README.md#command-for-jev). It loads your approved rubric and examples from `local/my-review/`, takes complete messages through stdin, calls Jev and saves the review. It does not fetch Gmail itself. If needed, the [reader-approved temporary-file option](gmail.md#hand-complete-conversations-to-jev) deletes its input before contacting Jev. Removing `--live` gives a metadata-only preview without a key or network call.
 
-Choose `--max-requests` for the agreed batch; it bounds requests, not dollars. An unchanged rerun reuses saved decisions. Follow the [review instructions](../workflow/docs/inline-review.md) to display results and save choices.
+Choose `--max-requests` for the agreed batch; it bounds requests, not dollars. The first switch from coding-agent classification requires fresh source and reassessment under the Jev evaluator; prior assessments and receipts remain in history. An unchanged rerun then reuses saved Jev decisions. Follow the [review instructions](../workflow/docs/inline-review.md) to display results and save choices.
 
 To see the interface before connecting anything, use the optional [fictional demo](../workflow/README.md#try-the-fictional-demo). Its saved judgments are simulated; it does not test Jev.
 

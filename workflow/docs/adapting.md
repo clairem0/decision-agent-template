@@ -7,7 +7,9 @@ Keep the same sequence: explore real examples, agree on categories and contrasts
 | Customer support | One complete conversation | Needs attention, waiting, resolved; include replies, ownership and the actual outstanding issue. |
 | Applications for human review | One application | Human-review categories or separate dimensions; include relevant submitted evidence and mark missing evidence explicitly. Historical accept/reject outcomes are answer keys, not source evidence. |
 | Job postings | One complete posting | Role fit under your approved criteria; distinguish missing requirements from a poor match and keep earlier versions. |
-| News about sales accounts | One sourced update | Relevant development versus background; use publication date, original source and the reader's approved account context. |
+| Company sourcing | One sourced company profile | Worth investigating versus outside the approved criteria; include evidence relevant to those criteria. |
+| News and posts | One complete sourced post or article | Worth surfacing versus background; include date, original source and the reader's interests. |
+| Recurring customer themes | One review or support conversation | Themes that help explain recurring problems; separate classification from the later aggregation and analysis. |
 
 This folder implements **email**. These are adaptation directions, not bundled connectors or ready-to-run workflows. The email labels, `kind`, UI wording and validation are intentionally small and explicit. Ask your agent to change those together for your use case; changing a JSON label alone is insufficient.
 
@@ -18,7 +20,7 @@ Adapt this decision-agent starter for [use case]. First help me define the decis
 
 Use fictional fixtures while changing the template. Update the source kind, allowed labels, classifier contract, review wording, examples and behavioral tests together. Keep missing evidence distinct from failed retrieval. Preserve source identity, meaningful-input hashes, saved corrections, explicit teaching approval and metadata-only storage. Keep target answer keys out of reviewer input.
 
-Use an existing authorized connector or a sample I supply. Do not add a generic framework or bring in someone else's data. Test Jev on held-out examples and a complete manual review, including correction and unchanged rerun, before discussing a schedule. Keep external actions separately authorized.
+Use an existing authorized connector or a sample I supply. Do not add a generic framework or bring in someone else's data. Test the chosen classifier on fresh examples and a complete manual review, including correction and unchanged rerun, before discussing a schedule. Start with your own classification; add Jev only when I request it, or preserve Jev if we already chose it. Keep external actions separately authorized.
 ```
 
-Start with one source and a small rubric. Keep [Jev](../../setup/jev.md) as the classifier and recheck its judgments against examples from the new task.
+Start with one source and a small rubric. The coding agent can classify first; [Jev](../../setup/jev.md) is optional. Recheck the chosen classifier against examples from the new task.

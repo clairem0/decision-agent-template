@@ -4,7 +4,7 @@
 
 Read [setup/README.md](setup/README.md) and follow its setup sequence. **Begin with capability checks and a small approved example scope.** The reader supplies judgment; you handle files, commands and review receipts. An existing approved rubric is a starting point, not a reason to restart discovery.
 
-Jev is the default classifier; follow setup/jev.md. The fictional demo is optional. Do not start with repository maintenance or the implementation backlog when the reader asks to set up their own workflow.
+Follow the article's flow: explore examples with the reader, approve the rubric, then test it with the coding agent and save review choices. Jev is optional; use setup/jev.md when requested, and preserve an existing chosen classifier. With no email connector, use complete pasted conversations or the optional fictional demo. Follow the reader's current step: an explanation or demo request does not authorize running the rest of setup. Do not start with repository maintenance or the implementation backlog when the reader asks to set up their own workflow.
 
 When the reader chooses the synthetic Jev test, follow [Try Jev without Gmail](workflow/README.md#try-jev-without-gmail) instead of the personal-inbox setup sequence. Use only the bundled synthetic inbox, rubric and examples. Do not check email connectors, load personal context or borrow credentials/configuration from other projects. The existing offline demo remains separate and unchanged.
 

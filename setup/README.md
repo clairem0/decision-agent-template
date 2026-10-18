@@ -1,16 +1,21 @@
 # Set up the workflow with your agent
 
-Follow **examples → approved rubric → connect Jev → saved review**. Use an existing approved rubric as the starting point. Do the technical work; keep the reader's choices about judgment, source scope and review.
+Follow the article: **explore examples → approve the rubric → test and review → optionally schedule or add Jev**. Start with the coding agent as classifier unless the reader has already chosen Jev. Preserve an existing approved rubric and classifier choice. Do the technical work; keep the reader's choices about judgment, source scope and review.
+
+Follow the reader's current prompt. If they ask to download or explain the template, briefly orient them and stop there. If they ask for the fictional demo, show it and stop there. During setup, pause for their judgments and rubric approval; do not jump ahead to keys, scheduling or a large inbox run.
 
 Want to try Jev without personal data? Use the [50-thread synthetic inbox](../workflow/README.md#try-jev-without-gmail). That path does not require Gmail, personal context or the setup steps below; finish there unless the reader asks to connect their own inbox.
 
-## 1. Start with examples
+## 1. Explore examples together
 
-Check Python 3.11+, file access, existing email connectors and a review surface. Use an existing supported runtime; do not install tools or connect accounts automatically. With no connector, offer a pasted sample or the fictional demo. Without a native review surface, use local HTML or numbered chat.
+Check Python 3.11+, file access, existing email connectors and a review surface. Use an existing supported runtime; do not install tools or connect accounts automatically. Without a native review surface, use local HTML or numbered chat.
 
-Follow the [Gmail notes](gmail.md) to confirm the account and a small read-only scope. Read complete conversations and relevant sent replies and attachments. Explain that ordinary source stays in memory by default, private metadata stays in ignored `local/`, and host transcripts may retain reads. Saving full teaching examples needs separate approval.
+- **Connected email:** follow the [Gmail notes](gmail.md) to confirm the account and a small read-only scope. Read complete conversations, including relevant sent replies and attachments.
+- **No connected email:** use the [pasted-sample path](gmail.md#without-an-email-connection), or show the fictional demo if the reader wants to explore without personal data. Do not require a connector or API key to continue.
 
-## 2. Review the rubric
+Discuss a small batch with the reader. Offer preliminary categories and ask what they would change; explore another batch if needed. Look at sender, content, obligations and later replies together. Treat these as discovery, not an approved rubric or permission to save full teaching examples. Explain that ordinary source stays in memory by default, private metadata stays in ignored `local/`, and host transcripts may retain reads.
+
+## 2. Make and approve the rubric
 
 Use just three categories:
 
@@ -18,38 +23,44 @@ Use just three categories:
 - **Worth seeing:** no action needed, but wanted reading or an update that affects plans or understanding.
 - **Skip:** neither. Recommend skipping, but still show it for the reader to confirm. Do not alter the inbox or make future-mail rules.
 
-Visualize definitions with gold and anti-gold examples when the host supports it; otherwise show a compact table. Probe an unresolved request versus its resolved thread; an unwanted invitation versus an agreed commitment; and a useful update versus routine acknowledgment. Keep timing separate from the category. Missing substantive context gets an uncertainty flag; incomplete retrieval stays on hold.
+When the reader is ready, draft the rubric from the examples and their feedback. Show an easy-to-scan reference sheet with **three horizontal rows** and columns **Category / Belongs here / Goes elsewhere**. Use concrete examples and contrasts; the latter two columns are the gold/anti-gold teaching pattern. Use a compact table if visualization is unavailable.
 
-Start from [the rubric](../rubric/rubric.json) and [gold/anti-gold examples](../rubric/examples.json). Approve and [save the rubric and teaching examples](../workflow/docs/agent-reference.md#save-approved-configuration). Your approved copies live in `local/my-review/rubric.json` and `local/my-review/references.json`. Keep the library small. Do not automatically copy personal preferences or turn review history into teaching data.
+Probe an unresolved request versus its resolved thread; an unwanted invitation versus an agreed commitment; and a useful update versus routine acknowledgment. Keep timing separate from category. Missing substantive context gets an uncertainty flag; incomplete retrieval stays on hold.
 
-## 3. Connect Jev
+Use [the starter rubric](../rubric/rubric.json) and [teaching examples](../rubric/examples.json) as shapes, not assumed personal preferences. Get approval for the rubric and separately for any full examples retained, then [save the approved configuration](../workflow/docs/agent-reference.md#save-approved-configuration). Use `{"references":[]}` if no examples are approved for storage. Keep the library small and do not automatically turn review history into teaching data.
 
-Follow [Jev setup](jev.md). Copy [.env.example](../.env.example) to `.env` at the repository root and enter the TypeSafe key locally. Keep it outside chat and Git. Start with a fictional email; then confirm the small real-email scope and that full messages, context and approved examples will go to TypeSafe. Use the fixed Jev evaluator identity and the saved rubric for both tests and the actual workflow.
+## 3. Review a first run
 
-If Jev is unavailable, pause this path. A fictional demo or explicitly chosen coding-agent alternative is fine, but do not silently substitute it and claim Jev worked.
+Use a small agreed fresh sample, such as yesterday's conversations or a new pasted batch. Record the source scope accurately: pasted samples cannot establish coverage of the reader's inbox.
 
-## 4. Review a first run
+**Without Jev (the starting path):** follow [Classify without Jev](../workflow/docs/agent-reference.md#classify-without-jev). Prepare full inputs with the saved rubric and examples, classify them with the actual available coding agent, validate and save the answers, then render the review. No TypeSafe key, API setup or Jev command is needed. This is a fresh classification, unlike the demo's fixed simulated judgments.
 
-Pass fresh complete conversations to `workflow/pipeline.py` through stdin, using the saved rubric, references and agreed request bound. If the host makes that handoff difficult, use the [reader-approved temporary-file option](gmail.md#hand-complete-conversations-to-jev). Run the [command below](#command-for-the-agent) from the repository root. It prepares the requests, calls Jev, checks and saves the results, and generates the review. Each valid decision is saved independently. A failed call leaves only that conversation pending; the review still shows successful results and holds. Saved successful attempts can be reused after an interruption; failed or uncertain attempts are never automatically resent. A successful answer with an evidence flag is reviewable, including Skip; it is not a failed API call.
+**If the reader has chosen Jev:** follow [Jev setup](jev.md) and the [pipeline command](#command-for-jev). Each valid decision is saved independently; failed calls stay pending while successful results remain reviewable. Saved successful attempts can be reused after interruption, and failed or uncertain attempts are never automatically resent. A successful answer with an evidence flag is reviewable, including Skip. Jev supplies no written reasons; label its category definitions and identify any additional explanation as the coding agent's interpretation.
 
-Show all categories, uncertainties, holds and original links. Jev does not write reasons: the default review text is explicitly a category definition. If the reader asks why, inspect the original and identify your explanation as the coding agent's interpretation.
+Show all categories, uncertainties, holds and verified original links using [review display and receipts](../workflow/docs/inline-review.md). Explain **Send changes to chat**; if a native bridge is unavailable, use copy-to-chat or the numbered fallback. Save submitted choices and read back their receipts. An unchanged rerun should preserve choices without another classification.
 
-Use [review display and receipts](../workflow/docs/inline-review.md). Save each submitted correction, acknowledgment or follow-up instruction and read back its receipt. An unchanged rerun should preserve those choices without another Jev call. After a correction, [discuss whether the rubric should change](../workflow/docs/agent-reference.md#improve-the-rubric-with-the-reader), even without a rubric-update request. **Use to update rubric** asks for a rule-change proposal, not full-source retention. Offer a rubric tweak, a teaching example or both. Show exact proposed wording and get approval before saving it. Full teaching examples need separate approval. Test an approved change on a fresh similar case plus a contrast; never claim a cached rerun proves learning.
+After a correction, [discuss whether the rubric should change](../workflow/docs/agent-reference.md#improve-the-rubric-with-the-reader), even without a rubric-update request. **Use to update rubric** asks for a rule-change proposal, not full-source retention. Offer a rubric tweak, a teaching example or both. Show exact proposed wording and get approval before saving it. Full teaching examples need separate approval. Test an approved change on a fresh similar case plus a contrast; a cached rerun does not prove learning.
 
 Follow-up notes authorize the specified work; classification alone does not. Sending, changing accounts and scheduling require their corresponding user instruction.
 
-## 5. Finish setup
+## 4. Finish the manual setup
 
-Confirm scope, actual Jev results, review delivery, saved receipt and unchanged rerun. Leave one item untouched and verify it resurfaces while a saved clear/assignment/correction stays quiet. If using Remind me, verify it returns next review or at the first review after the custom time; it creates no separate notification. Showing the review is not acknowledgment, and unchanged items reuse their saved classification. Name remaining gaps. Keep live model evidence separate from simulated code tests and reader acceptance.
+Confirm source scope, which classifier actually ran, review delivery, a saved receipt and an unchanged rerun. Leave one item untouched and verify it resurfaces while a saved clear/assignment/correction stays quiet. If using Remind me, verify it returns next review or at the first review after the custom time; it creates no separate notification. Showing the review is not acknowledgment. Name remaining gaps and distinguish fresh model judgment, simulated checks and reader acceptance.
 
-Stop before creating a schedule unless explicitly asked. [Scheduling](../workflow/docs/scheduling.md) · [Technical reference](../workflow/docs/agent-reference.md) · [Rubric pressure test](../workflow/docs/rubric-check.md).
+Stop here unless the reader asks for more. For a daily workflow, follow [scheduling](../workflow/docs/scheduling.md) with the existing classifier and a source that will be available at runtime. Pasted samples alone do not provide fresh inbox access.
 
-## Command for the agent
+## 5. Add Jev when requested
 
-By default, stream the connector's normalized input through stdin without saving email bodies to a file:
+Follow [Jev setup](jev.md). Keep the reader's approved rubric, examples, state history and review interface. Help them create `.env` from [.env.example](../.env.example) and open it for local key entry; keep the key outside chat and Git. Test one fictional email in a separate test root, then agree on a small real-email or pasted batch and explain that full content, relevant context and approved examples go to TypeSafe. Do not treat the API test as proof of the Gmail handoff.
+
+Switching classifiers changes the evaluator contract, so fresh inputs need reassessment; do not relabel old coding-agent results as Jev results or discard their history. If the reader asks to classify the bundled fake inbox with Jev, use the separate synthetic path above with its own fictional rubric. If Jev is unavailable, pause that path and offer continuing with the coding agent; never silently substitute it and claim Jev worked.
+
+## Command for Jev
+
+Only for the chosen Jev path, stream normalized input through stdin without saving email bodies to a file:
 
 ```sh
 python3 workflow/pipeline.py --root local/my-review --env-file .env --live --max-requests 5
 ```
 
-The command expects stdin; it does not fetch Gmail itself. Use the input shape in `workflow/demo/inputs.json`, adapted to the authorized account. A cap of 5 allows at most five new classifications; choose a cap matching the agreed batch. Without `--live`, it prepares and previews without calling Jev. An unchanged rerun reuses saved decisions.
+The command expects stdin; it does not fetch Gmail itself. Use the input shape in `workflow/demo/inputs.json`, adapted to the agreed source. If the host makes stdin transfer difficult, use the [reader-approved temporary-file option](gmail.md#hand-complete-conversations-to-jev). A cap of 5 allows at most five new classifications; choose a cap matching the agreed batch. Without `--live`, it prepares and previews without calling Jev. An unchanged rerun reuses saved decisions.

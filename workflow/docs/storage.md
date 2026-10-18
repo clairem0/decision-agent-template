@@ -1,6 +1,6 @@
 # What stays on disk
 
-By default, ordinary full emails and retrieved conversation context stay in the source account. The agent reads them into memory for classification and passes their actual content, the rubric and approved teaching examples to the evaluator. It must not keep a local source export, save classifier stdout or put bodies in review pages, reasons, coverage notes or receipts.
+By default, ordinary full emails and retrieved conversation context remain at their original source, including the chat when the reader supplies a pasted sample. The agent reads them into memory for classification and passes their actual content, the rubric and approved teaching examples to the evaluator. It must not keep a local source export, save classifier stdout or put bodies in review pages, reasons, coverage notes or receipts.
 
 The reader may explicitly approve a [temporary input file](../../setup/gmail.md#hand-complete-conversations-to-jev) for the Gmail-to-Jev handoff. Create only the agreed batch under the state root's `temporary-input/`, in a private, non-synced location. `pipeline.py --temporary-input PATH` reads and deletes the designated file before loading the key, preparing state or contacting Jev. Parsing errors also trigger deletion; a deletion failure stops processing. Confirm the file is gone after every run and clean up approved leftovers after startup failures or forced stops. This does not authorize retaining source, saving diagnostic output or teaching from it. File deletion is not secure erasure and cannot undo host transcripts or backups.
 
@@ -10,7 +10,7 @@ The only full source retained after the handoff is a separately approved teachin
 
 `prepare --stdin` returns the complete classifier batch to the agent on stdout. Its local `packet.json` is a **metadata manifest**, not that complete batch. `accept` validates results against this manifest and current state. Never classify from the saved manifest: retrieve source again and prepare again if the agent lost the in-memory batch. The helper does not read Gmail itself or verify a claimed complete capture. It trusts the agent's provenance and coverage.
 
-Agent conversations, tool transcripts, host visualization storage and external provider logs may retain content the agent reads. This template controls its own files; it cannot promise that your coding agent never stores email. Check the host's data policy before a real run. A pasted sample also remains in that chat. The default Jev workflow sends full messages, relevant context, your rubric and approved examples to TypeSafe; agree on that scope before the first real run.
+Agent conversations, tool transcripts, host visualization storage and external provider logs may retain content the agent reads. This template controls its own files; it cannot promise that your coding agent never stores email. Check the host's data policy before a real run. A pasted sample also remains in that chat. If you choose Jev, the workflow sends full messages, relevant context, your rubric and approved examples to TypeSafe; agree on that scope before the first real run. Without Jev, classification stays with the coding-agent provider you are already using, subject to that host's data policy.
 
 ## Storage compatibility
 

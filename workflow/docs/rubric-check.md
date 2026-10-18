@@ -27,7 +27,7 @@ The starter asks one question: **does this email need action, deserve a look, or
 
 Prepare the fictional cases with the shipped rubric and references, using a separate `local/check-1` root and evaluator `jev:jev-1.13.0:email-v3`. Save Jev's actual judgments before reading the answer file. Each request contains only full target, rubric and approved examples. Compare category, uncertainty and coverage, including every Skip.
 
-For a semantic trial, `jev_run.run` can record each independent case under that root's attempts folder. It sends exactly one selected target with `live=True, max_requests=1`. Bound the overall run to the 24 complete cases; stop on a provider failure and preserve attempts. For an operational batch, use `workflow/jev_workflow.py`; a failure or contradictory Skip + missing-evidence answer keeps the batch pending.
+For a semantic trial, `jev_run.run` can record each independent case under that root's attempts folder. It sends exactly one selected target with `live=True, max_requests=1`. Bound the overall run to the 24 complete cases; stop on a provider failure and preserve attempts. For an operational Jev batch, use `workflow/jev_workflow.py`: valid decisions save independently, failed calls stay pending and successful Skip answers with evidence flags remain visible for review.
 
 After explicit authorization, repeat on identical inputs in `local/check-2` and `local/check-3` to inspect consistency. Cache reuse is not another trial. Change one distinction at a time; rerun both the similar case and its contrast. Retain failed trials. Finally check a separate reader-approved sample: synthetic success cannot prove a rubric fits someone's inbox.
 
