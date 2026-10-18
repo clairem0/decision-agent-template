@@ -2,6 +2,8 @@
 
 Teach your AI what needs your attention. Your coding agent reads Gmail, Jev applies your rubric, and you review the results together: **Needs action**, **Worth seeing** or **Skip**. Your inbox stays unchanged.
 
+Leave an item untouched and it stays in the next review. Only a submitted choice clears it from that review; simply showing it does not count as acknowledgment.
+
 ## Start here
 
 Open this folder in Claude Code or Codex and paste the prompt below. You'll need Gmail access, Python 3.11+ and a TypeSafe API key; your agent can help check and set these up.

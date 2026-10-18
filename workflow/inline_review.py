@@ -19,7 +19,7 @@ def render(root, output, include_seen=False):
             holds.append({'title': source.get('title', key), 'reason': row.get('hold', 'Awaiting classification.'),
                           'original_url': d.source_link(source.get('original_url'))})
             continue
-        if not include_seen and (assessment['acknowledged'] or assessment['delivered']):
+        if not include_seen and assessment['acknowledged']:
             continue
         current = assessment['correction'] or assessment
         summary = current['reason']

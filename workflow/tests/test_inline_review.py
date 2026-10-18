@@ -53,6 +53,31 @@ class InlineReviewTests(unittest.TestCase):
         # Requesting a proposal must not approve or write a teaching library.
         self.assertFalse((self.root/'references.json').exists())
 
+    def test_only_submitted_user_choices_remove_items_from_the_next_review(self):
+        _, first = self.payload('first.html')
+        items = {item['id']: item for item in first['items']}
+        for item in items.values():
+            d.review(self.root, {'receipt_id': 'shown-'+item['id'], 'id': item['id'],
+                     'decision_id': item['decision_id'], 'action': 'delivered', 'note': 'Shown in chat.'})
+        _, delivered = self.payload('delivered.html')
+        self.assertEqual(delivered['items'], first['items'])
+        # Leave A untouched; explicitly acknowledge B, assign C, and correct D.
+        for item_id, action, extra in (
+                ('mail-demo-b', 'seen', {}),
+                ('mail-demo-c', 'assign', {'note': 'Draft a note about the guide.'}),
+                ('mail-demo-d', 'correct', {'label': 'read', 'note': 'I want this sale update.'})):
+            item = items[item_id]
+            d.review(self.root, {'receipt_id': 'choice-'+item_id, 'id': item_id,
+                     'decision_id': item['decision_id'], 'action': action, **extra})
+        before = d.read_state(self.root)
+        _, next_review = self.payload('next.html')
+        self.assertEqual([item['id'] for item in next_review['items']], ['mail-demo-a'])
+        self.assertEqual(next_review['items'][0]['decision_id'], items['mail-demo-a']['decision_id'])
+        _, full = self.payload('full.html', include_seen=True)
+        self.assertEqual(len(full['items']), 4)
+        self.assertEqual(d.read_state(self.root), before)
+        self.assertEqual(before['items']['mail-demo-c']['task']['status'], 'open')
+
     def test_metadata_only_retrieval_failure_renders_without_a_subject(self):
         failed = {'coverage': {'status': 'partial', 'scope': 'Fictional retry', 'detail': 'One unreadable conversation.'},
                   'items': [{'id': 'fictional-account:unreadable', 'status': 'failed'}]}

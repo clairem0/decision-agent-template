@@ -230,12 +230,30 @@ class DecisionTests(unittest.TestCase):
         page = d.render(self.root).read_text()
         self.assertIn('Follow-up open', page); self.assertEqual(page.count('value="complete"'), 1)
 
-    def test_delivered_is_explicit_and_preparation_does_not_suppress(self):
+    def test_delivery_is_audit_only_and_untouched_decisions_resurface(self):
         self.accepted();d.render(self.root)
+        original = d.read_state(self.root)['items']['mail-demo-a']['decision']
         self.assertTrue(d.summary(self.root)['items'][0]['new_review'])
-        d.review(self.root,self.choice('delivered',note='Confirmed in reader chat.'))
+        for run in range(2):
+            d.review(self.root, self.choice('delivered', receipt_id=f'delivery-{run}', note='Confirmed in reader chat.'))
+            self.assertEqual(self.prepare()['requests'], [])
+            self.assertTrue(d.summary(self.root)['items'][0]['new_review'])
+            current = d.read_state(self.root)['items']['mail-demo-a']['decision']
+            self.assertTrue(current['delivered']); self.assertFalse(current['acknowledged'])
+            self.assertEqual(current['id'], original['id'])
+            self.assertEqual(current['label'], original['label'])
+            page = d.render(self.root).read_text()
+            self.assertIn('4 awaiting review', page)
+            self.assertIn('Shown in chat', page)
+        # Retrieval gaps suspend presentation, but do not turn delivery into acknowledgment.
+        self.inputs['items'][0]['status'] = 'failed'; self.prepare()
         self.assertFalse(d.summary(self.root)['items'][0]['new_review'])
-        self.assertEqual(self.prepare()['requests'],[])
+        self.inputs['items'][0]['status'] = 'complete'; self.prepare()
+        self.assertTrue(d.summary(self.root)['items'][0]['new_review'])
+        d.review(self.root, self.choice('seen'))
+        self.assertEqual(self.prepare()['requests'], [])
+        self.assertFalse(d.summary(self.root)['items'][0]['new_review'])
+        self.assertIn('3 awaiting review', d.render(self.root).read_text())
 
     def test_unapproved_reference_change_does_not_invalidate(self):
         self.accepted();ref=copy.deepcopy(self.refs['references'][0]);ref.update(id='proposal',status='proposed')

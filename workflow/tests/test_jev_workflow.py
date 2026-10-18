@@ -56,6 +56,22 @@ class JevWorkflowTests(unittest.TestCase):
             with self.assertRaises(d.Hold): w.run(self.root, self.batch, live=True, max_requests=1)
             post.assert_not_called()
 
+    def test_delivered_but_untouched_results_resurface_without_provider_calls(self):
+        import inline_review
+        with patch.dict(os.environ, {'JEV_API_KEY': 'test-key'}), patch.object(j, 'post', side_effect=lambda p, k: answer(p)) as post:
+            w.run(self.root, self.batch, live=True, max_requests=2)
+            state = d.read_state(self.root)
+            for key, row in state['items'].items():
+                d.review(self.root, {'receipt_id': 'shown-'+key, 'id': key,
+                    'decision_id': row['decision']['id'], 'action': 'delivered', 'note': 'Shown in chat.'})
+            self.assertEqual(w.run(self.root, self.prepare(), live=True, max_requests=2)['accepted'], 0)
+            self.assertEqual(post.call_count, 2)
+        self.assertTrue(all(item['new_review'] for item in d.summary(self.root)['items']))
+        fragment = inline_review.render(self.root, self.root/'next-review.html').read_text()
+        payload = json.loads(fragment.split('class="dr-data">')[1].split('</script>')[0])
+        self.assertEqual({item['id']: item['decision_id'] for item in payload['items']},
+                         {key: row['decision']['id'] for key, row in state['items'].items()})
+
     def test_uncertain_skip_is_held_not_silently_hidden_or_relabelled(self):
         with patch.dict(os.environ, {'JEV_API_KEY': 'test-key'}), patch.object(j, 'post', side_effect=lambda p, k: answer(p, 'skip', 'needs_review')):
             with self.assertRaises(d.Hold): w.run(self.root, self.batch, live=True, max_requests=2)
