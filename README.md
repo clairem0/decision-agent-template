@@ -1,4 +1,4 @@
-# Have your AI decide
+# Making decisions with AI
 
 Teach your AI what needs your attention. Explore examples together, agree on a rubric, then review your emails as **Needs action**, **Worth seeing** or **Skip**. Start with your regular AI agent; Jev is an optional classifier you can add later. Your inbox stays unchanged unless you explicitly ask for an action.
 
