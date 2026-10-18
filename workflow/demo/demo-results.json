@@ -4,7 +4,7 @@
     {
       "id": "mail-demo-a",
       "label": "act",
-      "reason": "You need to update the expired card to keep an existing workspace running.",
+      "reason": "Your team's workspace renewal failed. Update the expired card by Friday to keep it running.",
       "reference_ids": [
         "email-deadline"
       ],
@@ -13,16 +13,16 @@
     {
       "id": "mail-demo-b",
       "label": "skip",
-      "reason": "You already decided not to attend; your fourth agent has no new information.",
+      "reason": "You already confirmed the delivery address, and the team acknowledged your reply. Nothing else is needed.",
       "reference_ids": [
-        "email-promotion"
+        "email-confirmed"
       ],
       "uncertainty": ""
     },
     {
       "id": "mail-demo-c",
       "label": "read",
-      "reason": "A practical guide to turning your judgment into an email-sorting rubric.",
+      "reason": "A newsletter you asked to receive, with a guide to sorting emails using your own judgment. No reply needed.",
       "reference_ids": [
         "email-reading"
       ],
@@ -31,7 +31,7 @@
     {
       "id": "mail-demo-d",
       "label": "skip",
-      "reason": "An unwanted sale creates no obligation, even with another deadline.",
+      "reason": "A clothing sale you aren't interested in. The deadline doesn't require a response or purchase.",
       "reference_ids": [
         "email-promotion"
       ],

@@ -8,28 +8,28 @@
     {
       "id": "mail-demo-a",
       "kind": "email",
-      "title": "SaaS isn’t dead. Your payment method is.",
-      "content": "Yet Another SaaS Billing: Your card expired. Please update it by Friday, April 12, to keep your workspace running.",
+      "title": "Your card expired — update it by Friday",
+      "content": "Northline Workspace Billing: We couldn't renew your team's workspace because the card on file has expired. Please update your payment method by Friday, April 12, to avoid an interruption.",
       "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation, with no later replies or other open obligations. The reader uses this paid workspace, wants to keep it running and is responsible for billing. The payment method has not been updated.",
       "status": "complete",
       "original_url": "https://mail.example.test/thread/mail-demo-a",
-      "sender": "Yet Another SaaS · Billing"
+      "sender": "Northline Workspace · Billing"
     },
     {
       "id": "mail-demo-b",
       "kind": "email",
-      "title": "Just flagging this in case your other three agents didn’t",
-      "content": "Your fourth agent: I found a reminder for tomorrow’s optional webinar. You’ve already decided not to attend. No new information, but I did find this independently.",
-      "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation, with no later replies or other open obligations. The reader already decided not to attend this webinar. This agent’s reminder adds no new information. The reader has not registered, does not need to RSVP and has no related work obligation.",
+      "title": "Re: Please confirm your delivery address",
+      "content": "Rowan, delivery team: Before we send your replacement desk lamp, please confirm that the delivery address on your order is still correct.\nRecipient: Yes, the address on the order is correct. Thank you.\nRowan: Thanks, that's all we need. Your existing delivery date is unchanged.",
+      "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation. The recipient's reply was sent and the delivery team acknowledged it. No unanswered request or useful new delivery information remains.",
       "status": "complete",
       "original_url": "https://mail.example.test/thread/mail-demo-b",
-      "sender": "Your fourth agent"
+      "sender": "Rowan · Delivery team"
     },
     {
       "id": "mail-demo-c",
       "kind": "email",
       "title": "This meeting could have been a rubric",
-      "content": "Technically Curious: When “I know it when I see it” is your entire decision process, your agent has follow-up questions. Start with real examples of what fits and what does not. Turn those distinctions into a rubric, review it yourself, then let your agent apply it to the next batch of emails.",
+      "content": "Technically Curious: This week's guide shows how to turn everyday judgment into a reusable email rubric. Start with examples of messages you would act on, read or skip. Explain the differences, approve the categories, then test them on a small new batch. No meeting required.",
       "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation, with no later replies or other open obligations. This is a fictional newsletter for the demo, not an actual published issue. The reader subscribes for practical AI workflow guides and has not read this issue. No reply or task is requested.",
       "status": "complete",
       "original_url": "https://mail.example.test/thread/mail-demo-c",
@@ -39,7 +39,7 @@
       "id": "mail-demo-d",
       "kind": "email",
       "title": "Your final, final chance to save 15%",
-      "content": "Cedar & Thread: We’ve extended your last chance again. This time we mean it, probably. Save 15% on our spring clothing collection through tonight.",
+      "content": "Cedar & Thread: Our spring sale has been extended through tonight. Save 15% on the spring clothing collection with code SPRING15. Browse the collection if you like; no purchase is required.",
       "context": "Fictional review on April 8, 2030; next review April 10. This is the complete conversation, with no later replies or other open obligations. The reader does not want optional Cedar & Thread sale emails. This is a general promotion, unrelated to an existing order or account issue.",
       "status": "complete",
       "original_url": "https://mail.example.test/thread/mail-demo-d",

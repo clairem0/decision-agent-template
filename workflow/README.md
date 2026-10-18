@@ -12,14 +12,16 @@ Correct a decision and explain why; ask your agent to save the correction. Appro
 
 ## Try the fictional demo
 
-Want to see the review before connecting anything? Ask your agent: **“Show me the fictional demo in chat using the included review interface.”** It uses these four emails from [demo/inputs.json](demo/inputs.json):
+Want to see the review before connecting anything? Ask your agent: **“Show me the fictional demo in chat using the included review interface.”** These four fictional emails illustrate situations you might find in your own inbox. Each has an email subject and a separately labeled summary:
 
-| From | Subject | Category |
+| Example of | Subject | Category |
 | --- | --- | --- |
-| Yet Another SaaS · Billing | SaaS isn’t dead. Your payment method is. | Needs action |
-| Your fourth agent | Just flagging this in case your other three agents didn’t | Skip |
-| Technically Curious | This meeting could have been a rubric | Worth seeing |
-| Cedar & Thread | Your final, final chance to save 15% | Skip |
+| A billing issue you need to fix | Your card expired — update it by Friday | Needs action |
+| A newsletter you want to read | This meeting could have been a rubric | Worth seeing |
+| A request you've already resolved | Re: Please confirm your delivery address | Skip |
+| An unwanted promotion | Your final, final chance to save 15% | Skip |
+
+The complete example conversations and their fictional context are in [demo/inputs.json](demo/inputs.json). The newsletter is invented for this demo, not an actual published issue.
 
 The demo is optional. Its decisions are saved and simulated, so it needs no Gmail access or Jev key. Your agent runs:
 

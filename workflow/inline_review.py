@@ -22,9 +22,17 @@ def render(root, output, include_seen=False):
         if not include_seen and (assessment['acknowledged'] or assessment['delivered']):
             continue
         current = assessment['correction'] or assessment
+        summary = current['reason']
+        if assessment['correction']:
+            summary_label = 'Your correction'
+        elif assessment['mode'] == 'jev':
+            summary_label = 'Category definition'
+            summary = summary.removeprefix('Category definition: ').removesuffix(' (Jev supplies no written reason.)')
+        else:
+            summary_label = 'Example summary' if assessment['mode'] == 'simulated' else 'Agent summary'
         items.append({'id': key, 'decision_id': assessment['id'], 'title': source['title'],
                       'sender': source.get('sender', source['kind'].title()),
-                      'label': current['label'], 'summary': current['reason'],
+                      'label': current['label'], 'summary': summary, 'summary_label': summary_label,
                       'original_url': d.source_link(source.get('original_url')),
                       'uncertainty': assessment.get('uncertainty', ''),
                       'mode': assessment['mode']})
