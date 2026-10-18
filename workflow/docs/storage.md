@@ -12,7 +12,7 @@ Agent conversations, tool transcripts, host visualization storage and external p
 
 ## Storage compatibility
 
-Reminders are optional metadata on the current decision (`reminder.when` and, for timed reminders, `reminder.at`) plus the exact saved receipt. Existing version-3 state needs no migration. Due checks never rewrite state; classification inputs exclude reminders.
+Reminders are optional metadata on the current decision (`reminder.when` and, for timed reminders, `reminder.at`) plus the exact saved receipt. Text requests retain their original words, timezone and request timestamp in the receipt; `reminder_resolutions` records the agent-resolved time by receipt ID. Unresolved requests do not change state. Existing version-3 state needs no migration. Due checks never rewrite state; classification inputs exclude reminders.
 
 Unsupported storage versions are refused without changing the existing folder. Preserve it and choose a fresh state root; do not copy ordinary source exports into the new workflow.
 

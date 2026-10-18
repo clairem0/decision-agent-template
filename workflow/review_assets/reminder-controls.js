@@ -1,46 +1,33 @@
 // Shared by the inline review and the local copy-to-chat review. No scheduling API.
 const reminderZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 function reminderCaption(reminder) {
+  if (reminder.when === 'requested') return reminder.text;
   return reminder.when === 'next_review' ? 'Next review' : new Date(reminder.at).toLocaleString(undefined, {
     month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short'
   });
 }
 function reminderFields() {
-  return '<label>When?<select class="reminder-when cursor-interaction" aria-label="Remind me when">'
-    + '<option value="next_review">Next review</option><option value="custom">Choose date &amp; time…</option></select></label>'
-    + '<label class="reminder-custom" hidden>Date &amp; time<input class="reminder-date" type="datetime-local" aria-label="Reminder date and time"></label>'
-    + '<p class="reminder-detail" role="status"></p><p class="reminder-help"></p>';
+  return '<p>Remind me next review.</p>'
+    + '<label>Or specify another time (optional)<textarea class="reminder-text" aria-label="Another reminder time (optional)" maxlength="500" placeholder="e.g. tomorrow at 9 AM"></textarea></label>'
+    + '<p class="reminder-detail" role="status"></p><p>Returns during a review. No separate notification.</p>';
 }
 function reminderDraft(container) {
-  return {preset: container.querySelector('.reminder-when').value, local: container.querySelector('.reminder-date').value};
+  return {text: container.querySelector('.reminder-text').value};
 }
 function readReminder(container) {
-  const {preset, local} = reminderDraft(container);
-  if (preset === 'next_review') return {when: 'next_review'};
-  let date;
-  if (preset === 'custom') {
-    // Check the round trip: nonexistent local times at a daylight-saving jump must not shift silently.
-    const parts = local.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/);
-    if (!parts) throw new Error('Choose a date and time.');
-    date = new Date(local);
-    const actual = [date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes()];
-    if (actual.some((value, i) => value !== Number(parts[i + 1]))) throw new Error('That local time does not exist. Choose another time.');
-  } else throw new Error('Choose when to bring this back.');
-  if (!Number.isFinite(date.getTime()) || date <= new Date()) throw new Error('Choose a future date and time.');
-  return {when: 'at', at: date.toISOString()};
+  const {text} = reminderDraft(container);
+  if (!text.trim()) return {when: 'next_review'};
+  if (text.length > 500) throw new Error('Keep the reminder time under 500 characters.');
+  // The coding agent resolves language in chat; the UI preserves the request and its time context.
+  return {when: 'requested', text, timezone: reminderZone, requested_at: new Date().toISOString()};
 }
 function bindReminder(container, draft = {}) {
-  container.querySelector('.reminder-when').value = draft.preset || 'next_review';
-  container.querySelector('.reminder-date').value = draft.local || '';
+  container.querySelector('.reminder-text').value = draft.text || '';
   const refresh = () => {
-    const custom = reminderDraft(container).preset === 'custom';
-    container.querySelector('.reminder-custom').hidden = !custom;
+    const custom = Boolean(reminderDraft(container).text.trim());
     container.querySelector('.reminder-detail').hidden = !custom;
-    container.querySelector('.reminder-help').textContent = custom ? 'Returns in your first review at or after this time. No separate notification.' : 'Returns in your next review. No separate notification.';
-    let caption;
-    try { caption = reminderCaption(readReminder(container)); } catch (error) { caption = error.message; }
-    container.querySelector('.reminder-detail').textContent = caption + ' · ' + reminderZone;
+    container.querySelector('.reminder-detail').textContent = 'Your agent will confirm the time in chat · ' + reminderZone;
   };
-  container.querySelectorAll('select,input').forEach(field => field.addEventListener('input', refresh));
+  container.querySelector('.reminder-text').addEventListener('input', refresh);
   refresh();
 }

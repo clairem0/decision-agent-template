@@ -21,6 +21,10 @@ HANDOFF = (
     'Validate each current decision ID and read back saved receipts; report stale or failed choices individually. '
     'Only submitted user choices acknowledge items; leave all untouched items pending for the next review even if already delivered. '
     'A remind choice defers review only: save its exact reminder and confirm the return time with timezone. '
+    'For when=requested, preserve the exact text, timezone and requested_at; resolve clear language using that context '
+    'and supply --resolve-reminder with the resulting timestamp (or next_review) when saving the unchanged choice. '
+    'Clarify ambiguous or nonexistent local times before saving; never guess or hide an unresolved item. '
+    'Read back both the original receipt and its saved reminder_resolutions entry. '
     'It returns in the first review at or after that time, or the next review for next_review; no separate notification is scheduled. '
     'After saving and confirming an assign receipt, begin the follow-up work I explicitly requested in its note, '
     'such as reviewing information or drafting a reply. Re-read necessary source through approved connectors and '
@@ -133,10 +137,19 @@ def reminder_time(value):
         raise Hold('Invalid reminder date or timezone offset.') from error
 
 
-def validate_reminder(reminder):
+def validate_reminder(reminder, allow_request=False):
     if not isinstance(reminder, dict):
         raise Hold('Choose next_review or an exact reminder time.')
     if reminder == {'when': 'next_review'}:
+        return
+    if allow_request and reminder.get('when') == 'requested':
+        if set(reminder) != {'when', 'text', 'timezone', 'requested_at'}:
+            raise Hold('A reminder request needs only text, timezone and requested_at.')
+        if len(require_text(reminder['text'], 'requested reminder time')) > 500:
+            raise Hold('Keep the reminder request under 500 characters.')
+        if not isinstance(reminder['timezone'], str) or not re.fullmatch(r'[A-Za-z][A-Za-z0-9_+/\-]{0,99}', reminder['timezone']):
+            raise Hold('Reminder requests need the reader timezone.')
+        reminder_time(reminder['requested_at'])
         return
     if set(reminder) != {'when', 'at'} or reminder['when'] != 'at':
         raise Hold('Reminders accept only when=next_review, or when=at with a timestamp.')
@@ -240,7 +253,7 @@ def accept(root, batch, response):
     return len(results)
 
 
-def review(root, choice):
+def review(root, choice, reminder_resolution=None):
     """Apply only an explicit reader choice. An acknowledgment never completes a task."""
     if set(choice) - {'receipt_id', 'id', 'decision_id', 'action', 'label', 'note', 'propose_teaching', 'reminder'}:
         raise Hold('Review receipts accept metadata only, not source snapshots.')
@@ -251,15 +264,21 @@ def review(root, choice):
     for k in ('receipt_id', 'id', 'decision_id', 'action'):
         require_text(choice.get(k), k)
     if choice['action'] == 'remind':
-        validate_reminder(choice.get('reminder'))
+        validate_reminder(choice.get('reminder'), allow_request=True)
     elif 'reminder' in choice:
         raise Hold('Only a remind choice can set a reminder.')
+    if reminder_resolution is not None:
+        if choice['action'] != 'remind' or choice['reminder']['when'] != 'requested':
+            raise Hold('Only a text reminder request accepts a separate time resolution.')
+        validate_reminder(reminder_resolution)
     with writer_lock(root):
         state = read_state(root)
         prior = state['receipts'].get(choice['receipt_id'])
         if prior:
             if prior != choice:
                 raise Hold('Receipt ID reused with different content.')
+            if reminder_resolution is not None and state.get('reminder_resolutions', {}).get(choice['receipt_id']) != reminder_resolution:
+                raise Hold('This reminder receipt was already resolved differently. Submit a new choice to change it.')
             return 'already saved'
         row = state['items'].get(choice['id'])
         if not row or row['status'] != 'current' or row['decision']['id'] != choice['decision_id']:
@@ -278,7 +297,13 @@ def review(root, choice):
             decision['follow_up'] = {'instruction': require_text(choice.get('note'), 'follow-up instruction'), 'status': 'open'}
             decision['acknowledged'] = True
         elif action == 'remind':
-            decision['reminder'] = copy.deepcopy(choice['reminder'])
+            reminder = choice['reminder']
+            if reminder['when'] == 'requested':
+                if reminder_resolution is None:
+                    raise Hold('Resolve the requested time with its timezone before saving; clarify ambiguity with the reader. The item is unchanged.')
+                state.setdefault('reminder_resolutions', {})[choice['receipt_id']] = copy.deepcopy(reminder_resolution)
+                reminder = reminder_resolution
+            decision['reminder'] = copy.deepcopy(reminder)
             decision['acknowledged'] = False
         elif action == 'complete':
             if not decision['follow_up']:
@@ -449,7 +474,7 @@ fieldset{border:0;padding:0;margin:0 0 12px}legend{font-size:14px;font-weight:60
 .field{display:block;margin:4px 0 12px}.field>span{display:block;font-size:14px;font-weight:600;margin-bottom:4px}
 textarea{width:100%;font:inherit;font-size:15px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;resize:vertical}
 textarea:focus{border-color:var(--accent)}
-.reminder-fields label{display:block;margin:8px 0}.reminder-fields select,.reminder-date{display:block;max-width:100%;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:6px;padding:8px;margin-top:4px}.reminder-fields p{font-size:14px;color:var(--muted)}
+.reminder-fields label{display:block;margin:8px 0}.reminder-fields p{font-size:14px;color:var(--muted)}
 .teach{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:8px;background:var(--soft);font-size:14px;cursor:pointer}
 .teach input{margin-top:4px;accent-color:var(--accent)}.teach small{display:block;color:var(--muted)}
 button{font:inherit;font-size:14px;font-weight:600;border-radius:8px;padding:8px 16px;cursor:pointer;border:1px solid var(--accent);background:var(--accent);color:var(--card)}
@@ -490,17 +515,17 @@ document.querySelectorAll('form.review').forEach(form => {
   form.querySelector('.prepare').addEventListener('click', () => {
     const action = picked('action');
     const field = form.querySelector('[data-for="' + action + '"] textarea');
-    const note = field ? field.value.trim() : '';
+    const note = field && action !== 'remind' ? field.value.trim() : '';
     const fail = (message, target) => { error.textContent = message; out.hidden = true; if (target) target.focus(); };
     if (!action) return fail('Choose what to do first.');
     if (action === 'correct' && !picked('label')) return fail('Choose the category it should be.', form.querySelector('.cats input:not(:disabled)'));
-    if (field && !note) return fail(field.dataset.need, field);
+    if (field && action !== 'remind' && !note) return fail(field.dataset.need, field);
     const teach = action === 'correct' && form.querySelector('[name=teach]').checked;
     const choice = {receipt_id: crypto.randomUUID(), id: form.dataset.id, decision_id: form.dataset.decision, action, note, propose_teaching: teach};
     if (action === 'correct') choice.label = picked('label');
     if (action === 'remind') {
       try { choice.reminder = readReminder(reminderFieldsRoot); }
-      catch (error) { return fail(error.message, reminderFieldsRoot.querySelector('.reminder-date')); }
+      catch (error) { return fail(error.message, reminderFieldsRoot.querySelector('.reminder-text')); }
     }
     text.value = SAVE + JSON.stringify(choice, null, 2);
     text.rows = Math.min(16, text.value.split('\n').length + 1);
@@ -543,7 +568,7 @@ def render(root, now=None):
 
     def form(key, d, label, rubric, task):
         actions = ['seen', 'assign', 'remind', 'correct'] + (['complete'] if task and task.get('status') == 'open' else [])
-        names = {'seen': 'Seen & clear', 'correct': 'Change category', 'assign': 'Add follow-up', 'remind': 'Remind me…', 'complete': 'Mark follow-up done'}
+        names = {'seen': 'Seen & clear', 'correct': 'Change category', 'assign': 'Add follow-up', 'remind': 'Remind me', 'complete': 'Mark follow-up done'}
         radios = ''.join(f'<label><input type="radio" name="action" value="{a}"><span>{names[a]}</span></label>' for a in actions)
         cats = ''.join(
             f'<label class="c-{v}"><input type="radio" name="label" value="{v}"{" disabled" if v == label else ""}>'
@@ -639,7 +664,8 @@ def render(root, now=None):
             f'<li><b>{esc(ACTIONS.get(r["action"], r["action"]))}</b>'
             + (f' → {esc(NAMES.get(r["label"], r["label"]))}' if r.get('label') else '')
             + (f': {esc(r["note"])}' if r.get('note') else '')
-            + (f': {esc(r["reminder"].get("at", "Next review"))}' if r.get('reminder') else '')
+            + (f': {esc(r["reminder"].get("text", r["reminder"].get("at", "Next review")))}' if r.get('reminder') else '')
+            + (f'<br><span class="small">Resolved: {esc(state["reminder_resolutions"][r["receipt_id"]].get("at", "Next review"))}</span>' if r['receipt_id'] in state.get('reminder_resolutions', {}) else '')
             + f'<br><span class="small">Receipt {esc(r["receipt_id"])}</span></li>'
             for r in row['reviews'])
         history += '<h3>Saved choices</h3>' + (f'<ul>{saved}</ul>' if saved else '<p class="small">None yet.</p>')
@@ -696,7 +722,10 @@ def main():
     p.add_argument('--stdin', action='store_true', help='Read fresh inputs (prepare) or one re-read source (teach) from stdin without caching bodies.')
     p.add_argument('--evaluator', help='Actual coding-agent identity/version used to classify this packet; required for prepare.')
     p.add_argument('--response'); p.add_argument('--choice'); p.add_argument('--approval')
+    p.add_argument('--resolve-reminder', metavar='TIMESTAMP_OR_NEXT_REVIEW', help='For a text reminder request only: its resolved ISO timestamp with timezone, or next_review. Preserve the original choice file.')
     args = p.parse_args(); base = Path('workflow/demo')
+    if args.resolve_reminder is not None and args.command != 'review':
+        p.error('--resolve-reminder is only for review.')
     if args.command == 'prepare' and not args.evaluator:
         p.error('prepare needs --evaluator with your actual coding-agent identity/version.')
     if args.command in ('prepare', 'teach') and not (args.stdin or args.inputs):
@@ -725,7 +754,8 @@ def main():
         elif args.command == 'accept':
             print('Accepted:', accept(args.root, load_json(Path(args.root)/'packet.json'), load_json(args.response)))
         elif args.command == 'review':
-            print(review(args.root, load_json(args.choice)))
+            resolution = None if args.resolve_reminder is None else ({'when': 'next_review'} if args.resolve_reminder == 'next_review' else {'when': 'at', 'at': args.resolve_reminder})
+            print(review(args.root, load_json(args.choice), resolution))
             print(json.dumps(summary(args.root), indent=2))
         elif args.command == 'teach':
             source = read_stdin_json() if args.stdin else load_json(args.inputs)

@@ -208,6 +208,73 @@ class DecisionTests(unittest.TestCase):
         self.assertEqual(item['label'], 'skip')
         self.assertTrue(item['new_review'])
 
+    def test_text_reminder_requires_resolution_and_preserves_exact_request_and_receipt(self):
+        self.accepted()
+        request = {'when': 'requested', 'text': ' Tomorrow at 9 AM ', 'timezone': 'America/Chicago',
+                   'requested_at': '2030-04-08T17:00:00Z'}
+        choice = self.choice('remind', reminder=request)
+        before = (self.root/'state.json').read_bytes()
+        with self.assertRaises(d.Hold):
+            d.review(self.root, choice)
+        self.assertEqual((self.root/'state.json').read_bytes(), before)
+        self.assertTrue(d.summary(self.root)['items'][0]['new_review'])
+        resolution = {'when': 'at', 'at': '2030-04-09T09:00:00-05:00'}
+        self.assertEqual(d.review(self.root, choice, resolution), 'saved')
+        state = d.read_state(self.root)
+        self.assertEqual(state['receipts']['remind'], choice)
+        self.assertEqual(state['reminder_resolutions']['remind'], resolution)
+        self.assertEqual(state['items']['mail-demo-a']['decision']['reminder'], resolution)
+        self.assertEqual(state['items']['mail-demo-a']['reviews'][-1], choice)
+        self.assertEqual(d.review(self.root, choice, resolution), 'already saved')
+        self.assertEqual(d.review(self.root, choice), 'already saved')
+        with self.assertRaises(d.Hold):
+            d.review(self.root, choice, {'when': 'next_review'})
+        self.assertEqual(d.read_state(self.root), state)
+        self.assertEqual(self.prepare()['requests'], [])
+        page = d.render(self.root).read_text()
+        self.assertIn('Tomorrow at 9 AM', page)
+        self.assertIn('Resolved: 2030-04-09T09:00:00-05:00', page)
+
+    def test_invalid_text_request_or_resolution_never_changes_state(self):
+        self.accepted()
+        request = {'when': 'requested', 'text': 'Friday at 9 AM', 'timezone': 'America/Chicago',
+                   'requested_at': '2030-04-08T17:00:00Z'}
+        before = (self.root/'state.json').read_bytes()
+        for changes in ({'text': ''}, {'text': 'x'*501}, {'timezone': None}, {'timezone': ''},
+                        {'requested_at': '2030-04-08T17:00:00'}, {'content': 'Unexpected source'}):
+            with self.subTest(changes=changes), self.assertRaises(d.Hold):
+                d.review(self.root, self.choice('remind', reminder=dict(request, **changes)), {'when': 'next_review'})
+            self.assertEqual((self.root/'state.json').read_bytes(), before)
+        for resolution in (request, {'when': 'at', 'at': 'tomorrow'}, {'when': 'at', 'at': '2030-04-09T09:00:00'}):
+            with self.subTest(resolution=resolution), self.assertRaises(d.Hold):
+                d.review(self.root, self.choice('remind', reminder=request), resolution)
+            self.assertEqual((self.root/'state.json').read_bytes(), before)
+        with self.assertRaises(d.Hold):
+            d.review(self.root, self.choice('seen'), {'when': 'next_review'})
+        stale = self.choice('remind', reminder=request)
+        self.inputs['items'][0]['content'] += ' New evidence.'
+        self.prepare()
+        before = (self.root/'state.json').read_bytes()
+        with self.assertRaises(d.Hold):
+            d.review(self.root, stale, {'when': 'next_review'})
+        self.assertEqual((self.root/'state.json').read_bytes(), before)
+
+    def test_cli_resolves_text_request_without_rewriting_submitted_file(self):
+        self.accepted()
+        choice = self.choice('remind', reminder={'when': 'requested', 'text': 'Next time I review these',
+                            'timezone': 'America/Chicago', 'requested_at': '2030-04-08T17:00:00Z'})
+        path = self.root/'choice.json'; path.write_text(json.dumps(choice))
+        command = [sys.executable, 'workflow/decision.py', 'review', '--root', str(self.root), '--choice', str(path)]
+        missing = subprocess.run(command, text=True, capture_output=True)
+        self.assertNotEqual(missing.returncode, 0)
+        saved = subprocess.run(command + ['--resolve-reminder', 'next_review'], text=True, capture_output=True)
+        self.assertEqual(saved.returncode, 0, saved.stderr)
+        self.assertEqual(d.load_json(path), choice)
+        state = d.read_state(self.root)
+        self.assertEqual(state['receipts']['remind'], choice)
+        self.assertEqual(state['reminder_resolutions']['remind'], {'when': 'next_review'})
+        self.assertTrue(d.summary(self.root)['items'][0]['new_review'])
+
     def test_missing_failed_sources_and_partial_coverage_preserve_history(self):
         self.accepted();self.inputs['items']=self.inputs['items'][:1]
         self.inputs['items'][0]['status']='failed';self.inputs['coverage']['status']='partial'
