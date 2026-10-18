@@ -30,11 +30,20 @@ Construct fresh inputs in memory following the example shape:
 
 ## Review and save choices
 
-Show all three categories and any held items using the [review interface or chat fallback](inline-review.md). Save submitted choices and read back their receipts before confirming them. An unchanged rerun must preserve the choices without another Jev call. A correction applies to that assessment; reusable teaching follows the separate approval step below.
+Show all three categories and any held items using the [review interface or chat fallback](inline-review.md). Save submitted choices and read back their receipts before confirming them. An unchanged rerun must preserve the choices without another Jev call. A correction applies to that assessment; then discuss [whether the rubric should change](#improve-the-rubric-with-the-reader).
 
 Inspect the full review page. `new_review` identifies unsurfaced decisions; unchanged cleared or actually delivered results remain quiet. Generated HTML is not proof of delivery. Only after actual chat delivery, save a `delivered` receipt with evidence in `note` using the review command. Keep that separate from acknowledgment. The full page retains all items for inspection, including failures and earlier assessments; missing scan entries do not close tasks or retire items.
 
 A temporary retrieval failure suspends the prior assessment and its saved choices. When the exact same decision inputs return, the assessment resumes unchanged; held assessments cannot accept new choices. Changes in content, relevant context, rubric, approved references or evaluator invalidate the current assessment. Old assessments and reviews remain visible. Reassess changed inputs; do not silently reapply an old correction to new evidence. Saved follow-up tasks remain separate from classification and require explicit completion evidence. No automatic reminder engine is included. An open task alone does not justify another recommendation.
+
+## Improve the rubric with the reader
+
+After each successfully saved correction, briefly discuss what should change for future decisions. Offer a rubric tweak, a teaching example or both, explaining which would help. This applies even when the teaching-example checkbox is unchecked. Group related corrections into one proposal and check earlier approvals before repeating a discussion.
+
+1. **Find the cause.** Re-read relevant source and the current approved rubric. Distinguish missing replies/context, a misapplied existing rule, a one-off exception and a reusable preference. Fix missing evidence before proposing a preference change. Do not broaden a rule just to fit one corrected label.
+2. **Propose the smallest useful change.** If a rule should change, show its exact current and proposed wording, a case it would affect and a contrast it should leave unchanged. For example: “Keep order updates Worth seeing, but Skip general sale promotions.” Ask the reader to approve or refine it. Offer a teaching example when a concrete case would make the distinction clearer, either alongside the rubric tweak or on its own. If the rubric already covers the correction, say so; do not invent a rule change. If neither is useful, explain why rather than adding redundant rules or examples.
+3. **Save only after approval.** Archive the previous approved rubric, update `local/my-review/rubric.json` without changing the three category IDs, and retain the reader's approval and the related correction receipt IDs as private metadata. Read back the saved wording. A correction alone does not approve a rubric edit, full-source retention or new provider calls. Saving an example requires the separate approval below.
+4. **Check the effect.** Within an agreed evaluation scope, use the updated rubric on a fresh similar case and a contrast. Confirm the actual classifier request contains the new rule; compare the judgments with the reader. The next pipeline run loads the saved rubric and changed rubric inputs require reassessment. Preserve previous assessments and receipts. Until new judgments are checked, report “rubric updated; effect not yet verified.” A cached rerun does not demonstrate improvement.
 
 ## Teach from a correction
 
@@ -62,7 +71,7 @@ Use the [rubric check](rubric-check.md) to evaluate Jev on fresh examples and co
 
 ## Optional fictional demo
 
-Use the [four-email demo](../README.md#try-the-fictional-demo) only when the reader wants a preview or cannot supply a real sample. It uses our fictional joke emails and saved simulated judgments, without Gmail access or a Jev key. Teaching examples remain separate in `rubric/examples.json`.
+Use the [four-email demo](../README.md#try-the-fictional-demo) only when the reader wants a preview or cannot supply a real sample. It uses fictional everyday inbox situations and saved simulated judgments, without Gmail access or a Jev key. Teaching examples remain separate in `rubric/examples.json`.
 
 Follow [review display and submission](inline-review.md) with `local/email-demo/`. If a local browser is needed, reuse an appropriate server or run:
 

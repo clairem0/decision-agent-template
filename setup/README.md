@@ -32,7 +32,7 @@ Pass fresh complete conversations to `workflow/pipeline.py` through stdin, using
 
 Show all categories, uncertainties, holds and original links. Jev does not write reasons: the default review text is explicitly a category definition. If the reader asks why, inspect the original and identify your explanation as the coding agent's interpretation.
 
-Use [review display and receipts](../workflow/docs/inline-review.md). Save each submitted correction, acknowledgment or follow-up instruction and read back its receipt. An unchanged rerun should preserve those choices without another Jev call. A correction affects this assessment. For broader improvement, separately approve a teaching example and test a fresh similar case plus a contrast. Never claim an unchanged cached rerun proves learning.
+Use [review display and receipts](../workflow/docs/inline-review.md). Save each submitted correction, acknowledgment or follow-up instruction and read back its receipt. An unchanged rerun should preserve those choices without another Jev call. After a correction, [discuss whether the rubric should change](../workflow/docs/agent-reference.md#improve-the-rubric-with-the-reader), even without a teaching-example request. Offer a rubric tweak, a teaching example or both. Show exact proposed wording and get approval before saving it. Full teaching examples need separate approval. Test an approved change on a fresh similar case plus a contrast; never claim a cached rerun proves learning.
 
 Follow-up notes authorize the specified work; classification alone does not. Sending, changing accounts and scheduling require their corresponding user instruction.
 

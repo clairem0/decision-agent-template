@@ -10,6 +10,6 @@ The demo uses four fictional examples of everyday inbox situations with saved, s
 
 ## Still to verify
 
-No successful live TypeSafe response has been validated for this starter. Real Gmail coverage in Claude and Codex, actual native-chat submission, reader acceptance and unattended scheduling remain unverified. Use the [rubric check](rubric-check.md) for planned live judgment and repeatability trials.
+The correction-to-rubric discussion is wired into agent instructions and both review handoffs; an actual reader approval and fresh-provider evaluation of that loop remain unverified. No successful live TypeSafe response has been validated for this starter. Real Gmail coverage in Claude and Codex, actual native-chat submission, reader acceptance and unattended scheduling remain unverified. Use the [rubric check](rubric-check.md) for planned live judgment and repeatability trials.
 
 Offline tests verify implementation behavior; each reader still needs to check the rubric and complete a small manual run in their own setup.

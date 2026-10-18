@@ -19,3 +19,5 @@ Open this folder in Claude Code or Codex and paste the prompt below. You'll need
 - **See how it runs:** [workflow](workflow/README.md), including the optional in-chat review.
 
 Your agent saves your approved versions in `local/my-review/rubric.json` and `local/my-review/references.json`. Those are the files to revisit when you want to change the judgment.
+
+When you correct a classification, your agent saves it and offers a rubric tweak, a teaching example, or both to improve similar decisions. You review and approve each proposal before it is saved; keeping a full message as an example is a separate choice.
