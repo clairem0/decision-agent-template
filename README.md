@@ -1,5 +1,7 @@
 # Making decisions with AI
 
+The companion template for [Have Your AI Decide (A Lot of Things)](https://technicallycurious.substack.com/p/have-your-ai-decide-a-lot-of-things) from **Technically Curious**.
+
 Teach your AI what needs your attention. Explore examples together, agree on a rubric, then review your emails as **Needs action**, **Worth seeing** or **Skip**. Start with your regular AI agent; Jev is an optional classifier you can add later. Your inbox stays unchanged unless you explicitly ask for an action.
 
 ## Get started
